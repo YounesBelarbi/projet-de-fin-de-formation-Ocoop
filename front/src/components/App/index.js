@@ -18,6 +18,8 @@ import { faCoffee, faBars } from '@fortawesome/free-solid-svg-icons'
 import Header from 'src/components/Header';
 import Footer from 'src/components/Footer';
 import HomeMain from 'src/components/HomeMain';
+import Signin from 'src/components/Signin';
+
 
 // Données
 // Styles et assets
@@ -30,6 +32,7 @@ const App = () => {
   return <div id="app">
    <Header />
    <HomeMain />
+   {/* <Signin /> */}
    <Footer />
   </div>;
 }
