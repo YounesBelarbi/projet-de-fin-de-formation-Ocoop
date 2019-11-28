@@ -1,11 +1,14 @@
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFacebook, faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 import './style.sass';
 
 const Footer = () => {
     return <div className="foot">
-        <h2>F</h2>
-        <h2>T</h2>
+        <FontAwesomeIcon icon={faFacebook} className="footer-icon"/>
+        <FontAwesomeIcon icon={faTwitter} className="footer-icon"/>
+        
     </div>
 }
 

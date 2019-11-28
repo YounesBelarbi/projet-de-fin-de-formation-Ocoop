@@ -1,12 +1,12 @@
 @import src/styles/vars
 
 .header
-  height: 80px
+  height: 10vh
   color: #fff
   display: flex
   justify-content: space-between
   align-items: center
-  padding: 40px 150px
+  
   background-color: rgba(0, 0, 0, 0.2)
 
 .header-logo
@@ -15,8 +15,9 @@
 
 nav
   height: 95px
-  background-color: #000000
+  background-color: rgba(0, 0, 0, .5)
   z-index: 1
+  
 
 
 a
@@ -27,6 +28,11 @@ a
 
 a:hover
   color: $orange
+
+// Mdifier le li pour ajouter un effet de profondeur
+// li:hover
+//   box-shadow: -1px 2px 10px 3px rgba(0, 0, 0, 0.3) inset
+//   color: #181717dc
 
 
 #menuToggle
@@ -103,11 +109,11 @@ a:hover
  */
 #menu
   position: absolute
-  width: 300px
-  margin: -100px 0 0 -50px
+  width: 400px
+  margin: -62px 0 0 -50px
   padding: 50px
   padding-top: 125px
-  background: #000000
+  background: rgba(0, 0, 0, .5)
   list-style-type: none
   -webkit-font-smoothing: antialiased
   /* to stop flickering of text in safari */

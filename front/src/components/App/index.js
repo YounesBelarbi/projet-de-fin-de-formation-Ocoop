@@ -3,9 +3,12 @@
  */
 import React from 'react';
 
+
+
 /**
  * Imports locaux
  */
+//import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoffee, faBars } from '@fortawesome/free-solid-svg-icons'
