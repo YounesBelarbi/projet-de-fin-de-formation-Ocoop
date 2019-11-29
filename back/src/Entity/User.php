@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -92,6 +94,33 @@ class User implements UserInterface
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updated_at;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\FavoriteGame", mappedBy="user")
+     */
+    private $favoriteGames;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Guild", inversedBy="users")
+     */
+    private $guild;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Frequency", inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $frequency;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Status", inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $status;
+
+    public function __construct()
+    {
+        $this->favoriteGames = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -306,6 +335,73 @@ class User implements UserInterface
     public function setUpdatedAt(?\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FavoriteGame[]
+     */
+    public function getFavoriteGames(): Collection
+    {
+        return $this->favoriteGames;
+    }
+
+    public function addFavoriteGame(FavoriteGame $favoriteGame): self
+    {
+        if (!$this->favoriteGames->contains($favoriteGame)) {
+            $this->favoriteGames[] = $favoriteGame;
+            $favoriteGame->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavoriteGame(FavoriteGame $favoriteGame): self
+    {
+        if ($this->favoriteGames->contains($favoriteGame)) {
+            $this->favoriteGames->removeElement($favoriteGame);
+            // set the owning side to null (unless already changed)
+            if ($favoriteGame->getUser() === $this) {
+                $favoriteGame->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getGuild(): ?Guild
+    {
+        return $this->guild;
+    }
+
+    public function setGuild(?Guild $guild): self
+    {
+        $this->guild = $guild;
+
+        return $this;
+    }
+
+    public function getFrequency(): ?Frequency
+    {
+        return $this->frequency;
+    }
+
+    public function setFrequency(?Frequency $frequency): self
+    {
+        $this->frequency = $frequency;
+
+        return $this;
+    }
+
+    public function getStatus(): ?Status
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?Status $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

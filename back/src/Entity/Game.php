@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -45,6 +47,29 @@ class Game
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updated_at;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Rank", mappedBy="games")
+     */
+    private $ranks;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\FavoriteGame", mappedBy="game")
+     */
+    private $favoriteGames;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Plateform", inversedBy="games")
+     */
+    private $plateform;
+
+
+    public function __construct()
+    {
+        $this->ranks = new ArrayCollection();
+        $this->favoriteGames = new ArrayCollection();
+        $this->plateform = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -122,4 +147,93 @@ class Game
 
         return $this;
     }
+
+    /**
+     * @return Collection|Rank[]
+     */
+    public function getRanks(): Collection
+    {
+        return $this->ranks;
+    }
+
+    public function addRank(Rank $rank): self
+    {
+        if (!$this->ranks->contains($rank)) {
+            $this->ranks[] = $rank;
+            $rank->setGames($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRank(Rank $rank): self
+    {
+        if ($this->ranks->contains($rank)) {
+            $this->ranks->removeElement($rank);
+            // set the owning side to null (unless already changed)
+            if ($rank->getGames() === $this) {
+                $rank->setGames(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FavoriteGame[]
+     */
+    public function getFavoriteGames(): Collection
+    {
+        return $this->favoriteGames;
+    }
+
+    public function addFavoriteGame(FavoriteGame $favoriteGame): self
+    {
+        if (!$this->favoriteGames->contains($favoriteGame)) {
+            $this->favoriteGames[] = $favoriteGame;
+            $favoriteGame->setGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavoriteGame(FavoriteGame $favoriteGame): self
+    {
+        if ($this->favoriteGames->contains($favoriteGame)) {
+            $this->favoriteGames->removeElement($favoriteGame);
+            // set the owning side to null (unless already changed)
+            if ($favoriteGame->getGame() === $this) {
+                $favoriteGame->setGame(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Plateform[]
+     */
+    public function getPlateform(): Collection
+    {
+        return $this->plateform;
+    }
+
+    public function addPlateform(Plateform $plateform): self
+    {
+        if (!$this->plateform->contains($plateform)) {
+            $this->plateform[] = $plateform;
+        }
+
+        return $this;
+    }
+
+    public function removePlateform(Plateform $plateform): self
+    {
+        if ($this->plateform->contains($plateform)) {
+            $this->plateform->removeElement($plateform);
+        }
+
+        return $this;
+    }
+
 }
