@@ -10,7 +10,7 @@ import './style.sass';
 const Header = () => {
     return <header>
 
-        {/* <Column  desktop={ narrow= boolean, size=12 }>
+        {/* <Column  desktop={ narrow= boolean, size='full' }>
           
         </Column> */}
         <nav role="navigation">
