@@ -2,6 +2,7 @@
  * Imports de dépendances
  */
 import React from 'react';
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom'
 
 
 
@@ -19,6 +20,7 @@ import Header from 'src/components/Header';
 import Footer from 'src/components/Footer';
 import HomeMain from 'src/components/HomeMain';
 import Signin from 'src/components/Signin';
+import Signup from 'src/components/Signup';
 
 
 // Données
@@ -29,14 +31,21 @@ import './app.sass';
  * Code
  */
 const App = () => {
-  return <div id="app">
-   <Header />
-   <HomeMain />
-   {/* <Signin /> */}
-   <Footer />
-  </div>;
+  return <Router>
+            <div id="app">
+              <Header />
+              <main>
+              <Switch>
+                <Route path="/" exact component={HomeMain} />
+                <Route path="/signin" component={Signin} />
+                <Route path="/signup" component={Signup} />
+                
+              </Switch>
+              </main>
+              <Footer />
+          </div>
+        </Router>;
 }
-
 /**
  * Export
  */

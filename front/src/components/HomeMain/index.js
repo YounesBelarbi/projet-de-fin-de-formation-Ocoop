@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 import Card from 'src/components/Card';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 //import { faCoffee, faBars } from '@fortawesome/free-solid-svg-icons'
@@ -14,10 +14,10 @@ const HomeMain = () => {
                     
                     <Column.Group multiline centered>
                         <Column desktop={{size: 'two-fifths'}} mobile={{size: 'full'}} >
-                            <Button className="btn-main btn-right-align">S'inscrire</Button>
+                            <Link to="/signup"><Button className="btn-main btn-right-align">S'inscrire</Button></Link>
                         </Column>
                         <Column desktop={{size: 'two-fifths'}} mobile={{size: 'full'}}>
-                            <Button className="btn-main btn-signin btn-left-align">Se connecter</Button>
+                            <Link to="/signin"><Button className="btn-main btn-signin btn-left-align">Se connecter</Button></Link>
                         </Column>
                     </Column.Group>
                 </div>
