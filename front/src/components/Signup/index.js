@@ -12,32 +12,36 @@ const Signup = () => {
             <div className="signup-container">
                 <div className="signup-form">
                     <Form>
-                    <Row className="justify-content-center">
-                        <Col lg={5} md={6} sm={8} xs={10}>
-                        <Form.Group controlId="pseudo">
-                            <Form.Label>Pseudo</Form.Label>
-                            <Form.Control type="text" placeholder="Pseudo" className="form-input"/>
-                        </Form.Group>
+                        <Row className="justify-content-center">
+                            <Col lg={5} md={6} sm={8} xs={10}>
+                            <Form.Group controlId="pseudo">
+                                <Form.Label>Pseudo</Form.Label>
+                                <Form.Control type="text" placeholder="Pseudo" className="form-input"/>
+                            </Form.Group>
 
-                        <Form.Group controlId="formBasicEmail">
-                            <Form.Label>mail</Form.Label>
-                            <Form.Control type="email" placeholder="Mail" className="form-input"/>
-                        </Form.Group>
+                            <Form.Group controlId="formBasicEmail">
+                                <Form.Label>mail</Form.Label>
+                                <Form.Control type="email" placeholder="Mail" className="form-input"/>
+                                <Form.Text className="text-muted">
+                                    Nous ne partagerons jamais vos informations
+                                </Form.Text>
+                            </Form.Group>
+                            
 
-                        <Form.Group controlId="formBasicPassword">
-                            <Form.Label>Mot de passe</Form.Label>
-                            <Form.Control type="password" placeholder="Mot de passe" className="form-input"/>
-                        </Form.Group>
+                            <Form.Group controlId="formBasicPassword">
+                                <Form.Label>Mot de passe</Form.Label>
+                                <Form.Control type="password" placeholder="Mot de passe" className="form-input"/>
+                            </Form.Group>
 
-                        <Form.Group controlId="passwordVerif">
-                            <Form.Label>Mot de passe</Form.Label>
-                            <Form.Control type="password" placeholder="Mot de passe" className="form-input"/>
-                        </Form.Group>
+                            <Form.Group controlId="passwordVerif">
+                                <Form.Label>Mot de passe</Form.Label>
+                                <Form.Control type="password" placeholder="Mot de passe" className="form-input"/>
+                            </Form.Group>
 
-                        <Form.Group controlId="formBasicCheckbox">
-                            <Form.Check type="checkbox" label="J'accepte les conditions générales d'utilisation" />
-                        </Form.Group>
-                        </Col>
+                            <Form.Group controlId="formBasicCheckbox">
+                                <Form.Check type="checkbox" label="J'accepte les conditions générales d'utilisation" />
+                            </Form.Group>
+                            </Col>
                         </Row>
                         <Row className="justify-content-center">
                             <Col lg={3} md={6} sm={8} xs={10}>  
