@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserFriends, faUsers, faNewspaper, faBlog, faClipboardList } from '@fortawesome/free-solid-svg-icons'
 
-import "rbx/index.css";
+//import "rbx/index.css";
 
 import './style.sass';
 

@@ -34,7 +34,6 @@ const Signup = () => {
                             <Form.Control type="password" placeholder="Mot de passe" className="form-input"/>
                         </Form.Group>
 
-                        
                         <Form.Group controlId="formBasicCheckbox">
                             <Form.Check type="checkbox" label="J'accepte les conditions générales d'utilisation" />
                         </Form.Group>
@@ -46,10 +45,8 @@ const Signup = () => {
                                     s'inscrire
                                 </Button>
                             </Col>
-                        </Row>
-                        
-                    </Form>
-                    
+                        </Row>   
+                    </Form> 
                 </div>
             </div>
         </div>

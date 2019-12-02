@@ -23,7 +23,7 @@ const HomeCards = () => {
    return <Container fluid className="mb-5">
   <Row className="justify-content-center">
   {['CS:GO', 'WOW', 'OverWatch', 'Adibou', 'CandyCrush'].map(i => (
-    <Col lg={3} md={4} sm={12} className="pt-5">
+    <Col key={i} lg={3} md={4} sm={12} className="pt-5">
     <Card className="bg-dark text-white hover-card rounded-card">
         <Card.Img className="rounded-card" src="https://lesplayersdudimanche.com/wp-content/uploads/2017/02/Dust-2.jpg" alt="Card image" />
         <Card.ImgOverlay>
