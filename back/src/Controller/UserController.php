@@ -13,38 +13,42 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class UserController extends AbstractController
 {
+
     /**
      * @Route("/list", name="list")
      */
     public function userList(UserRepository $userRepository)
     {
-        $user = $userRepository->findAll();
+        
+        $users = $userRepository->findAll();
         //dump(findAll());
-        $arrayUser = [];
-        foreach ($user as  $user) {
-            $arrayUser [] = [
+        $arrayUsers = [];
+        foreach ($users as  $user) {
+            $arrayUsers [] = [
                 'username' => $user->getUsername(),
-                'roles' => $user->getRoles(),
-                'password'=> $user->getPassword(),
-                'firstname'=> $user->getFirstname(),
-                'lastname'=> $user->getLastname(),
-                'birth' => $user->getBirth(),
-                'email' => $user->getEmail(),
+                // 'roles' => $user->getRoles(),
+                // 'password'=> $user->getPassword(),
+                //'firstname'=> $user->getFirstname(),
+                //'lastname'=> $user->getLastname(),
+                //'birth' => $user->getBirth(),
+                //'email' => $user->getEmail(),
                 'city' => $user->getCity(),
-                'longitude' => $user->getLongitude(),
-                'latitude' => $user->getLatitude(),
-                'mobile' => $user->getMobile(),
+                //'longitude' => $user->getLongitude(),
+                //'latitude' => $user->getLatitude(),
+                // 'mobile' => $user->getMobile(),
                 'avatar' => $user->getAvatar(),
-                'created_at' => $user->getCreatedAt(),
-                'updated_at' => $user->getUpdatedAt(),
+                // 'created_at' => $user->getCreatedAt(),
+                // 'updated_at' => $user->getUpdatedAt(),
                 'url' => $this->generateUrl('user_list', [
                     'id' => $user->getId()
                 ], UrlGeneratorInterface::ABSOLUTE_URL)
             ];
         }
-        return $this->json($arrayUser);             
-
+        
+        return $this->json($arrayUsers);             
     }
+
+
 
     /**
      * @Route("/{id}", name="show")
@@ -57,30 +61,29 @@ class UserController extends AbstractController
         foreach ($user as  $user) {
             $arrayUser [] = [
                 'username' => $user->getUsername(),
-                'roles' => $user->getRoles(),
+                // 'roles' => $user->getRoles(),
                 'password'=> $user->getPassword(),
                 'firstname'=> $user->getFirstname(),
                 'lastname'=> $user->getLastname(),
                 'birth' => $user->getBirth(),
                 'email' => $user->getEmail(),
                 'city' => $user->getCity(),
-                'longitude' => $user->getLongitude(),
-                'latitude' => $user->getLatitude(),
+                // 'longitude' => $user->getLongitude(),
+                // 'latitude' => $user->getLatitude(),
                 'mobile' => $user->getMobile(),
                 'avatar' => $user->getAvatar(),
-                'created_at' => $user->getCreatedAt(),
-                'updated_at' => $user->getUpdatedAt(),
+                // 'created_at' => $user->getCreatedAt(),
+                // 'updated_at' => $user->getUpdatedAt(),
                 'url' => $this->generateUrl('user_show', [
                     'id' => $user->getId()
                 ], UrlGeneratorInterface::ABSOLUTE_URL)
             ];
-
-            
         }
         // dump($user->getUsername());
             
         return $this->json($arrayUser);
     }
+
     
 }
 
