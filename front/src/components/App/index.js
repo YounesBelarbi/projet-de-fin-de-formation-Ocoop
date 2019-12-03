@@ -21,7 +21,7 @@ import Footer from 'src/components/Footer';
 import HomeMain from 'src/components/HomeMain';
 import Signin from 'src/components/Signin';
 import Signup from 'src/components/Signup';
-
+import ResetPassword from 'src/components/ResetPassword';
 
 // Données
 // Styles et assets
@@ -39,6 +39,7 @@ const App = () => {
                 <Route path="/" exact component={HomeMain} />
                 <Route path="/signin" component={Signin} />
                 <Route path="/signup" component={Signup} />
+                <Route path="/resetpassword" component={ResetPassword} />
                 
               </Switch>
               </main>

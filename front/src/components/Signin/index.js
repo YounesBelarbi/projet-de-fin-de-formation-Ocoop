@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Col, Row } from 'react-bootstrap';
+import ErrorMessage from "./errorMessage";
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
+import useForm from "react-hook-form";
 
 // Données
 // Styles et assets
@@ -8,19 +12,60 @@ import { Form, Button, Col, Row } from 'react-bootstrap';
 import './style.sass';
 
 const Signin = () => {
-    return <Form className="signup-form ">
+
+    // connexion au state du loginReducer
+    const {email, password} = useSelector(state => ({
+        ...state.loginReducer
+    }))
+
+    // init du dispatch grace au useDispatch()
+    const dispatch = useDispatch();
+
+
+    // react hook form permettant un controle de formulaire grace aux hooks
+    const {
+        register,
+        handleSubmit,
+        errors,
+        formState: { isSubmitting }
+      } = useForm();
+
+    // comportement à l'envoi du formulaire
+    const onSubmit = (data) => {
+        
+        alert(JSON.stringify(data));
+
+      };
+
+    // comportement à la saisie des champs
+    const handleChangeInput = (event) => {
+        const property = event.target.id;
+        console.log(`LOGIN_${property.toUpperCase()}`);
+        // action envoyé au reducer 
+        dispatch({
+          type: `LOGIN_${property.toUpperCase()}`,
+          data: event.target.value
+        })
+      };
+
+
+
+
+    return <Form className="signup-form" onSubmit={handleSubmit(onSubmit)}>
         <Row className="justify-content-center">
             <Col lg={5} md={8} sm={10} xs={11}>
-                <Form.Group controlId="formBasicEmail">
+                <Form.Group controlId="email">
                 <Form.Label>Adresse email</Form.Label>
-                <Form.Control type="email" placeholder="Entrez email" className="form-input"/>
+                <Form.Control name="email" type="email" placeholder="Entrez email" onChange={handleChangeInput} className="form-input" ref={register({ required: true, pattern: /^\S+@\S+$/i  })}/>
                 <Form.Text className="text-muted">
+                <ErrorMessage error={errors.email} />
                     Nous ne partagerons jamais vos informations
                 </Form.Text>
                 </Form.Group>
-                <Form.Group controlId="formBasicPassword">
+                <Form.Group controlId="password">
                     <Form.Label>Mot de passe</Form.Label>
-                    <Form.Control type="password" placeholder="Entrez mot de passe" className="form-input"/>
+                    <Form.Control name="password" type="password" placeholder="Entrez mot de passe" onChange={handleChangeInput} className="form-input" ref={register({ required: true })}/>
+                    <ErrorMessage error={errors.password} />
                 </Form.Group>
                 <Form.Group controlId="formBasicCheckbox">
                     <Form.Check type="checkbox" label="Se souvenir de moi" />
@@ -32,6 +77,7 @@ const Signin = () => {
                 <Button variant="primary" type="submit" className="btn-main btn-submit">
                     Se connecter
                 </Button>
+                <Link to="/resetpassword"><Form.Text> Mot de passe oublié ? </Form.Text></Link>
             </Col>
         </Row>
 

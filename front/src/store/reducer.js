@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux';
 
-import votes from 'src/store/votes';
+import registerReducer from 'src/store/register';
+import loginReducer from 'src/store/login';
 
 export default combineReducers({
-  votes
+  registerReducer,
+  loginReducer
 });
