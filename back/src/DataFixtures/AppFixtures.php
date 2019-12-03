@@ -12,7 +12,7 @@ class AppFixtures extends Fixture
     {
         // $product = new Product();
         // $manager->persist($product);
-        $loader = new NativeLoader();
+        $loader = new Loader();
         
 
         
