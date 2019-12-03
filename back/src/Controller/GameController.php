@@ -36,7 +36,7 @@ class GameController extends AbstractController
         // // return $this->json($arrayGames); 
                 
         
-        
+
         $games = $gameRepository->findAll();
         
         $response = new Response;
