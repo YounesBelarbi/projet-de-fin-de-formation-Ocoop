@@ -22,6 +22,8 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
 
+
+        // create new user and get informtions from request json
         $user = new User();
 
         $username               = $request->request->get('username');
@@ -39,7 +41,7 @@ class RegistrationController extends AbstractController
 
 
         
-        
+        // test password
         $errors = [];
         if ($password != $passwordConfirmation) {
             $errors[] = "Password does not match the password confirmation.";
@@ -49,6 +51,8 @@ class RegistrationController extends AbstractController
            $errors[] = "Password should be at least 6 characters.";
         }
         
+  
+        //if we have no error we register the user
         if (!$errors) {
             
             $encodedPassword = $passwordEncoder->encodePassword($user, $password);
@@ -58,7 +62,7 @@ class RegistrationController extends AbstractController
             $user->setDescription($description);
             $user->setFirstname($firstname);
             $user->setLastname($lastname);
-            $user->setBirth(new \DateTime());
+            $user->setBirth($birth);
             $user->setCity($city);
             $user->setMobile($mobile);
             $user->setAvatar($avatar);
@@ -68,8 +72,6 @@ class RegistrationController extends AbstractController
             // $userFrequency = new Frequency;
             // $userFrequency->setName($frequency);
             // $user->setFrequency($userFrequency);
-
-         
 
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -82,6 +84,7 @@ class RegistrationController extends AbstractController
         }
 
 
+        // in case of an error we return 400
         return $this->json([
             'errors' => $errors
         ], 400);
@@ -89,40 +92,6 @@ class RegistrationController extends AbstractController
         
 
 
-       
 
-
-
-
-
-
-
-
-
-        // $user = new User();
-        // $form = $this->createForm(RegistrationFormType::class, $user);
-        // $form->handleRequest($request);
-
-        // if ($form->isSubmitted() && $form->isValid()) {
-        //     // encode the plain password
-        //     $user->setPassword(
-        //         $passwordEncoder->encodePassword(
-        //             $user,
-        //             $form->get('plainPassword')->getData()
-        //         )
-        //     );
-
-        //     $entityManager = $this->getDoctrine()->getManager();
-        //     $entityManager->persist($user);
-        //     $entityManager->flush();
-
-        //     // do anything else you need here, like send an email
-
-        //     return $this->redirectToRoute('home');
-        // }
-
-        // return $this->render('registration/register.html.twig', [
-        //     'registrationForm' => $form->createView(),
-        // ]);
     }
 }
