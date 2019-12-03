@@ -7,15 +7,19 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 
 /**
- * @Route("/user", name="user_")
+ * @Route("/api", name="user_")
  */
 class UserController extends AbstractController
 {
 
+    
+
     /**
-     * @Route("/list", name="list")
+     * @Route("/user/list", name="list")
      */
     public function userList(UserRepository $userRepository)
     {
@@ -51,7 +55,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/{id}", name="show")
+     * @Route("/user/{id}", name="show")
      */
     public function userShow(User $user, UserRepository $userRepository)
     {        
@@ -84,7 +88,30 @@ class UserController extends AbstractController
         return $this->json($arrayUser);
     }
 
-    
+
+
+    /**
+    * @Route("/login", name="api_login", methods={"POST"})
+    */
+    public function login()
+    {
+        return $this->json(['result' => true]);
+
+    }
+
+
+
+    /**
+    * @Route("/profile/{id}", name="api_profile")
+    *@IsGranted("ROLE_USER")
+    */
+    public function profile()
+    {
+     return $this->json([
+       'user' => $this->getUser()
+    ]);
+
+    }
 }
 
 
