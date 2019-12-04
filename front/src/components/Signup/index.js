@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form, Button, Col, Row } from 'react-bootstrap';
 import ErrorMessage from "./errorMessage";
+import axios from 'axios';
+//import { submitSignup } from 'src/store/register/actions';
 
 import useForm from "react-hook-form";
 
@@ -36,9 +38,27 @@ const Signup = (props) => {
         formState: { isSubmitting }
       } = useForm();
 
-    const onSubmit = data => {
-    alert(JSON.stringify(data));
+    const onSubmit = (data) => {
+
+        axios.post('localhost:8000/api/register', 
+            JSON.stringify(data)
+          )
+          .then(function (response) {
+            console.log(response.status);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    
+
+    //alert(JSON.stringify(data));
+    dispatch({
+        type: `SUBMIT_SIGNUP`
+      });
     };
+
+
+    
 
     const handleChangeInput = (event) => {
         const property = event.target.id;

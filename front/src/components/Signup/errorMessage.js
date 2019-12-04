@@ -8,7 +8,7 @@ export default function ErrroMessage({ error }) {
       case "minLength":
         return <p>Votre nom doit avoir plus de 2 caractères</p>;
       case "pattern":
-        return <p>Entrez une adresse mail valide</p>;
+        return <p className="errors-messages">Entrez une adresse mail valide</p>;
       case "min":
         return <p>Minmium age is 18</p>;
       case "validate":
