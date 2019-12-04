@@ -3,6 +3,8 @@ import { Form, Button, Col, Row } from 'react-bootstrap';
 import ErrorMessage from "./errorMessage";
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
 
 import useForm from "react-hook-form";
 
@@ -32,8 +34,18 @@ const Signin = () => {
 
     // comportement à l'envoi du formulaire
     const onSubmit = (data) => {
-        
-        alert(JSON.stringify(data));
+        console.log(JSON.stringify(data));
+        axios.post('http://127.0.0.1:8000/api/login',
+            JSON.stringify(data)
+          )
+          .then(function (response) {
+            console.log('HTTP RESPONSE STATUT:', response.status);
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        // alert(JSON.stringify(data));
 
       };
 

@@ -14,20 +14,26 @@ import './style.sass';
 
 const Signup = (props) => {
 
-    const {username, mail, birthdate, password, verifPassword} = useSelector(state => ({
+    // récupération du state
+    // const {username, mail, birthdate, password, verifPassword} = useSelector(state => ({
+    //    ...state.registerReducer,
+    //  }));
+
+    const activeState = useSelector(state => ({
         ...state.registerReducer,
-      }));
+    }));
 
     const dispatch = useDispatch();
 
     const [userInfo, setUserInfo] = useState({
         username: '',
-        mail: '',
+        email: '',
         birth: '',
         password: '',
-        passwordVerif: '',
+        password_confirmation: '',
 
     });
+
 
     const {
         register,
@@ -39,9 +45,9 @@ const Signup = (props) => {
       } = useForm();
 
     const onSubmit = (data) => {
-        console.log(JSON.stringify(data));
-        axios.post('localhost:8000/api/register', 
-            JSON.stringify(data)
+        console.log(JSON.stringify(activeState));
+        axios.post('http://127.0.0.1:8000/api/register',
+            JSON.stringify(activeState)
           )
           .then(function (response) {
             console.log('HTTP RESPONSE STATUT:', response.status);
@@ -62,18 +68,19 @@ const Signup = (props) => {
     
 
     const handleChangeInput = (event) => {
+        console.log(JSON.stringify(activeState));
         const property = event.target.id;
         console.log(`CHANGE_${property.toUpperCase()}`);
         // Message d'erreur si les mots de passes ne sont pas similaires
-        console.log(password, verifPassword, property)
-        if(property == "verifpassword") {
-            if(password !== verifPassword){
-                setError("verifPassword", "samePassword")
-            }
-            else {
-                clearError("verifPassword")
-            }
-        }
+        // console.log(password, verifPassword, property)
+        // if(property == "verifpassword") {
+        //     if(password !== verifPassword){
+        //         setError("verifPassword", "samePassword")
+        //     }
+        //     else {
+        //         clearError("verifPassword")
+        //     }
+        // }
 
         dispatch({
           type: `CHANGE_${property.toUpperCase()}`,
