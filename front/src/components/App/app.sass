@@ -6,24 +6,27 @@
 /**
  * Styles
  */
+
+
 body
-  background: $background-page
+  
+  
+  height: 100vh 
+  overflow-x: hidden
+  font-family: 'Open Sans', sans-serif
 
-#app
-  padding: 3em
-  width: 500px
-  text-align: center
-  margin: 3em auto
-  border: 1px solid $border-color
-  background: $background-app
+#app 
+  background: url('http://localhost:8000/../assets/images/bg.png')
 
-  &-title
-    font-weight: 700
-    font-size: 2em
+main 
+  min-height: 100vh
+  padding-top: 95px
+  
+  
+  
 
-  &-content
-    margin: .6em 0
-    color: #55b1f3
-    font-style: italic
-    font-size: 1.4em
-    font-weight: bold
+@media (max-width: 1300px)
+  main
+    padding: 10px
+
+    

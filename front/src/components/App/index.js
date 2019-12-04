@@ -2,13 +2,27 @@
  * Imports de dépendances
  */
 import React from 'react';
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom'
+
+
 
 /**
  * Imports locaux
  */
+//import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCoffee, faBars } from '@fortawesome/free-solid-svg-icons'
 // Composants React
-import VoteWidget from 'src/components/VoteWidget';
-import TestingHooks from 'src/components/TestingHooks';
+// import VoteWidget from 'src/components/VoteWidget';
+// import TestingHooks from 'src/components/TestingHooks';
+import Header from 'src/components/Header';
+import Footer from 'src/components/Footer';
+import HomeMain from 'src/components/HomeMain';
+import Signin from 'src/components/Signin';
+import Signup from 'src/components/Signup';
+
+
 // Données
 // Styles et assets
 import './app.sass';
@@ -16,15 +30,22 @@ import './app.sass';
 /**
  * Code
  */
-const App = ({ promo }) => {
-  return <div id="app">
-    <h1 id="app-title">Modèle React</h1>
-    <p id="app-content"><em>Salut</em> {promo} !</p>
-    <VoteWidget />
-    <TestingHooks />
-  </div>;
+const App = () => {
+  return <Router>
+            <div id="app">
+              <Header />
+              <main>
+              <Switch>
+                <Route path="/" exact component={HomeMain} />
+                <Route path="/signin" component={Signin} />
+                <Route path="/signup" component={Signup} />
+                
+              </Switch>
+              </main>
+              <Footer />
+          </div>
+        </Router>;
 }
-
 /**
  * Export
  */

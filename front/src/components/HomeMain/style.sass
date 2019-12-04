@@ -1,0 +1,75 @@
+@import src/styles/vars
+
+// .buttons
+//     display: flex
+//     justify-content: center
+    
+.home-main
+    
+
+.home-content
+    padding: 0 0 10px 0
+    text-align: center
+
+.btn-main
+    min-width: 55%
+    height: 80px
+    margin-top: 15px
+    border: none
+    background-color: $orange
+    border-radius: 50px
+    color: #fff
+    -webkit-box-shadow: 0px 0px 19px -5px rgba(0,0,0,0.75)
+    -moz-box-shadow: 0px 0px 19px -5px rgba(0,0,0,0.75)
+    box-shadow: 0px 0px 19px -5px rgba(0,0,0,0.75)
+    &:hover
+      background-color: $orange-hover
+      color: #fff
+
+// .btn-right-align
+//     margin-left: 150px
+
+// .btn-left-align
+//     margin-left: 150px
+
+.column
+    text-align: center
+
+.btn-signin
+    border: 2px solid $orange
+    background-color: rgba(0, 0, 0, 0)
+    color: $orange
+
+.btn-signin:hover
+    border: none
+    background-color: $orange-hover
+    color: #fff
+    
+    
+
+
+    // text
+.home-description
+  max-width: 80%
+  padding: 40px
+  color: #ffffff
+  font-size: 20px
+  margin: auto
+  text-align: center
+    
+
+@media (max-width: 1300px)
+  .btn-right-align
+    margin-right: 0
+
+  .btn-left-align
+    margin-left: 0
+
+  .btn-main
+    width: 70%
+
+  .home-content
+    padding: 0
+
+  .home-description
+    padding-top: 100px
