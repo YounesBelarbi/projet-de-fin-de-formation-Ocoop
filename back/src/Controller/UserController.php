@@ -30,7 +30,7 @@ class UserController extends AbstractController
                 // 'password'=> $user->getPassword(),
                 //'firstname'=> $user->getFirstname(),
                 //'lastname'=> $user->getLastname(),
-                //'birth' => $user->getBirth(),
+                'birth' => $user->getBirth(),
                 //'email' => $user->getEmail(),
                 'city' => $user->getCity(),
                 //'longitude' => $user->getLongitude(),

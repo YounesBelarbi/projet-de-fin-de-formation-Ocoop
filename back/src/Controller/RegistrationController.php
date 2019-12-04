@@ -64,7 +64,7 @@ class RegistrationController extends AbstractController
             $user->setDescription($description);
             $user->setFirstname($firstname);
             $user->setLastname($lastname);
-            $user->setBirth(new \DateTime());
+            $user->setBirth($birth);
             $user->setCity($city);
             $user->setMobile($mobile);
             $user->setAvatar($avatar);
