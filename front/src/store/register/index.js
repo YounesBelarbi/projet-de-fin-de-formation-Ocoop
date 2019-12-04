@@ -3,9 +3,9 @@ import { register as actions } from 'src/store/actions';
 const initialState = {
   username: '',
   email: '',
-  birthDate: '',
+  birth: '',
   password: '',
-  verifPassword: ''
+  password_confirm: ''
 };
 
 const registerReducer = (state = initialState, action) => {

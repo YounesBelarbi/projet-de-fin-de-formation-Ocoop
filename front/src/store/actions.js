@@ -1,3 +1,3 @@
 // Toutes les actions disponibles dans l'application, centralisées.
 
-export { actions as votes } from 'src/store/votes/actions';
+export { actions as register } from 'src/store/register/actions';
