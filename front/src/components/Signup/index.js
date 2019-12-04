@@ -39,12 +39,13 @@ const Signup = (props) => {
       } = useForm();
 
     const onSubmit = (data) => {
-
+        console.log(JSON.stringify(data));
         axios.post('localhost:8000/api/register', 
             JSON.stringify(data)
           )
           .then(function (response) {
-            console.log(response.status);
+            console.log('HTTP RESPONSE STATUT:', response.status);
+            console.log(response);
           })
           .catch(function (error) {
             console.log(error);
