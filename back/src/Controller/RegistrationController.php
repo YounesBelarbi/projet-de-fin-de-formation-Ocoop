@@ -32,7 +32,7 @@ class RegistrationController extends AbstractController
         $description            = $request->request->get('description');
         $firstname              = $request->request->get('firstname');
         $lastname               = $request->request->get('lastname');
-        $birth                  = $request->request->get('birth');
+        $birth                  = \DateTime::createFromFormat('Y-m-d H:i:s', $request->request->get('birth').' 00:00:00');
         $city                   = $request->request->get('city');
         $mobile                 = $request->request->get('mobile');
         $avatar                 = $request->request->get('avatar');
@@ -40,8 +40,7 @@ class RegistrationController extends AbstractController
         $password               = $request->request->get("password");
         $passwordConfirmation   = $request->request->get("password_confirmation");
        
-
-
+        
         
         // test password
         $errors = [];
@@ -51,6 +50,8 @@ class RegistrationController extends AbstractController
         
         if (strlen($password) < 6) {
            $errors[] = "Le mot de passe doit contenir au moins 6 caractères.";
+           $errors["password"] = $password; // juste pour tester ;)
+           $errors["request"] = $request; // juste pour tester ;)
         }
         
   
@@ -70,7 +71,7 @@ class RegistrationController extends AbstractController
             $user->setAvatar($avatar);
             $user->setCreatedAt(new \DateTime());
             
-            
+           
 
             // test for fields that must be unique
             try
