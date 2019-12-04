@@ -5,7 +5,7 @@ const initialState = {
   password: '',
 };
 
-const registerReducer = (state = initialState, action) => {
+const loginReducer = (state = initialState, action) => {
     console.log('reducer[register] >>', action);
     switch(action.type) {
         case 'LOGIN_EMAIL' :
@@ -23,4 +23,4 @@ const registerReducer = (state = initialState, action) => {
     }
 };
 
-export default registerReducer;
+export default loginReducer;
