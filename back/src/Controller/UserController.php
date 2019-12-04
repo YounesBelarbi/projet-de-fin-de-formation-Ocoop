@@ -11,12 +11,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
 /**
- * @Route("/api", name="api_")
+ * @Route("/user", name="user_")
  */
 class UserController extends AbstractController
 {
     /**
-     * @Route("/user/list", name="user_list")
+     * @Route("/list", name="list")
      */
     public function userList(UserRepository $userRepository)
     {
@@ -52,7 +52,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/user/{id}", name="user_show")
+     * @Route("/{id}", name="show")
      */
     public function userShow(User $user, UserRepository $userRepository)
     {        
@@ -85,16 +85,14 @@ class UserController extends AbstractController
         return $this->json($arrayUser);
     }
 
-    /**
-    * @Route("/login", name="login")
-    */
-    public function login()
-    {
-        return $this->json(['result' => true]);
+    // /**
+    // * @Route("/login", name="login")
+    // */
+    // public function login()
+    // {
+    //     return $this->json(['result' => true]);
 
-    }
-
-
+    // }
 
     /**
     * @Route("/profile/{id}", name="profile")
