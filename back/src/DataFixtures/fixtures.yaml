@@ -7,7 +7,7 @@ App\Entity\User:
         firstname: '<firstname()>'
         lastname: '<lastname()>'
         birth: '<date_create()>'
-        email: '<email()>'
+        email (unique): '<email()>'
         city: '<city()>'
         longitude: '<randomFloat()>'
         latitude: '<randomFloat()>'

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Frequency;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,8 @@ class RegistrationController extends AbstractController
     {
 
 
-        // create new user and get informtions from request json
+
+        //create new user and get informtions from request json
         $user = new User();
 
         $username               = $request->request->get('username');
@@ -37,22 +39,22 @@ class RegistrationController extends AbstractController
         $email                  = $request->request->get("email");
         $password               = $request->request->get("password");
         $passwordConfirmation   = $request->request->get("password_confirmation");
-        $frequency              = $request->request->get("frequency");
+       
 
 
         
         // test password
         $errors = [];
         if ($password != $passwordConfirmation) {
-            $errors[] = "Password does not match the password confirmation.";
+            $errors[] = "Les mots de passe doivent être identique.";
         }
         
         if (strlen($password) < 6) {
-           $errors[] = "Password should be at least 6 characters.";
+           $errors[] = "Le mot de passe doit contenir au moins 6 caractères.";
         }
         
   
-        //if we have no error we register the user
+        // if we have no error we register the user
         if (!$errors) {
             
             $encodedPassword = $passwordEncoder->encodePassword($user, $password);
@@ -62,25 +64,37 @@ class RegistrationController extends AbstractController
             $user->setDescription($description);
             $user->setFirstname($firstname);
             $user->setLastname($lastname);
-            $user->setBirth($birth);
+            $user->setBirth(new \DateTime());
             $user->setCity($city);
             $user->setMobile($mobile);
             $user->setAvatar($avatar);
             $user->setCreatedAt(new \DateTime());
             
             
-            // $userFrequency = new Frequency;
-            // $userFrequency->setName($frequency);
-            // $user->setFrequency($userFrequency);
 
+            // test for fields that must be unique
+            try
+            {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+                return $this->json([
+                    'user' => $user
+                ]);
+              
+            }
+            catch(UniqueConstraintViolationException $e)
+            {
+                $errors[] = "mail ou username déjà utilisés";
+                
+            }
+            catch(\Exception $e)
+            {
+                
+                $errors[] = "Ce mail est déjà pris, désolé!";
+            }
 
-            return $this->json([
-                'user' => $user
-            ]);
         }
 
 
@@ -88,9 +102,6 @@ class RegistrationController extends AbstractController
         return $this->json([
             'errors' => $errors
         ], 400);
-
-        
-
 
 
     }
