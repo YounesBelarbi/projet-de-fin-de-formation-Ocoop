@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -9,7 +10,6 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SecurityAuthenticator extends AbstractGuardAuthenticator
 { 
@@ -30,17 +30,23 @@ class SecurityAuthenticator extends AbstractGuardAuthenticator
 
     public function getCredentials(Request $request)
     { 
-        // a modifier en fonction des données envoyé sur le formulaire de login 
-        return [
-            'username' => $request->request->get("username"),
-            'password' => $request->request->get("password")
-        ];    
+        $arrayData = json_decode($request->getContent(), true);
+        dump($arrayData);
+        
+        // a modifier en fonction des données envoyées sur le formulaire de login 
+        return $arrayData;    
     }
     
 
     public function getUser($credentials, UserProviderInterface $userProvider)
-    {
-        return $userProvider->loadUserByUsername($credentials['username']);   
+    {   
+        // dump($credentials);
+        // dump($credentials['email']);
+        // die;
+        // dump($userProvider->loadUserByUsername($credentials['email']));
+        // die;
+        return $userProvider->loadUserByUsername($credentials['email']); 
+        //return $this->userRepository->findOneBy(['email' => $credentials['email']]);  
     }
         
 
@@ -61,7 +67,8 @@ class SecurityAuthenticator extends AbstractGuardAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         return new JsonResponse([
-            'result' => true
+            'success' => true,
+            //'? token' => $token
         ]);
     }
 
