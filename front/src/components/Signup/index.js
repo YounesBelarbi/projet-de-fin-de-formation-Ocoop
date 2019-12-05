@@ -45,9 +45,13 @@ const Signup = (props) => {
       } = useForm();
 
     const onSubmit = (data) => {
-        console.log(activeState);
+        console.log(JSON.stringify({...activeState}));
         axios.post('http://127.0.0.1:8000/api/register',
-            {...activeState}
+          JSON.stringify({...activeState}), {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }
           )
           .then(function (response) {
             console.log('HTTP RESPONSE STATUT:', response.status);
@@ -55,6 +59,7 @@ const Signup = (props) => {
           })
           .catch(function (error) {
             console.log(error);
+            console.log('DATA:', error.response.data);
           });
     
 

@@ -5,7 +5,7 @@ const initialState = {
   email: '',
   birth: '',
   password: '',
-  password_confirm: ''
+  password_confirmation: ''
 };
 
 const registerReducer = (state = initialState, action) => {
@@ -34,7 +34,7 @@ const registerReducer = (state = initialState, action) => {
         case 'CHANGE_VERIFPASSWORD' :
             return {
                 ...state,
-                password_confirm: action.data
+                password_confirmation: action.data
             }
         default :
             return state
