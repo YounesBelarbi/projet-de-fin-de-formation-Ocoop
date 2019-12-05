@@ -60,7 +60,7 @@ class RegistrationController extends AbstractController
             $user->setBirth($birth);
             $user->setPassword($encodedPassword);
             $user->setCreatedAt(new \DateTime());
-          
+
 
             // test for fields that must be unique
            try
@@ -82,7 +82,7 @@ class RegistrationController extends AbstractController
 
         // in case of an error we return 400
         return $this->json([
-            'errors' => $errors
+            $errors
         ], 400);
     }
 }

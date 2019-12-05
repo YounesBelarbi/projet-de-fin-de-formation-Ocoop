@@ -16,9 +16,12 @@ import './style.sass';
 const Signin = () => {
 
     // connexion au state du loginReducer
-    const {email, password} = useSelector(state => ({
-        ...state.loginReducer
-    }))
+
+    
+
+    const activeState = useSelector(state => ({
+      ...state.loginReducer,
+    }));
 
     // init du dispatch grace au useDispatch()
     const dispatch = useDispatch();
@@ -34,13 +37,26 @@ const Signin = () => {
 
     // comportement à l'envoi du formulaire
     const onSubmit = (data) => {
-        console.log(JSON.stringify(data));
+        console.log('Form send : ', JSON.stringify({...activeState}));
         axios.post('http://127.0.0.1:8000/api/login',
-            JSON.stringify(data)
+        JSON.stringify({...activeState}),
+        {
+          headers: {
+              'Content-Type': 'application/json',
+          }
+      }
           )
           .then(function (response) {
             console.log('HTTP RESPONSE STATUT:', response.status);
             console.log(response);
+
+            if(response.status === 200) {        
+              history.push("/signin");
+            }
+            else {
+                console.log('error submit');
+            }
+            
           })
           .catch(function (error) {
             console.log(error);

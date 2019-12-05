@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Form, Button, Col, Row } from 'react-bootstrap';
 import ErrorMessage from "./errorMessage";
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 //import { submitSignup } from 'src/store/register/actions';
 
 import useForm from "react-hook-form";
@@ -18,6 +19,7 @@ const Signup = (props) => {
     // const {username, mail, birthdate, password, verifPassword} = useSelector(state => ({
     //    ...state.registerReducer,
     //  }));
+    let history = useHistory();
 
     const activeState = useSelector(state => ({
         ...state.registerReducer,
@@ -31,6 +33,7 @@ const Signup = (props) => {
         birth: '',
         password: '',
         password_confirmation: '',
+        formSuccess: false
 
     });
 
@@ -45,6 +48,8 @@ const Signup = (props) => {
       } = useForm();
 
     const onSubmit = (data) => {
+
+
         console.log(JSON.stringify({...activeState}));
         axios.post('http://127.0.0.1:8000/api/register',
           JSON.stringify({...activeState}), {
@@ -55,11 +60,22 @@ const Signup = (props) => {
           )
           .then(function (response) {
             console.log('HTTP RESPONSE STATUT:', response.status);
-            console.log('DATA:', response.data);
+            // console.log('DATA:', response.data);
+            if(response.status === 200) {        
+                history.push("/signin");
+            }
+            else {
+                console.log('error submit');
+            }
+
           })
           .catch(function (error) {
-            console.log(error);
-            console.log('DATA:', error.response.data);
+            var test;
+            test = error.response.data.errors[0];
+            console.log('data error :', test);
+            // if(error.response.data.errors) {
+                
+            // }
           });
     
 
@@ -76,16 +92,6 @@ const Signup = (props) => {
         console.log('activeState', JSON.stringify(activeState));
         const property = event.target.id;
         console.log(`CHANGE_${property.toUpperCase()}`);
-        // Message d'erreur si les mots de passes ne sont pas similaires
-        // console.log(password, verifPassword, property)
-        // if(property == "verifpassword") {
-        //     if(password !== verifPassword){
-        //         setError("verifPassword", "samePassword")
-        //     }
-        //     else {
-        //         clearError("verifPassword")
-        //     }
-        // }
 
         dispatch({
           type: `CHANGE_${property.toUpperCase()}`,
@@ -103,14 +109,14 @@ const Signup = (props) => {
                         <Col lg={5} md={6} sm={8} xs={10}>
                         <Form.Group controlId="username">
                             <Form.Label>Pseudo* </Form.Label>
-                            <Form.Control name="userName" type="text" placeholder="Pseudo" className="form-input" onChange={handleChangeInput} ref={register({ required: true })}/>
+                            <Form.Control name="userName" type="text" placeholder="Pseudo" className="form-input" onChange={handleChangeInput} ref={register({ required: true, maxLength: 24, minLength: 2 })}/>
                             <ErrorMessage error={errors.userName} />
                             
                         </Form.Group>
 
                         <Form.Group controlId="email">
                             <Form.Label>mail*</Form.Label>
-                            <Form.Control name="email" type="email" placeholder="Mail" className="form-input" onChange={handleChangeInput} ref={register({ required: true, pattern: /^\S+@\S+$/i  })}/>
+                            <Form.Control name="email" type="email" placeholder="Mail" className="form-input" onChange={handleChangeInput} ref={register({ required: true, pattern: /^\S+@\S+.+[a-z]+$/i  })}/>
                             <ErrorMessage error={errors.email} />
                             <Form.Text className="text-muted">
                                 Nous ne partagerons jamais vos informations

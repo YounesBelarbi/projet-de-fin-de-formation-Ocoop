@@ -6,7 +6,9 @@ export default function ErrroMessage({ error }) {
       case "required":
         return <p className="errors-messages">Ce champ est requis</p>;
       case "minLength":
-        return <p>Votre nom doit avoir plus de 2 caractères</p>;
+        return <p>Ce champ doit avoir plus de 2 caractères</p>;
+      case "maxLength":
+        return <p>Ce champ doit avoir moins de 24 caractères</p>;
       case "pattern":
         return <p className="errors-messages">Entrez une adresse mail valide</p>;
       case "min":
