@@ -45,13 +45,13 @@ const Signup = (props) => {
       } = useForm();
 
     const onSubmit = (data) => {
-        console.log(JSON.stringify(activeState));
+        console.log(activeState);
         axios.post('http://127.0.0.1:8000/api/register',
-            JSON.stringify(activeState)
+            {...activeState}
           )
           .then(function (response) {
             console.log('HTTP RESPONSE STATUT:', response.status);
-            console.log(response);
+            console.log('DATA:', response.data);
           })
           .catch(function (error) {
             console.log(error);
@@ -68,7 +68,7 @@ const Signup = (props) => {
     
 
     const handleChangeInput = (event) => {
-        console.log(JSON.stringify(activeState));
+        console.log('activeState', JSON.stringify(activeState));
         const property = event.target.id;
         console.log(`CHANGE_${property.toUpperCase()}`);
         // Message d'erreur si les mots de passes ne sont pas similaires
