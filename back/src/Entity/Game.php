@@ -59,16 +59,16 @@ class Game
     private $favoriteGames;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Plateform", inversedBy="games")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Platform", inversedBy="games")
      */
-    private $plateform;
+    private $platform;
 
 
     public function __construct()
     {
         $this->ranks = new ArrayCollection();
         $this->favoriteGames = new ArrayCollection();
-        $this->plateform = new ArrayCollection();
+        $this->platform = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -211,26 +211,26 @@ class Game
     }
 
     /**
-     * @return Collection|Plateform[]
+     * @return Collection|Platform[]
      */
-    public function getPlateform(): Collection
+    public function getPlatform(): Collection
     {
-        return $this->plateform;
+        return $this->platform;
     }
 
-    public function addPlateform(Plateform $plateform): self
+    public function addPlatform(Platform $platform): self
     {
-        if (!$this->plateform->contains($plateform)) {
-            $this->plateform[] = $plateform;
+        if (!$this->platform->contains($platform)) {
+            $this->platform[] = $platform;
         }
 
         return $this;
     }
 
-    public function removePlateform(Plateform $plateform): self
+    public function removePlatform(Platform $platform): self
     {
-        if ($this->plateform->contains($plateform)) {
-            $this->plateform->removeElement($plateform);
+        if ($this->platform->contains($platform)) {
+            $this->platform->removeElement($platform);
         }
 
         return $this;
