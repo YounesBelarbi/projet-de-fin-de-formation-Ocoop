@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Test filter!{% endblock %}
+
+{% block body %}
+<h1>Recherche</h1>
+<div>
+    {{ form_start(searchGameForm) }}
+    {{ form_row(searchGameForm) }} 
+    {{ form_end(searchGameForm) }}
+
+</div>
+{% endblock %}
