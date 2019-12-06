@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PlateformRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PlatformRepository")
  */
-class Plateform
+class Platform
 {
     /**
      * @ORM\Id()
@@ -34,7 +34,7 @@ class Plateform
     private $updated_at;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Game", mappedBy="plateform")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game", mappedBy="platform")
      */
     private $games;
 
@@ -96,7 +96,7 @@ class Plateform
     {
         if (!$this->games->contains($game)) {
             $this->games[] = $game;
-            $game->addPlateform($this);
+            $game->addPlatform($this);
         }
 
         return $this;
@@ -106,7 +106,7 @@ class Plateform
     {
         if ($this->games->contains($game)) {
             $this->games->removeElement($game);
-            $game->removePlateform($this);
+            $game->removePlatform($this);
         }
 
         return $this;

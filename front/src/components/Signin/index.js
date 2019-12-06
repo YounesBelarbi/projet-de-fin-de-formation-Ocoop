@@ -17,11 +17,9 @@ const Signin = () => {
 
     // connexion au state du loginReducer
 
-    
-
     const activeState = useSelector(state => ({
-      ...state.loginReducer,
-    }));
+        ...state.loginReducer
+    }))
 
     // init du dispatch grace au useDispatch()
     const dispatch = useDispatch();
@@ -37,10 +35,9 @@ const Signin = () => {
 
     // comportement à l'envoi du formulaire
     const onSubmit = (data) => {
-        console.log('Form send : ', JSON.stringify({...activeState}));
-        axios.post('http://127.0.0.1:8000/api/login',
-        JSON.stringify({...activeState}),
-        {
+        console.log("activeState", JSON.stringify({...activeState}));
+        axios.post('http://127.0.0.1:8001/api/login',
+        JSON.stringify({...activeState}), {
           headers: {
               'Content-Type': 'application/json',
           }
