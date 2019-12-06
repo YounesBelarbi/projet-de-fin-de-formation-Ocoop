@@ -16,7 +16,7 @@ const loginReducer = (state = initialState, action) => {
         case 'LOGIN_PASSWORD' :
             return {
                 ...state,
-                username: action.data
+                password: action.data
             }
         default :
             return state

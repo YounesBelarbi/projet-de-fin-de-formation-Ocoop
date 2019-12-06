@@ -16,7 +16,7 @@ import './style.sass';
 const Signin = () => {
 
     // connexion au state du loginReducer
-    const {email, password} = useSelector(state => ({
+    const activeState = useSelector(state => ({
         ...state.loginReducer
     }))
 
@@ -34,17 +34,23 @@ const Signin = () => {
 
     // comportement à l'envoi du formulaire
     const onSubmit = (data) => {
-        console.log(JSON.stringify(data));
-        axios.post('http://127.0.0.1:8000/api/login',
-            JSON.stringify(data)
-          )
-          .then(function (response) {
-            console.log('HTTP RESPONSE STATUT:', response.status);
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+
+        console.log("activeState", JSON.stringify({...activeState}));
+        axios.post('http://127.0.0.1:8001/api/login',
+        JSON.stringify({...activeState}), {
+          headers: {
+              'Content-Type': 'application/json',
+          }
+      }
+        )
+        .then(function (response) {
+          console.log('HTTP RESPONSE STATUT:', response.status);
+          console.log('DATA:', response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+          console.log('DATA:', error.response.data);
+        });
         // alert(JSON.stringify(data));
 
       };
