@@ -32,15 +32,12 @@ class SecurityAuthenticator extends AbstractGuardAuthenticator
     { 
         $arrayData = json_decode($request->getContent(), true);
        
-        
-        // a modifier en fonction des données envoyées sur le formulaire de login 
         return $arrayData;    
     }
     
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {   
-
         return $userProvider->loadUserByUsername($credentials['email']); 
         //return $this->userRepository->findOneBy(['email' => $credentials['email']]);  
     }

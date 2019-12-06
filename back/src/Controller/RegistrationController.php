@@ -41,8 +41,6 @@ class RegistrationController extends AbstractController
            $errors['password'] = "Le mot de passe doit contenir au moins 6 caractères.";
         }
 
-
-  
         // if we have no error we register the user
         if (!$errors) {
             
