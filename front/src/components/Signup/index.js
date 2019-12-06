@@ -15,10 +15,6 @@ import './style.sass';
 
 const Signup = (props) => {
 
-    // récupération du state
-    // const {username, mail, birthdate, password, verifPassword} = useSelector(state => ({
-    //    ...state.registerReducer,
-    //  }));
     let history = useHistory();
 
     const activeState = useSelector(state => ({
@@ -36,7 +32,6 @@ const Signup = (props) => {
         formSuccess: false
 
     });
-
 
     const {
         register,
@@ -61,18 +56,30 @@ const Signup = (props) => {
           .then(function (response) {
             console.log('HTTP RESPONSE STATUT:', response.status);
             // console.log('DATA:', response.data);
-            if(response.status === 200) {        
-                history.push("/signin");
-            }
-            else {
-                console.log('error submit');
-            }
+            // if(response.status === 200) {
+            //     dispatch({
+            //         type: `SUBMIT_SIGNUP`
+            //       });
+            //     };     
+            //     history.push("/signin");
+            // }
+            // else {
+            //     console.log('error submit');
+            // }
 
           })
           .catch(function (error) {
-            var test;
-            test = error.response.data.errors[0];
-            console.log('data error :', test);
+            //console.log(error.response.data[0]);
+            let errorFromServ;
+            errorFromServ = Object.entries(error.response.data[0]);
+            //console.log('data :', errorFromServ);
+            console.log('array :',Object.entries(errorFromServ));
+
+            
+
+            //errorFromServ.map((error, index) => {
+            //  return 
+            //})
             // if(error.response.data.errors) {
                 
             // }
