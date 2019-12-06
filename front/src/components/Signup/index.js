@@ -44,9 +44,8 @@ const Signup = (props) => {
 
     const onSubmit = (data) => {
 
-
         console.log(JSON.stringify({...activeState}));
-        axios.post('http://127.0.0.1:8001/api/register',
+        axios.post('http://127.0.0.1:8000/api/register',
           JSON.stringify({...activeState}), {
             headers: {
                 'Content-Type': 'application/json',
@@ -54,46 +53,23 @@ const Signup = (props) => {
         }
           )
           .then(function (response) {
-            console.log('HTTP RESPONSE STATUT:', response.status);
-            // console.log('DATA:', response.data);
-            // if(response.status === 200) {
-            //     dispatch({
-            //         type: `SUBMIT_SIGNUP`
-            //       });
-            //     };     
-            //     history.push("/signin");
-            // }
-            // else {
-            //     console.log('error submit');
-            // }
-
-          })
+            if(response.status === 200) {
+                dispatch({
+                    type: `SUBMIT_SIGNUP`
+                  });
+                console.log("submit",{...activeState});  
+                history.push("/signin");
+            }
+            else {
+                alert('une erreur est survenu lors de l\'inscription');
+            }})
           .catch(function (error) {
-            //console.log(error.response.data[0]);
+            console.log(error.response.status);
             let errorFromServ;
             errorFromServ = Object.entries(error.response.data[0]);
-            //console.log('data :', errorFromServ);
-            console.log('array :',Object.entries(errorFromServ));
-
-            
-
-            //errorFromServ.map((error, index) => {
-            //  return 
-            //})
-            // if(error.response.data.errors) {
-                
-            // }
+            alert(errorFromServ);
           });
-    
-
-    //alert(JSON.stringify(data));
-    dispatch({
-        type: `SUBMIT_SIGNUP`
-      });
     };
-
-
-    
 
     const handleChangeInput = (event) => {
         console.log('activeState', JSON.stringify(activeState));
@@ -106,7 +82,6 @@ const Signup = (props) => {
         });
 
       };
-
 
     return <div className="signup">
         <div className="signup-container">

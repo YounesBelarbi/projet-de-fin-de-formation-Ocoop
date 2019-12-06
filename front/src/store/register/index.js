@@ -36,6 +36,14 @@ const registerReducer = (state = initialState, action) => {
                 ...state,
                 password_confirmation: action.data
             }
+        case 'SUBMIT_SIGNUP' :
+            return {
+                ...state,
+                password: '',
+                password_confirmation: '',
+                username: '',
+                birth: ''
+            }
         default :
             return state
     }
