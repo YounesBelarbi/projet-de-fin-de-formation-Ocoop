@@ -22,6 +22,8 @@ import HomeMain from 'src/components/HomeMain';
 import Signin from 'src/components/Signin';
 import Signup from 'src/components/Signup';
 import ResetPassword from 'src/components/ResetPassword';
+import HeaderDashboard from 'src/components/HeaderDashboard';
+import Dashboard from 'src/components/Dashboard';
 
 // Données
 // Styles et assets
@@ -33,18 +35,35 @@ import './app.sass';
 const App = () => {
   return <Router>
             <div id="app">
-              <Header />
               <main>
               <Switch>
-                <Route path="/" exact component={HomeMain} />
-                <Route path="/signin" component={Signin} />
-                <Route path="/signup" component={Signup} />
+                <Route path="/" exact>
+                  <Header/>
+                  <HomeMain/>
+                  <Footer/> 
+                </Route>
+                <Route path="/signin">
+                  <Header/>
+                  <Signin/>
+                  <Footer/> 
+                </Route>
+                <Route path="/signup">
+                  <Header/>
+                  <Signup/>
+                  <Footer/> 
+                </Route>
+                <Route path="/dashboard">
+                  <HeaderDashboard/>
+                  <Dashboard/> 
+                </Route>
+                <Route path="/resetpassword" >
+                  <Header/>
+                  <ResetPassword/>
+                  <Footer/> 
+                </Route>
                 <Redirect from='/signup/' to="/signin/" />
-                <Route path="/resetpassword" component={ResetPassword} />
-                
               </Switch>
               </main>
-              <Footer />
           </div>
         </Router>;
 }

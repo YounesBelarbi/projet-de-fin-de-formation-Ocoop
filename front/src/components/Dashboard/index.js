@@ -1,8 +1,13 @@
-import react from 'react';
+import React from 'react';
+
+import { Button, Row, Col } from 'react-bootstrap';
 
 const Dashboard = () => {
     return( <div className="dashboard">
-                <h1>Dashboard</h1>
+                <Row>
+                    <Col>JEUX</Col>
+                    <Col>DASHBOARD</Col>
+                </Row>
         </div>
     );
 }

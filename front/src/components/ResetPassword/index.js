@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom'
 import { Form, Button, Col, Row } from 'react-bootstrap';
 
 const ResetPassword = () => {
@@ -7,9 +8,9 @@ const ResetPassword = () => {
             <Col lg={5} md={8} sm={10} xs={11}>
                 <Form.Group controlId="email">
                 <Form.Label>Adresse email</Form.Label>
-                <Form.Control name="email" type="email" placeholder="Entrez email" className="form-input" ref={register({ required: true, pattern: /^\S+@\S+$/i  })}/>
+                <Form.Control name="email" type="email" placeholder="Entrez email" className="form-input"/>
                 <Form.Text className="text-muted">
-                <ErrorMessage error={errors.email} />
+                
                     Nous ne partagerons jamais vos informations
                 </Form.Text>
                 </Form.Group>
@@ -20,7 +21,7 @@ const ResetPassword = () => {
                 <Button variant="primary" type="submit" className="btn-main btn-submit">
                     Se connecter
                 </Button>
-                <Link to="/resetpassword"><Form.Text> Mot de passe oublié ? </Form.Text></Link>
+                
             </Col>
         </Row>
 
