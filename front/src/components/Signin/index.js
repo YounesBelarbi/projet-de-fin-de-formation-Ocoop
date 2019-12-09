@@ -19,16 +19,18 @@ const Signin = () => {
         ...state.loginReducer
     }));
 
-     // connexion au state du registerReducer
+     // connexion au state du registerReducer (afin de récuperer le mail de register reducer)
     const lastState = useSelector(state => ({
       ...state.registerReducer
     }));
-    
+
+
+    // use effect est éxécuté a chaque fois que le state de LoginReducer change
     useEffect(() => {
-      console.log('lastState', lastState)
-      if(lastState.email !== ""){
-        dispatch({
-          type: `SET_EMAIL_VALUE`,
+      console.log('lastState', lastState) //last State est égale au state de register reducer
+      if(lastState.email !== ""){ //Si il est pas égale à une chaine de caractere vide on modifie le mail de login reducer
+        dispatch({ // en passant par dispatch donc ->store/login/index.js
+          type: `SET_EMAIL_VALUE`, //On appelle l'action SET_EMAIL_VALUE
           data: lastState.email
         })
       }

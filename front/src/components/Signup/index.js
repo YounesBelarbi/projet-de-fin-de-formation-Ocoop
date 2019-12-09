@@ -59,6 +59,7 @@ const Signup = (props) => {
                   });
                 console.log("submit",{...activeState});  
                 history.push("/signin");
+                // Response 200 donc on redirige sur /signin
             }
             else {
                 alert('une erreur est survenu lors de l\'inscription');

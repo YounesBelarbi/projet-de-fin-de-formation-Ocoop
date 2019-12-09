@@ -38,11 +38,12 @@ const registerReducer = (state = initialState, action) => {
             }
         case 'SUBMIT_SIGNUP' :
             return {
-                ...state,
-                password: '',
+                ...state, // on spread le state du registerReducer
+                password: '', //On vide les champ du state de cet élément
                 password_confirmation: '',
                 username: '',
                 birth: ''
+                // Mais on garde l'email
             }
         default :
             return state

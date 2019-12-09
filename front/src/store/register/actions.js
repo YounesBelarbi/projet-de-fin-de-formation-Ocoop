@@ -4,7 +4,7 @@ export const actions = {
     CHANGE_BIRTHDATE: 'register/action/CHANGE_BIRTHDATE',
     CHANGE_PASSWORD: 'register/action/CHANGE_PASSWORD',
     CHANGE_VERIFPASSWORD: 'register/action/CHANGE_VERIFPASSWORD',
-    SUBMIT_SIGNUP: 'register/action/SUBMIT_SIGNUP'
+    SUBMIT_SIGNUP: 'register/action/SUBMIT_SIGNUP' //action de submit register
   };
   
 export const register = (registerType) => ({
