@@ -118,20 +118,15 @@ const Dashboard = () => {
                                                         alt={user.username}
                                                         className="dahsboard-main-user-img"
                                                     />
-                                                    <Media.Body className="dahsboard-main-user-body">
+                                                    <Media.Body className="dahsboard-main-user-body" onClick={() => {setOpen(!open, user.id)}}>
                                                         <div className="dashboard-main-visible-header">
-
                                                             <h5 className="dahsboard-main-user-username">{user.username}</h5>
-                                                            <FontAwesomeIcon size="2x" icon={faChevronDown} onClick={() => {setOpen(!open, user.id)}}/>
-
+                                                            <FontAwesomeIcon size="2x" icon={faChevronDown} />
                                                         </div>
-
-
                                                         <Collapse in={open}>
                                                             <p className="dahsboard-main-user-description">
                                                                 Je carry les noobs sur Adibou ajoutez moi
                                                             </p>
-                                                            
                                                         </Collapse>  
                                                     </Media.Body>          
                                                 </Media>
