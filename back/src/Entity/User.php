@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,6 +25,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups("login_information")
      */
     private $username;
 
@@ -41,32 +42,38 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups("login_information")
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("login_information")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("login_information")
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("login_information")
      */
     private $birth;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\Email
+     * @Groups("login_information")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("login_information")
      */
     private $city;
 
@@ -82,11 +89,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("login_information")
      */
     private $mobile;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("login_information")
      */
     private $avatar;
 
@@ -102,23 +111,27 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\FavoriteGame", mappedBy="user")
+     * @Groups("login_information")
      */
     private $favoriteGames;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Guild", inversedBy="users")
+     * @Groups("login_information")
      */
     private $guild;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Frequency", inversedBy="users")
      * @ORM\JoinColumn(nullable=true)
+     * @Groups("login_information")
      */
     private $frequency;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Status", inversedBy="users")
      * @ORM\JoinColumn(nullable=true)
+     * @Groups("login_information")
      */
     private $status;
 

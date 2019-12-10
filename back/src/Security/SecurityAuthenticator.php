@@ -66,10 +66,7 @@ class SecurityAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        return new JsonResponse([
-            'success' => true,
-            //'? token' => $token
-        ]);
+        return null;
     }
 
 

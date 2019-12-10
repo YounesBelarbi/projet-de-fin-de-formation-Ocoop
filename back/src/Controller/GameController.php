@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @Route("/games", name="games_")
+ * @Route("api/games", name="games_")
  */
 class GameController extends AbstractController
 {
