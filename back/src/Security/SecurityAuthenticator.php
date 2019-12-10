@@ -31,7 +31,7 @@ class SecurityAuthenticator extends AbstractGuardAuthenticator
     public function getCredentials(Request $request)
     { 
         $arrayData = json_decode($request->getContent(), true);
-        dump($arrayData);
+        // dump($arrayData);
         
         // a modifier en fonction des données envoyées sur le formulaire de login 
         return $arrayData;    
@@ -40,11 +40,11 @@ class SecurityAuthenticator extends AbstractGuardAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {   
-        // dump($credentials);
         // dump($credentials['email']);
         // die;
         // dump($userProvider->loadUserByUsername($credentials['email']));
         // die;
+         
         return $userProvider->loadUserByUsername($credentials['email']); 
         //return $this->userRepository->findOneBy(['email' => $credentials['email']]);  
     }
@@ -68,7 +68,7 @@ class SecurityAuthenticator extends AbstractGuardAuthenticator
     {
         return new JsonResponse([
             'success' => true,
-            //'? token' => $token
+            'token' => $token
         ]);
     }
 
