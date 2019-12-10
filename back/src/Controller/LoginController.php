@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api", name="api_")
+ * @Route("/user", name="api_")
  */
 class LoginController extends AbstractController
 {
@@ -15,7 +15,13 @@ class LoginController extends AbstractController
      */
     public function index()
     {  
+
+
         return $this->json(['result' => true, 'user' => $this->getUser()]);
+
+        
+
+
     }
     
 }
