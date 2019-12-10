@@ -19,14 +19,22 @@ class LoginController extends AbstractController
      */
     public function index(UserInterface $user, JWTTokenManagerInterface $JWTManager)
     {  
-        
+
+        //if user logged in, we generate a token
         $token = new JsonResponse(['token' => $JWTManager->create($user)]);
-
-        return $this->json(['result' => true, 'user' => $this->getUser(), 'token' => $token]);
-
-     
-
         
+
+        // we send in informations in json
+        return $this->json([
+            'user' => $this->getUser()
+         ], 
+         200, 
+         [], 
+         [
+            'groups' => ['login_information'],
+            'token' => $token
+         ]
+      );
 
 
     }
