@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCogs, faSignOutAlt, faUserCog } from '@fortawesome/free-solid-svg-icons'
 
 import { Button, Card, Media } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import './style.sass';
 
@@ -14,7 +15,7 @@ const HeaderDashboard = () => {
             <span></span>
             <span></span>
             <span></span>
-            <div id="menu">
+            <div id="dashboard-menu">
 
                 <Card style={{ }}>
                 <Media>
@@ -40,8 +41,8 @@ const HeaderDashboard = () => {
                 
 
                 <ul>
-                    <a href="#"><li>paramètre<FontAwesomeIcon icon={faCogs}/></li></a>
-                    <a href="#"><li>se déconnecter<FontAwesomeIcon icon={faSignOutAlt}/></li></a>
+                    <a href="#"><li>paramètre <FontAwesomeIcon icon={faCogs}/></li></a>
+                    <a href="#"><li>se déconnecter <FontAwesomeIcon icon={faSignOutAlt}/></li></a>
                 </ul>
 
             </div>
