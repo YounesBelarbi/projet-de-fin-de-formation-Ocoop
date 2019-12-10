@@ -68,7 +68,6 @@ class RegistrationController extends AbstractController
                 $entityManager->flush();
 
                 return $this->json([
-                    'reception' => $request->getContent(),
                     'success' => 'success'
                 ]);  
             }
