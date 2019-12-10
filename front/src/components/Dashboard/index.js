@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { useSelector, useDispatch } from 'react-redux';
 import { Button, Container, Row, Col, Media, Card, Collapse } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGolfBall, faPlusCircle, faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -31,37 +31,27 @@ const Dashboard = () => {
         image: "https://blznav.akamaized.net/img/games/cards/card-overwatch-7eff92e1257149aa.jpg"
     }];
 
-    const Users = [{
-        id: 1,
-        username: "TheKairi78",
-        image: "http://image.noelshack.com/fichiers/2017/22/1496181267-kenny-vomir1.png",
-        isOpen: false
-    },
-    {
-        id: 2,
-        username: "ChristCosmique28",
-        image: "https://www.nouvelordremondial.cc/wp-content/uploads/2018/07/durif-pas-mort.jpg",
-        isOpen: false
-    },
-    {
-        id: 3,
-        username: "lampereur",
-        image: "https://www.numero.com/sites/default/files/images/article_new/slides/alkpotecfifou-0073alkpote-album-monument-rap-francais-numero-magazine.jpg",
-        isOpen: false
-    },
-    {
-        id: 4,
-        username: "Clovis",
-        image: "https://i.skyrock.net/6138/53906138/pics/2789465568_small_1.jpg",
-        isOpen: false
-    }];
-
     // const setOpen = (isOpen, id)  => {
 
     // };
 
+    const activeState = useSelector(state => ({
+        ...state.dashboardReducer,
+    }));
 
-    const [open, setOpen] = useState(false);
+    console.log(activeState);
+
+    const dispatch = useDispatch();
+
+    const showPlayerCard = (key) => {
+        dispatch({
+            type: `SHOW_PLAYER_CARD`,
+            data: key
+          });
+    };
+
+
+    // const [open, setOpen] = useState(false);
 
 
     return( <div className="dashboard">
@@ -107,9 +97,9 @@ const Dashboard = () => {
                                 </Row>
                                 <Row>
                                 {
-                                    Users.map(user=>{
-                                        return <Col xl={4} lg={6} md={6} sm={12} xm={12} className="p-1" >
-                                            <Card className="dahsboard-main-user" key={user.id}>
+                                    activeState.matchingResultPlayers.map((user, key) => {
+                                        return <Col xl={4} lg={6} md={6} sm={12} xm={12} className="p-1" key={user.userId}>
+                                            <Card className="dahsboard-main-user">
                                                 <Media>
                                                     <img
                                                         width={46}
@@ -118,19 +108,18 @@ const Dashboard = () => {
                                                         alt={user.username}
                                                         className="dahsboard-main-user-img"
                                                     />
-                                                    <Media.Body className="dahsboard-main-user-body" onClick={() => {setOpen(!open, user.id)}}>
+                                                    <Media.Body className="dahsboard-main-user-body" onClick={() => {showPlayerCard(key)}}>
                                                         <div className="dashboard-main-visible-header">
                                                             <h5 className="dahsboard-main-user-username">{user.username}</h5>
                                                             <FontAwesomeIcon size="2x" icon={faChevronDown} />
                                                         </div>
-                                                        <Collapse in={open}>
+                                                        <Collapse in={user.isOpen}>
                                                             <p className="dahsboard-main-user-description">
-                                                                Je carry les noobs sur Adibou ajoutez moi
+                                                                {user.description}
                                                             </p>
                                                         </Collapse>  
                                                     </Media.Body>          
                                                 </Media>
-                                                
                                             </Card>
                                         </Col>
                                     })
