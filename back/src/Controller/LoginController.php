@@ -15,6 +15,7 @@ class LoginController extends AbstractController
      */
     public function index()
     {  
-        return $this->json(['result' => true]);
+        return $this->json(['result' => true, 'user' => $this->getUser()]);
     }
+    
 }
