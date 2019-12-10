@@ -26,13 +26,15 @@ class LoginController extends AbstractController
 
         // we send in informations in json
         return $this->json([
-            'user' => $this->getUser()
+            $user,
+            ['token' => $JWTManager->create($user)]
+            
          ], 
          200, 
          [], 
          [
             'groups' => ['login_information'],
-            'token' => $token
+            
          ]
       );
 
