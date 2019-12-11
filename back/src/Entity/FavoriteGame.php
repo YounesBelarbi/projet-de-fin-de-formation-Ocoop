@@ -11,25 +11,19 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class FavoriteGame
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
+    
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Rank", inversedBy="favoriteGames")
      */
     private $rank;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Game", inversedBy="favoriteGames")
+     * @ORM\Id @ORM\ManyToOne(targetEntity="App\Entity\Game", inversedBy="favoriteGames")
      */
     private $game;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="favoriteGames")
+     * @ORM\Id @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="favoriteGames")
      */
     private $user;
 
@@ -39,10 +33,6 @@ class FavoriteGame
         $this->games = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getRank(): ?Rank
     {
