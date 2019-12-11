@@ -132,6 +132,10 @@ class UserController extends AbstractController
         {
             $errors['game'] = "Le jeu n'a pas été rajouté, il se peut qu'il soit déjà parmi vos favoris";  
         }
+        catch(\Exception $e)
+        {
+        $errors['game'] = "Le jeu n'a pas été rajouté, il se peut qu'il soit déjà parmi vos favoris";
+        }
 
 
         
@@ -162,6 +166,7 @@ class UserController extends AbstractController
 
         //searched for the game to delete
         $favoriteGameToDelete = $favoriteGameRepository->find(['game' => $game, 'user' => $user]);
+       
      
 
         $errors = [];
