@@ -10,36 +10,9 @@ import './style.sass';
 
 const Dashboard = () => {
 
-    const JEUX = [{
-        id: 1,
-        name: "CS:Go",
-        image: "https://steamcdn-a.akamaihd.net/steam/subs/54029/header_586x192.jpg?t=1544227353"
-    },
-    {
-        id: 2,
-        name: "Adibou",
-        image: "https://images-na.ssl-images-amazon.com/images/I/51lek1O4e4L.jpg"
-    },
-    {
-        id: 3,
-        name: "SpongeBob",
-        image: "https://upload.wikimedia.org/wikipedia/en/3/33/SpongeBob_SuperSponge_PS1.jpg"
-    },
-    {
-        id: 4,
-        name: "Overwatch",
-        image: "https://blznav.akamaized.net/img/games/cards/card-overwatch-7eff92e1257149aa.jpg"
-    }];
-
-    // const setOpen = (isOpen, id)  => {
-
-    // };
-
     const activeState = useSelector(state => ({
         ...state.dashboardReducer,
     }));
-
-    console.log(activeState);
 
     const dispatch = useDispatch();
 
@@ -50,9 +23,13 @@ const Dashboard = () => {
           });
     };
 
-
-    // const [open, setOpen] = useState(false);
-
+    const selectGame = (key) => {
+        dispatch({
+            type: `SELECT_GAME`,
+            data: key
+          });
+          
+    };
 
     return( <div className="dashboard">
             <Container fluid className="p-3">
@@ -60,28 +37,28 @@ const Dashboard = () => {
                         <Col lg={2} md={2} sm={2} xs={2} className="dashboard-game-list">
                             <Container fluid>
                             {
-                                JEUX.map(jeu => {
-                                    return  <Row className="justify-content-center">
-                                                <div className="game-row">
-                                                    <Media>
+                                activeState.gameList.map((game, key) => {
+                                    console.log(game);
+                                    return  <Row key={game.gameId} className="justify-content-end">
+                                                <div className={`game-row ${ game.isSelected ? "game-isSelected" : "" }`}>
+                                                    <Media onClick={() => {selectGame(key)}} >
                                                         <img
                                                         width={100}
                                                         height={100}
                                                         className="dashboard-images"
-                                                        src={jeu.image}
-                                                        alt={jeu.name}
-                                                        key={jeu.id}
+                                                        src={game.image}
+                                                        alt={game.name}
                                                     />
                                                     </Media>
                                                 </div>
                                             </Row> 
                                         })
                             }
-                                <Row className="justify-content-center">
-                                    <div className="dashboard-images add-game-dashboard">
-                                        <span className="add-span">+</span>    
+                                {/* <Row className="justify-content-end">
+                                    <div className={`game-row dashboard-images add-game-dashboard ${ game.isSelected ? "game-isSelected" : "" }`}>
+                                        <span className="add-span">+</span>
                                     </div> 
-                                </Row>
+                                </Row> */}
                             </Container>
                         </Col>
 
@@ -98,7 +75,7 @@ const Dashboard = () => {
                                 <Row>
                                 {
                                     activeState.matchingResultPlayers.map((user, key) => {
-                                        return <Col xl={4} lg={6} md={6} sm={12} xm={12} className="p-1" key={user.userId}>
+                                        return <Col xl={4} lg={6} md={6} sm={12} xm={12} className="col-card" key={user.userId}>
                                             <Card className="dahsboard-main-user">
                                                 <Media>
                                                     <img
