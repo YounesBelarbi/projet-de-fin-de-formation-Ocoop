@@ -135,16 +135,11 @@ class UserController extends AbstractController
 
 
         
-        // if there are errors we return them
-        if (!$errors) {
+        // if there are errors we return them  
         return $this->json([
-            $favoriteGame,
-        ]);
-        } else {
-            return $this->json([
-                $errors
-            ], 400);
-        }
+            $errors
+        ], 400);
+    
 
 
     }
@@ -169,21 +164,37 @@ class UserController extends AbstractController
         $favoriteGameToDelete = $favoriteGameRepository->find(['game' => $game, 'user' => $user]);
      
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($favoriteGameToDelete);
-        $entityManager->flush();
-
-
-        return $this->json([
-            'success' => 'Le jeu à bien été supprimé à vos favoris',
+        $errors = [];
+        try
+        {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($favoriteGameToDelete);
+            $entityManager->flush();
             
-        ]); 
+            return $this->json([
+                'success' => 'Le jeu à bien été supprimé à vos favoris',
+            ]);  
+        }
+
+        catch(UniqueConstraintViolationException $e)
+        {
+            $errors['game'] = "Le jeu n'existe pas dans les favoris";  
+        }
+        catch(\Exception $e)
+        {
+        $errors['game'] = "Le jeu n'existe pas dans les favoris";
+        }
+
 
         
-    }
-
-
+        // if there are errors we return them
+        return $this->json([
+            $errors
+        ], 400);
     
+        
+    }
+ 
 }
 
 

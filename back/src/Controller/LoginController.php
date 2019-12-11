@@ -14,6 +14,7 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
  */
 class LoginController extends AbstractController
 {
+    
     /**
      * @Route("/login", name="login", methods={"POST"})
      */
