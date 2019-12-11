@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Repository\GameRepository;
 use App\Repository\RankRepository;
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -90,43 +91,59 @@ class UserController extends AbstractController
 
 
 
-
      /**
      * @Route("/add/games/favorite", name="add_games")
      */
     public function userAddFavoriteGames(Request $request, UserRepository $userRepository, RankRepository $rankRepository, GameRepository $gameRepository)
     {
+
+        //egt data from request in json
         $gamesData = json_decode($request->getContent(), true);
 
-
         $user = $this->getUser();
-        // $user = $userRepository->findOneBy(['username' => 'younes']);
-        $rank = $rankRepository->findOneBy(['name' => 'Bronze']);
-        $game = $gameRepository->findOneBy(['title' => 'Fortnite']);
+        
+        $rank = $rankRepository->findOneBy(['name' => $gamesData['name']]);
+        $game = $gameRepository->findOneBy(['title' => $gamesData['title']]);
 
 
+        // set informations to new instance of FavoriteGame
         $favoriteGame = new FavoriteGame;
         $favoriteGame->setUser($user);
         $favoriteGame->setRank($rank);
         $favoriteGame->setGame($game);
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($favoriteGame);
-        $entityManager->flush();
+        
+        $errors = [];
+        try
+        {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($favoriteGame);
+            $entityManager->flush();
+
+            return $this->json([
+                'success' => 'Le jeu à bien été rajouté à vos favoris'
+            ]);  
+        }
+
+        catch(UniqueConstraintViolationException $e)
+        {
+            $errors['game'] = "Le jeu n'a pas été rajouté, il se peut qu'il soit déjà parmi vos favoris";  
+        }
+
 
         
-
-
-
-
-
-
+        // if there are errors we return them
+        if (!$errors) {
         return $this->json([
-            $gamesData,
-        
-        
-         
+            $favoriteGame,
         ]);
+        } else {
+            return $this->json([
+                $errors
+            ], 400);
+        }
+
+
     }
 
     
