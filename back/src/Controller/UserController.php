@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\FavoriteGame;
 use App\Entity\User;
+use App\Repository\FavoriteGameRepository;
 use App\Repository\GameRepository;
 use App\Repository\RankRepository;
 use App\Repository\UserRepository;
@@ -94,14 +95,15 @@ class UserController extends AbstractController
      /**
      * @Route("/add/games/favorite", name="add_games")
      */
-    public function userAddFavoriteGames(Request $request, UserRepository $userRepository, RankRepository $rankRepository, GameRepository $gameRepository)
+    public function userAddFavoriteGames(Request $request, RankRepository $rankRepository, GameRepository $gameRepository)
     {
+        
 
-        //egt data from request in json
+        //get data from request in json
         $gamesData = json_decode($request->getContent(), true);
 
         $user = $this->getUser();
-        
+       
         $rank = $rankRepository->findOneBy(['name' => $gamesData['name']]);
         $game = $gameRepository->findOneBy(['title' => $gamesData['title']]);
 
@@ -121,7 +123,8 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             return $this->json([
-                'success' => 'Le jeu à bien été rajouté à vos favoris'
+                'success' => 'Le jeu à bien été rajouté à vos favoris',
+                
             ]);  
         }
 
@@ -145,6 +148,40 @@ class UserController extends AbstractController
 
 
     }
+
+
+
+
+    /**
+     * @Route("/delete/games/favorite", name="delete_games")
+     */
+    public function userDeleteFavoriteGames(Request $request, GameRepository $gameRepository, FavoriteGameRepository $favoriteGameRepository)
+    {
+        
+        //get data from request in json
+        $gamesData = json_decode($request->getContent(), true);
+
+        $user = $this->getUser()->getId();
+        $game = $gameRepository->findOneBy(['title' => $gamesData['title']]);
+        
+
+        //searched for the game to delete
+        $favoriteGameToDelete = $favoriteGameRepository->find(['game' => $game, 'user' => $user]);
+     
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($favoriteGameToDelete);
+        $entityManager->flush();
+
+
+        return $this->json([
+            'success' => 'Le jeu à bien été supprimé à vos favoris',
+            
+        ]); 
+
+        
+    }
+
 
     
 }
