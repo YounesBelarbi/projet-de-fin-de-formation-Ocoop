@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Game;
 use App\Repository\GameRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 
 /**
  * @Route("/games", name="games_")
@@ -19,25 +21,7 @@ class GameController extends AbstractController
      */
     public function gameList(GameRepository $gameRepository)
     {
-        // $games = $gameRepository->findAll();
-        // $arrayGames = [];
-        // foreach ($games as  $game) {
-        //     $arrayGames [] = [
-        //         'title' => $game->getTitle(),
-        //         'description' => $game->getDescription(),
-        //         'poster' => $game->getPoster(),
-        //         'logo' => $game->getLogo(),
-        //         'url' => $this->generateUrl('games_list', [
-        //             'id' => $game->getId()
-        //         ], UrlGeneratorInterface::ABSOLUTE_URL)
-        //     ];
-        // }
-        // dump($this->json($arrayGames));
-        // // return $this->json($arrayGames); 
-                
-        
-
-        $games = $gameRepository->findAll();
+       $games = $gameRepository->findAll();
         
         $response = new Response;
         $arrayGames = [];
@@ -57,10 +41,69 @@ class GameController extends AbstractController
         
         $response->headers->set('Content-Type', 'application/json');
         
-        // dump($response);
-        // return $this->render('game/index.html.twig');
+    
         return $response;
     } 
+
+    /**
+     * @Route("/{id}", name="showById", methods={"GET"})
+     */
+    public function showById(GameRepository $gameRepository, $id): Response
+    {
+
+    
+        $game = $gameRepository->find($id);
+
+        $response = new Response;
+        $arrayGame = [];
+        
+
+        
+                $arrayGame [] = [
+                    'title' => $game->gettitle(),
+                    'description' => $game->getDescription(),
+                    'poster' => $game->getPoster(), 
+                    'logo' => $game->getLogo(),
+
+                ];
+            
+
+            $response->setContent(json_encode(
+                $arrayGame
+            ));        
+            $response->headers->set('Content-Type', 'application/json');
+            
+            ;
+            return $response;
+
+    }
+
+    /**
+     * @Route("/new", name="new", methods={"GET","POST"})
+     */
+    public function new(Request $request, EntityManagerInterface $em): Response
+    {
+
+        $arrayData = json_decode($request->getContent(), true);
+
+        $game = new Game;
+        $game->setTitle($arrayData['title']);
+        $game->setDescription($arrayData['description']);
+        $game->setPoster($arrayData['poster']);
+        $game->setLogo($arrayData['logo']);
+
+       
+
+        $em->persist($game);
+        $em->flush();
+
+
+        return $this->json([
+            'good' => $arrayData
+        ]);
+    }
+
+    
     
 }
 
