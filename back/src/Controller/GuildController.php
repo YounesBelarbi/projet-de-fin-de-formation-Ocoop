@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Guild;
-use App\Form\Guild1Type;
 use App\Repository\GuildRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,9 +22,9 @@ class GuildController extends AbstractController
 
 
     /**
-     * @Route("/show", name="guild_index", methods={"GET"})
+     * @Route("/list", name="list", methods={"GET"})
      */
-    public function show(GuildRepository $guildRepository): Response
+    public function list(GuildRepository $guildRepository): Response
     {
 
         $guilds = $guildRepository->findAll();
@@ -36,7 +36,10 @@ class GuildController extends AbstractController
                 $arrayGuild [] = [
                     'title' => $guild->getname(),
                     'description' => $guild->getDescription(),
+                    'avatar' => $guild->getAvatar(),
+                    'banner' => $guild->getBanner(),
 
+                   
                 ];
             }
 
@@ -53,7 +56,34 @@ class GuildController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="guild_new", methods={"GET","POST"})
+     * @Route("/{id}", name="showById", methods={"GET"})
+     */
+    public function showById(GuildRepository $guildRepository, $id): Response
+    {
+    
+        $guild = $guildRepository->find($id);
+        $response = new Response;
+        $arrayGuild = [];
+        
+        
+                $arrayGuild [] = [
+                    'name' => $guild->getName(),
+                    'description' => $guild->getDescription(),
+                    'avatar' => $guild->getAvatar(), 
+                    'banner' => $guild->getBanner(),
+                ];
+            
+            $response->setContent(json_encode(
+                $arrayGuild
+            ));        
+            $response->headers->set('Content-Type', 'application/json');
+            
+            ;
+            return $response;
+    }
+
+    /**
+     * @Route("/new", name="new", methods={"POST"})
      */
     public function new(Request $request, EntityManagerInterface $em): Response
     {
@@ -63,6 +93,9 @@ class GuildController extends AbstractController
         $guild = new Guild;
         $guild->setName($arrayData['name']);
         $guild->setDescription($arrayData['description']);
+        $guild->setDescription($arrayData['avatar']);
+        $guild->setDescription($arrayData['banner']);
+
        
 
         $em->persist($guild);
@@ -77,12 +110,23 @@ class GuildController extends AbstractController
    
 
     /**
-     * @Route("/edit/{id}", name="guild_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="edit", methods={"POST"})
      */
     public function edit(Request $request, Guild $guild, EntityManagerInterface $em): Response
     {
         $name=$request->request->get('name');
+        $description=$request->request->get('description');
+        $avatar=$request->request->get('avatar');
+        $banner=$request->request->get('banner');
+
+        $update = New DateTime();
+
         $guild->setName($name);
+        $guild->setDescription($description);
+        $guild->setAvatar($avatar);
+        $guild->setBanner($banner);
+        $guild->setUpdatedAt($update);
+
 
         $em->flush(); 
         
@@ -96,7 +140,7 @@ class GuildController extends AbstractController
 
 
     /**
-    * @Route("/delete/{id}")
+    * @Route("/delete/{id}", name="delete", methods={"POST"})
     */
     public function delete(Guild $guild, EntityManagerInterface $em)
     {
@@ -107,4 +151,5 @@ class GuildController extends AbstractController
         );
         return $response;
     }
+
 }
