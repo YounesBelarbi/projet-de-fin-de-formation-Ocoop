@@ -35,22 +35,30 @@ const initialState = {
     {
       gameId: 2,
       name: "CS:Go",
-      image: "https://steamcdn-a.akamaihd.net/steam/subs/54029/header_586x192.jpg?t=1544227353"
+      image: "https://steamcdn-a.akamaihd.net/steam/subs/54029/header_586x192.jpg?t=1544227353",
+      background: "csgo-bg",
+      isSelected: true
     },
     {
       gameId: 3,
       name: "Adibou",
-      image: "https://images-na.ssl-images-amazon.com/images/I/51lek1O4e4L.jpg"
+      image: "https://images-na.ssl-images-amazon.com/images/I/51lek1O4e4L.jpg",
+      background: "adibou-bg",
+      isSelected: false
     },
     {
       gameId: 1,
       name: "SpongeBob",
-      image: "https://upload.wikimedia.org/wikipedia/en/3/33/SpongeBob_SuperSponge_PS1.jpg"
+      image: "https://upload.wikimedia.org/wikipedia/en/3/33/SpongeBob_SuperSponge_PS1.jpg",
+      background: "img",
+      isSelected: false
     },
     {
       gameId: 5,
       name: "Overwatch",
-      image: "https://blznav.akamaized.net/img/games/cards/card-overwatch-7eff92e1257149aa.jpg"
+      image: "https://blznav.akamaized.net/img/games/cards/card-overwatch-7eff92e1257149aa.jpg",
+      background: "img",
+      isSelected: false
     }
   ]};
 
@@ -58,10 +66,24 @@ const dashboardReducer = (state = initialState, action) => {
     console.log('reducer[dashboard] >>', action);
     switch(action.type) {
         case 'SHOW_PLAYER_CARD' :
-          //state.matchingResultPlayers.
-          state.matchingResultPlayers[action.data].isOpen = !state.matchingResultPlayers[action.data].isOpen
+          let object = {...state.matchingResultPlayers[action.data], isOpen: !state.matchingResultPlayers[action.data].isOpen};
+          let array = [...state.matchingResultPlayers];
+          array[action.data] = object;
           return {
-              ...state
+            ...state,
+            matchingResultPlayers: array
+          }
+        case 'SELECT_GAME' :
+          let newGameList = state.gameList.map((user, key) => {
+            return {
+              ...user, isSelected: false
+            }
+          });
+          let newObject = {...newGameList[action.data], isSelected: true};
+          newGameList[action.data] = newObject;
+          return {
+            ...state,
+            gameList: newGameList
           }
         default :
             return state
