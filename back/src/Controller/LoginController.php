@@ -21,7 +21,7 @@ class LoginController extends AbstractController
     {  
 
         //if user logged in, we generate a token
-        $token = new JsonResponse(['token' => $JWTManager->create($user)]);
+        // $token =  $JWTManager->create($user);
         
 
         // we send in informations in json
