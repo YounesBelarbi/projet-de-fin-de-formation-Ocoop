@@ -55,7 +55,7 @@ class Game
     private $ranks;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\FavoriteGame", mappedBy="game")
+     * @ORM\OneToMany(targetEntity="App\Entity\FavoriteGame", mappedBy="game" )
      */
     private $favoriteGames;
 
@@ -71,6 +71,12 @@ class Game
         $this->favoriteGames = new ArrayCollection();
         $this->platform = new ArrayCollection();
         $this->created_at = new DateTime();
+    }
+
+    public function __toString()
+    {
+        return $this->title; 
+ 
     }
 
     public function getId(): ?int

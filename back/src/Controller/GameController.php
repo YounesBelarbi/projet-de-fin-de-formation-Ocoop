@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Game;
 use App\Repository\GameRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,7 +80,7 @@ class GameController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="new", methods={"GET","POST"})
+     * @Route("/new", name="new", methods={"POST"})
      */
     public function new(Request $request, EntityManagerInterface $em): Response
     {
@@ -101,6 +102,49 @@ class GameController extends AbstractController
         return $this->json([
             'good' => $arrayData
         ]);
+    }
+
+    /**
+     * @Route("/edit/{id}", name="edit", methods={"POST"})
+     */
+    public function edit(Request $request, Game $game, EntityManagerInterface $em): Response
+    {
+        $title=$request->request->get('title');
+        $description=$request->request->get('description');
+        $poster=$request->request->get('poster');
+        $logo=$request->request->get('logo');
+
+
+        $update = New DateTime();
+
+        $game->setTitle($title);
+        $game->setDescription($description);
+        $game->setPoster($poster);
+        $game->setLogo($logo);
+        $game->setUpdatedAt($update);
+
+        $em->flush(); 
+        
+        $response = new Response(
+            $game,
+            Response::HTTP_OK,
+            ['content-type' => 'json']
+        );
+        return $response;
+    }
+
+    /**
+    * @Route("/delete/{id}", name="delete", methods={"POST"})
+    */
+    public function delete(Game $game, EntityManagerInterface $em)
+    {
+        //this function dont work for the moment because integrity constraint
+        $em->remove($game);
+        $em->flush();
+        $response = new Response(
+            Response::HTTP_OK
+        );
+        return $response;
     }
 
     
