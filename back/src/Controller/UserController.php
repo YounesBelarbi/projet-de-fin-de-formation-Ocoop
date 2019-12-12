@@ -160,13 +160,13 @@ class UserController extends AbstractController
         //get data from request in json
         $gamesData = json_decode($request->getContent(), true);
 
-        $user = $this->getUser()->getId();
+        $user = $this->getUser();
         $game = $gameRepository->findOneBy(['title' => $gamesData['title']]);
         
 
         //searched for the game to delete
         $favoriteGameToDelete = $favoriteGameRepository->find(['game' => $game, 'user' => $user]);
-       
+      
      
 
         $errors = [];
@@ -199,7 +199,28 @@ class UserController extends AbstractController
     
         
     }
- 
+
+
+
+
+    /**
+     * @Route("/list/games/favorite", name="list_games")
+     */
+    public function userFavoriteGames(Request $request, GameRepository $gameRepository, FavoriteGameRepository $favoriteGameRepository)
+    {
+        
+        //get data from request in json
+        $gamesData = json_decode($request->getContent(), true);
+
+        $user = $this->getUser();
+    
+
+
+        $UserFavoriteGames = $favoriteGameRepository->findGamesbyUser($user);
+            
+ }
+
+    
 }
 
 
