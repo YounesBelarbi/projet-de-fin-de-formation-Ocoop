@@ -73,10 +73,7 @@ const Signup = (props) => {
     };
 
     const handleChangeInput = (event) => {
-        console.log('activeState', JSON.stringify(activeState));
         const property = event.target.id;
-        console.log(`CHANGE_${property.toUpperCase()}`);
-
         dispatch({
           type: `CHANGE_${property.toUpperCase()}`,
           data: event.target.value

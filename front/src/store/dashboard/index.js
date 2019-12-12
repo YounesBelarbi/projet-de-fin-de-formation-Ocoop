@@ -60,7 +60,77 @@ const initialState = {
       background: "img",
       isSelected: false
     }
-  ]};
+  ],
+  addGamePanel: {
+    isOpen: false,
+    gameToAdd: {
+      plateformId: '',
+      gameId: '',
+      rankId: '',
+      frequencyId: '',
+    },
+    plateformList: [
+      {
+        id: 1,
+        name: 'PC'
+      },
+      {
+        id: 2,
+        name: 'XBOX'
+      },
+      {
+        id: 3,
+        name: 'PS4'
+      }
+    ],
+    gameList: [
+      {
+        id: 1,
+        name: 'OverWatch'
+      },
+      {
+        id: 2,
+        name: 'CS:GO'
+      },
+      {
+        id: 3,
+        name: 'LOL'
+      },
+      {
+        id: 4,
+        name: 'Adibou'
+      }
+    ],
+    rankList: [
+      {
+        id: 1,
+        name: 'Bronze'
+      },
+      {
+        id: 2,
+        name: 'Argent'
+      },
+      {
+        id: 3,
+        name: 'Or'
+      },
+      {
+        id: 4,
+        name: 'Diamant'
+      }
+    ],
+    frequencyList: [
+      {
+        id: 1,
+        name: 'Chill'
+      },
+      {
+        id: 2,
+        name: 'Compétitif'
+      }
+    ]
+  }
+};
 
 const dashboardReducer = (state = initialState, action) => {
     console.log('reducer[dashboard] >>', action);
@@ -84,6 +154,65 @@ const dashboardReducer = (state = initialState, action) => {
           return {
             ...state,
             gameList: newGameList
+          }
+        case 'SHOW_ADD_GAME_PANEL' : 
+          //console.log('ADD_GAME Reducer >>', action.data);   
+          return {
+            ...state,
+            addGamePanel: {
+              ...state.addGamePanel,
+              isOpen: !state.addGamePanel.isOpen
+            }
+          }
+          case 'ADD_FAVORITE_SELECTED_PLATFORM' : 
+            return {
+              ...state,
+              addGamePanel: {
+                ...state.addGamePanel,
+                gameToAdd: {
+                  ...state.addGamePanel.gameToAdd,
+                  plateformId: action.data,
+                  gameId: "",
+                  rankId: "",
+                  frequencyId: ""
+                }
+              }
+            }
+          case 'ADD_FAVORITE_SELECTED_GAME' : 
+          return {
+            ...state,
+            addGamePanel: {
+              ...state.addGamePanel,
+              gameToAdd: {
+                ...state.addGamePanel.gameToAdd,
+                gameId: action.data,
+                rankId: "",
+                frequencyId: ""
+              }
+            }
+          }
+          case 'ADD_FAVORITE_SELECTED_RANK' : 
+          return {
+            ...state,
+            addGamePanel: {
+              ...state.addGamePanel,
+              gameToAdd: {
+                ...state.addGamePanel.gameToAdd,
+                rankId: action.data,
+                frequencyId: ""
+              }
+            }
+          }
+          case 'ADD_FAVORITE_SELECTED_FREQUENCY' : 
+          return {
+            ...state,
+            addGamePanel: {
+              ...state.addGamePanel,
+              gameToAdd: {
+                ...state.addGamePanel.gameToAdd,
+                frequencyId: action.data
+              }
+            }
           }
         default :
             return state
