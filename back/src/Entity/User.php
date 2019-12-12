@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,7 +25,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups("login_information")
      */
     private $username;
 
@@ -41,39 +40,41 @@ class User implements UserInterface
     private $password;
 
     /**
+     * A non-persisted field that's used to create the encoded password
+     *
+     * @var string
+     */
+    private $plainPassword;
+
+
+    /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups("login_information")
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("login_information")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("login_information")
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups("login_information")
      */
     private $birth;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\Email
-     * @Groups("login_information")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("login_information")
      */
     private $city;
 
@@ -89,13 +90,11 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("login_information")
      */
     private $mobile;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("login_information")
      */
     private $avatar;
 
@@ -111,27 +110,23 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\FavoriteGame", mappedBy="user")
-     * @Groups("login_information")
      */
     private $favoriteGames;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Guild", inversedBy="users")
-     * @Groups("login_information")
      */
     private $guild;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Frequency", inversedBy="users")
      * @ORM\JoinColumn(nullable=true)
-     * @Groups("login_information")
      */
     private $frequency;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Status", inversedBy="users")
      * @ORM\JoinColumn(nullable=true)
-     * @Groups("login_information")
      */
     private $status;
 
@@ -139,11 +134,7 @@ class User implements UserInterface
     {
         $this->favoriteGames = new ArrayCollection();
         $this->createdAt = new \DateTime();
-        
-       
-     
     }
-
 
     public function getId(): ?int
     {
@@ -201,6 +192,18 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+        // forces the object to look "dirty" to Doctrine. Avoids
+        // Doctrine *not* saving this entity, if only plainPassword changes
+        $this->password = null;
+    }
+
     /**
      * @see UserInterface
      */
@@ -215,7 +218,7 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function getDescription(): ?string
