@@ -13,9 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 /**
- * @Route("/admin/games", name="games_")
+ * @Route("/admin/games", name="admin_games_")
  */
-class GameController extends AbstractController
+class AdminGameController extends AbstractController
 {
     /**
      * @Route("/list", name="list")

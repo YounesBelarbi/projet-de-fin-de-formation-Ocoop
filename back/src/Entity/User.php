@@ -101,7 +101,7 @@ class User implements UserInterface
     private $updated_at;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\FavoriteGame", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\FavoriteGame", mappedBy="user", cascade={"remove"})
      */
     private $favoriteGames;
 
