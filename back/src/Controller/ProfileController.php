@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
- * @route("/profile", name="profile_")
+ * @route("api/profile", name="profile_")
  */
 class ProfileController extends AbstractController
 {
@@ -125,7 +125,7 @@ class ProfileController extends AbstractController
     }
 
      /**
-     * @Route("/avatar/delete", name="avatar_delete")
+     * @Route("/delete/avatar", name="delete_avatar")
      */
     public function deleteAvatar(EntityManagerInterface $em)
     {
