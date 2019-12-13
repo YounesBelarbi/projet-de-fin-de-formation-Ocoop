@@ -45,7 +45,7 @@ const Signup = (props) => {
     const onSubmit = (data) => {
 
         console.log(JSON.stringify({...activeState}));
-        axios.post('http://127.0.0.1:8000/api/register',
+        axios.post('http://127.0.0.1:8001/user/register',
           JSON.stringify({...activeState}), {
             headers: {
                 'Content-Type': 'application/json',

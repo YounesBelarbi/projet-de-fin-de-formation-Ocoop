@@ -17,7 +17,7 @@ class RegistrationController extends AbstractController
 
 
     /**
-     * @Route("/api/register", name="api_register", methods={"POST"})
+     * @Route("/user/register", name="api_register", methods={"POST"})
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -48,8 +48,8 @@ class RegistrationController extends AbstractController
         // if we have no error we register the user
         if (!$errors) {
             
-            
             $encodedPassword = $passwordEncoder->encodePassword($user, $password);
+            
             $user->setUsername($username);
             $user->setEmail($email);
             $user->setBirth($birth);
@@ -75,6 +75,10 @@ class RegistrationController extends AbstractController
             catch(UniqueConstraintViolationException $e)
             {
                 $errors['userName'] = "Email ou username déjà utilisé.";  
+            }
+            catch(\Exception $e)
+            {
+                $errors['game'] = "Email ou username déjà utilisé.";
             }
         }
 
