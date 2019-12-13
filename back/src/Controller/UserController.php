@@ -13,6 +13,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * @Route("api/user", name="user_")
@@ -91,6 +97,7 @@ class UserController extends AbstractController
     }
 
 
+    
 
      /**
      * @Route("/add/games/favorite", name="add_games")
@@ -130,11 +137,11 @@ class UserController extends AbstractController
 
         catch(UniqueConstraintViolationException $e)
         {
-            $errors['game'] = "Le jeu n'a pas été rajouté, il se peut qu'il soit déjà parmi vos favoris";  
+            $errors['add_game'] = "Le jeu n'a pas été rajouté, il se peut qu'il soit déjà parmi vos favoris";  
         }
         catch(\Exception $e)
         {
-        $errors['game'] = "Le jeu n'a pas été rajouté, il se peut qu'il soit déjà parmi vos favoris";
+        $errors['add_game'] = "Le jeu n'a pas été rajouté, il se peut qu'il soit déjà parmi vos favoris";
         }
 
 
@@ -183,11 +190,11 @@ class UserController extends AbstractController
 
         catch(UniqueConstraintViolationException $e)
         {
-            $errors['game'] = "Le jeu n'existe pas dans les favoris";  
+            $errors['delete_game'] = "Le jeu n'existe pas dans les favoris";  
         }
         catch(\Exception $e)
         {
-        $errors['game'] = "Le jeu n'existe pas dans les favoris";
+        $errors['delete_game'] = "Le jeu n'existe pas dans les favoris";
         }
 
 
@@ -210,17 +217,45 @@ class UserController extends AbstractController
     {
         
         //get data from request in json
-        $gamesData = json_decode($request->getContent(), true);
+       
 
         $user = $this->getUser();
     
+        
+        $userFavoriteGames = $favoriteGameRepository->findGamesbyUser($user);
+         
 
+        $gamesList = [];
+        $indice=1;
 
-        $UserFavoriteGames = $favoriteGameRepository->findGamesbyUser($user);
+        for ($i= 0 ; $i < count($userFavoriteGames); $i++) { 
             
- }
 
-    
+            $gamesList['favorite_game'][]= [
+                'title' => $userFavoriteGames[$i]->getGame()->getTitle(),
+                'description' => $userFavoriteGames[$i]->getGame()->getDescription(),
+                'poster' => $userFavoriteGames[$i]->getGame()->getPoster(),
+                'logo' => $userFavoriteGames[$i]->getGame()->getLogo(),
+                'rank' => $userFavoriteGames[$i]->getRank()->getName()
+            ];
+
+            $indice++;
+        }
+
+
+
+        if ($gamesList) {
+
+            return $this->json($gamesList);
+
+        } else {
+
+            return $this->json(['errors' => 'la liste des favoris est vide']);
+        }
+      
+
+
+    }
 }
 
 
