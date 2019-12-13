@@ -64,7 +64,7 @@ App\Entity\Platform:
         updatedAt: '<date_create()>'        
 
 App\Entity\FavoriteGame:
-    favoriteGame_{1..50}:
+    favoriteGame_{1..2}:
         rank: '@rank*'
         game: '@game*'
         user: '@user*'
