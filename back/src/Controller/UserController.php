@@ -57,13 +57,12 @@ class UserController extends AbstractController
 
 
 
+
     /**
      * @Route("/{id}", name="show")
      */
     public function userShow(User $user, UserRepository $userRepository)
     {        
-        $user = $userRepository->findById($user);
-        
         $arrayUser = [];
         foreach ($user as  $user) {
             $arrayUser [] = [
@@ -209,14 +208,12 @@ class UserController extends AbstractController
      * @Route("/list/games/favorite", name="list_games", methods={"POST"})
      */
     public function userFavoriteGames(Request $request, GameRepository $gameRepository, FavoriteGameRepository $favoriteGameRepository)
-    {
-        
+    {        
         //get data from request in json
        
-
         $user = $this->getUser();
     
-        
+      
         $userFavoriteGames = $favoriteGameRepository->findGamesbyUser($user);
          
 

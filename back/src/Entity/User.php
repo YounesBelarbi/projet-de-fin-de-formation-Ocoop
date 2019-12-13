@@ -111,7 +111,7 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\FavoriteGame", mappedBy="user", cascade={"remove"})
-     * @Groups("login_information")
+     * 
      */
     private $favoriteGames;
 

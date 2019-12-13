@@ -61,6 +61,14 @@ class GameController extends AbstractController
         // return $this->render('game/index.html.twig');
         return $response;
     } 
-    
-}
 
+    /**
+     * @Route("/rankbygame", name="RankByGames")
+     */
+    public function RankByGame(GameRepository $gameRepository){
+
+        
+    }
+
+
+}

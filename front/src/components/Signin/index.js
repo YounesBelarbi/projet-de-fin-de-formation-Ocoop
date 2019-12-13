@@ -4,6 +4,8 @@ import ErrorMessage from "./errorMessage";
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+//import { Cookies } from 'react-cookie';
 
 import useForm from "react-hook-form";
 
@@ -13,6 +15,9 @@ import useForm from "react-hook-form";
 import './style.sass';
 
 const Signin = () => {
+
+  let history = useHistory();
+
 
     // connexion au state du loginReducer
     const activeState = useSelector(state => ({
@@ -50,17 +55,22 @@ const Signin = () => {
     // comportement à l'envoi du formulaire
     const onSubmit = (data) => {
         console.log("activeState", JSON.stringify({...activeState}));
-        axios.post('http://127.0.0.1:8000/user/login',
+        axios.post('http://localhost:8000/user/login',
         JSON.stringify({...activeState}), {
           headers: {
-              'Content-Type': 'application/json',
+              'Content-Type': 'application/json'
           }
-        })
+      }
+        )
         .then(function (response) {
           console.log('HTTP RESPONSE STATUT:', response.status);
           console.log(response);
-
-          if(response.status === 200) {        
+          if(response.status === 200) {
+            document.cookie = response.data.token;
+            dispatch({
+              type: `SET_USER_INFOS`,
+              data: response.data
+            })
             history.push("/dashboard");
           }
           else {
@@ -69,7 +79,7 @@ const Signin = () => {
           
         })
         .catch(function (error) {
-          console.log(error);
+          console.log('Axios', error);
         });
 
       };

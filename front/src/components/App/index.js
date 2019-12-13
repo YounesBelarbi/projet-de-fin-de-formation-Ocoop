@@ -5,7 +5,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom'
 
 
-
 /**
  * Imports locaux
  */
@@ -16,6 +15,7 @@ import { faCoffee, faBars } from '@fortawesome/free-solid-svg-icons'
 // Composants React
 // import VoteWidget from 'src/components/VoteWidget';
 // import TestingHooks from 'src/components/TestingHooks';
+import CheckToken from 'src/components/CheckToken';
 import Header from 'src/components/Header';
 import Footer from 'src/components/Footer';
 import HomeMain from 'src/components/HomeMain';
@@ -24,6 +24,8 @@ import Signup from 'src/components/Signup';
 import ResetPassword from 'src/components/ResetPassword';
 import HeaderDashboard from 'src/components/HeaderDashboard';
 import Dashboard from 'src/components/Dashboard';
+
+
 
 // Données
 // Styles et assets
@@ -36,6 +38,7 @@ const App = () => {
   return <Router>
             <div id="app">
               <main>
+              <CheckToken/>
               <Switch>
                 <Route path="/" exact>
                   <Header/>
