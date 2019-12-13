@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const initialState = {
   showEditor: false,
-  username: 'Pascal',
+  username: 'Pascalou',
   frequency: 'Compétiteur',
-  description: 'Tu casses les couilles comme la RATP, et j\'t\'en*ule comme l\'heure du RDV',
+  description: 'Je recherche des joueurs de mon age et de mon niveau',
   copyChange: {}
 };
 

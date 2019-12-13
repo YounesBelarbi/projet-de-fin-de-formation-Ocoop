@@ -56,7 +56,7 @@ const HeaderDashboard = () => {
                             width={94}
                             height={94}
                             className="mr-3"
-                            src="http://image.noelshack.com/fichiers/2019/04/5/1548409064-ppullpup.png"
+                            src="https://pbs.twimg.com/profile_images/2565206995/image.jpg"
                             alt="Generic placeholder"
                         />
                         <Media.Body>

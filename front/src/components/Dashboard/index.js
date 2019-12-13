@@ -48,48 +48,35 @@ const Dashboard = () => {
 
     const { register, handleSubmit, errors } = useForm();
 
-    // SUBMIT FORM
-    const submitAddGame = (data) => {
-        // console.log('onsubmit data >>', activeState.addGame)
-        // dispatch({
-        //     type: 'ADD_GAME',
-        //     data
-        // })
-        // console.log(JSON.stringify({...activeState}));
-        // axios.post('http://127.0.0.1:8000/api/register',
-        //   JSON.stringify({...activeState.addGame}), {
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     }
-        // }
-        //   )
-        //   .then(function (response) {
-        //     if(response.status === 200) {
-        //         dispatch({
-        //             type: `SUBMIT_SIGNUP`
-        //           });
-        //         console.log("submit",{...activeState.addGame});  
-                
-        //         // Response 200 donc on redirige sur /signin
-        //     }
-        //     else {
-        //         alert('une erreur est survenu lors de l\'inscription');
-        //     }})
-        //   .catch(function (error) {
-        //     console.log(error.response.status);
-        //     let errorFromServ;
-        //     errorFromServ = Object.entries(error.response.data[0]);
-        //     alert(errorFromServ);
-        //   });
-    };
-    console.log(errors);
+    const submitAddGame = (event) => {
+        event.preventDefault();
+        console.log("gameToAdd", JSON.stringify({...activeState.addGamePanel.gameToAdd}));
+        axios.post("http://127.0.0.1:8000/api/user/add/games/favorite",
+        JSON.stringify({...activeState.addGamePanel.gameToAdd}), {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(function (response) {
+        console.log('HTTP RESPONSE STATUT:', response.status);
+        console.log(response);
 
-
-
-
-    return( 
+        if(response.status === 200) {        
+            dispatch({
+                type: `ADD_FAVORITE_GAME`
+                });
+        }
+        else {
+            console.log('error submit');
+        }
         
-    
+        })
+        .catch(function (error) {
+        console.log(error);
+        });
+    };
+
+    return(
         <div className="dashboard">
             
             <Container fluid className="p-3">
@@ -172,7 +159,7 @@ const Dashboard = () => {
                              ): ( 
                                 <Container fluid>
                                     <Row className="justify-content-center form-add-game">
-                                        <Form>
+                                        <Form onSubmit={submitAddGame}>
                                             <Form.Row>
                                                 {/* <Form.Group controlId="games">
                                                     <select name="games" ref={register} className="btn-select" onChange={handleChange}>

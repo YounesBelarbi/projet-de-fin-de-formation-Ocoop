@@ -50,7 +50,7 @@ const Signin = () => {
     // comportement à l'envoi du formulaire
     const onSubmit = (data) => {
         console.log("activeState", JSON.stringify({...activeState}));
-        axios.post('http://127.0.0.1:8000/api/login',
+        axios.post('http://127.0.0.1:8000/user/login',
         JSON.stringify({...activeState}), {
           headers: {
               'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ const Signin = () => {
           console.log(response);
 
           if(response.status === 200) {        
-            history.push("/signin");
+            history.push("/dashboard");
           }
           else {
               console.log('error submit');

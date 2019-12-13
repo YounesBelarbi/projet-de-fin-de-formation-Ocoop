@@ -14,7 +14,7 @@ const Header = () => {
                 <span></span>
                 <span></span>
                 <span></span>
-                <ul id="menu">
+                <ul id="menu" className="header-menu-ul">
                     <a href="#"><li>Teams <FontAwesomeIcon icon={faUserFriends}/></li></a>
                     <a href="#"><li>Guildes <FontAwesomeIcon icon={faUsers}/></li></a>
                     <a href="#"><li>News <FontAwesomeIcon icon={faNewspaper}/></li></a>
