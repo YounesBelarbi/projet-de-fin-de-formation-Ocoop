@@ -22,19 +22,17 @@ class FavoriteGameRepository extends ServiceEntityRepository
     // /**
     //  * @return FavoriteGame[] Returns an array of FavoriteGame objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function findGamesbyUser($user)
     {
         return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('f.user = :user')
+            ->setParameter('user', $user)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?FavoriteGame

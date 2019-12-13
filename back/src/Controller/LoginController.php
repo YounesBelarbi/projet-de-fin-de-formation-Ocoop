@@ -14,6 +14,7 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
  */
 class LoginController extends AbstractController
 {
+    
     /**
      * @Route("/login", name="login", methods={"POST"})
      */
@@ -21,7 +22,7 @@ class LoginController extends AbstractController
     {  
 
         //if user logged in, we generate a token
-        $token = new JsonResponse(['token' => $JWTManager->create($user)]);
+        // $token =  $JWTManager->create($user);
         
 
         // we send in informations in json
@@ -29,14 +30,14 @@ class LoginController extends AbstractController
             $user,
             ['token' => $JWTManager->create($user)]
             
-         ], 
-         200, 
-         [], 
-         [
-            'groups' => ['login_information'],
-            
-         ]
-      );
+            ], 
+            200, 
+            [], 
+            [
+                'groups' => ['login_information'],
+                
+            ]
+        );
 
 
     }
