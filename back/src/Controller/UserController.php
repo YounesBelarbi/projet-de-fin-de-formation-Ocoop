@@ -13,12 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Validator\Constraints\Length;
+
 
 /**
  * @Route("api/user", name="user_")
@@ -97,10 +92,10 @@ class UserController extends AbstractController
     }
 
 
-    
+
 
      /**
-     * @Route("/add/games/favorite", name="add_games")
+     * @Route("/add/games/favorite", name="add_games", methods={"POST"})
      */
     public function userAddFavoriteGames(Request $request, RankRepository $rankRepository, GameRepository $gameRepository)
     {
@@ -159,7 +154,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/delete/games/favorite", name="delete_games")
+     * @Route("/delete/games/favorite", name="delete_games", methods={"POST"})
      */
     public function userDeleteFavoriteGames(Request $request, GameRepository $gameRepository, FavoriteGameRepository $favoriteGameRepository)
     {
@@ -211,7 +206,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/list/games/favorite", name="list_games")
+     * @Route("/list/games/favorite", name="list_games", methods={"POST"})
      */
     public function userFavoriteGames(Request $request, GameRepository $gameRepository, FavoriteGameRepository $favoriteGameRepository)
     {
@@ -250,7 +245,7 @@ class UserController extends AbstractController
 
         } else {
 
-            return $this->json(['errors' => 'la liste des favoris est vide']);
+            return $this->json(['errors' => 'la liste des favoris est vide'], 400);
         }
       
 
