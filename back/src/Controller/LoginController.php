@@ -30,14 +30,14 @@ class LoginController extends AbstractController
             $user,
             ['token' => $JWTManager->create($user)]
             
-         ], 
-         200, 
-         [], 
-         [
-            'groups' => ['login_information'],
-            
-         ]
-      );
+            ], 
+            200, 
+            [], 
+            [
+                'groups' => ['login_information'],
+                
+            ]
+        );
 
 
     }
