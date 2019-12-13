@@ -50,11 +50,7 @@ const Signin = () => {
     // comportement à l'envoi du formulaire
     const onSubmit = (data) => {
         console.log("activeState", JSON.stringify({...activeState}));
-<<<<<<< HEAD
         axios.post('http://127.0.0.1:8000/user/login',
-=======
-        axios.post('http://127.0.0.1:8001/user/login',
->>>>>>> 590ce5815d8f2e1359ff7dc9c2652f8a85f0be42
         JSON.stringify({...activeState}), {
           headers: {
               'Content-Type': 'application/json',
