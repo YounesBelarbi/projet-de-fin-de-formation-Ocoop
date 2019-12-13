@@ -34,42 +34,43 @@ class ProfileController extends AbstractController
     public function edit(EntityManagerInterface $em, Request $request): Response
     {
         $user = $this->getUser();
-        dd($user);
         
-        $user = new User();
+        // $user = new User();
 
-        $password = $user->getPlainPassword();
+        // $password = $user->getPassword();
         
         $arrayData = json_decode($request->getContent(), true);
 
         $username               = $arrayData['username'];
+        // $role               = $arrayData['role'];
         $email                  = $arrayData['email'];          
         $birth                  = \DateTime::createFromFormat('Y-m-d H:i:s', $arrayData['birth'].' 00:00:00');
         $description            = $arrayData['description'];
         // $avatar                 = $arrayData['avatar'];
-        // $firstname              = $arrayData['firstname'];
-        // $lastname               = $arrayData['lastname'];
-        // $city                   = $arrayData['city'];
-        // $mobile                 = $arrayData['mobile'];
+        $firstname              = $arrayData['firstname'];
+        $lastname               = $arrayData['lastname'];
+        $city                   = $arrayData['city'];
+        $mobile                 = $arrayData['mobile'];
         
         $errors = [];
         if (!$errors) {
 
             $user->setUsername($username);
+            // $user->setRoles($role);
             $user->setEmail($email);
-            $user->setPassword($password);
+            // $user->setPassword($password);
             $user->setBirth($birth);
             // $user->setAvatar($avatar);
             $user->setDescription($description);
-            // $user->setFirstname($firstname);
-            // $user->setLastname($lastname);
-            // $user->setcity($city);
-            // $user->setMobile($mobile);
+            $user->setFirstname($firstname);
+            $user->setLastname($lastname);
+            $user->setcity($city);
+            $user->setMobile($mobile);
             $user->setCreatedAt(new \DateTime());
             $user->setUpdatedAt(new \DateTime());
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
+            // $entityManager->persist($user);
             $entityManager->flush();
 
             return $this->json([

@@ -48,8 +48,8 @@ class RegistrationController extends AbstractController
         // if we have no error we register the user
         if (!$errors) {
             
-            
             $encodedPassword = $passwordEncoder->encodePassword($user, $password);
+            
             $user->setUsername($username);
             $user->setEmail($email);
             $user->setBirth($birth);
