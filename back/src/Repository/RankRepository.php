@@ -47,4 +47,15 @@ class RankRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+    public function findRanksbygame($game)
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.games = :game')
+            ->setParameter('game', $game)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

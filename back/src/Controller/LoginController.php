@@ -24,11 +24,10 @@ class LoginController extends AbstractController
         // $token =  $JWTManager->create($user);
         $userFavoriteGames = $favoriteGameRepository->findGamesbyUser($user);
         $gamesList = [];
-        $indice=1;
+        
 
         for ($i= 0 ; $i < count($userFavoriteGames); $i++) { 
             
-
             $gamesList[]= [
                 'title' => $userFavoriteGames[$i]->getGame()->getTitle(),
                 'description' => $userFavoriteGames[$i]->getGame()->getDescription(),
@@ -37,7 +36,6 @@ class LoginController extends AbstractController
                 'rank' => $userFavoriteGames[$i]->getRank()->getName()
             ];
 
-            $indice++;
         }
 
 
@@ -74,7 +72,6 @@ class LoginController extends AbstractController
 
         for ($i= 0 ; $i < count($userFavoriteGames); $i++) { 
             
-
             $gamesList[]= [
                 'game_id' => $userFavoriteGames[$i]->getGame()->getId(),
                 'title' => $userFavoriteGames[$i]->getGame()->getTitle(),
@@ -84,11 +81,8 @@ class LoginController extends AbstractController
                 'rank' => $userFavoriteGames[$i]->getRank()->getName()
             ];
 
-            
         }
-        
-
-        
+     
         return $this->json([
             'user' => $user,
             'favorite_games' => $gamesList,
