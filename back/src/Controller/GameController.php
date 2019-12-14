@@ -15,27 +15,10 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class GameController extends AbstractController
 {
     /**
-     * @Route("/list", name="list")
+     * @Route("/list", name="list", methods={"POST"})
      */
     public function gameList(GameRepository $gameRepository)
     {
-        // $games = $gameRepository->findAll();
-        // $arrayGames = [];
-        // foreach ($games as  $game) {
-        //     $arrayGames [] = [
-        //         'title' => $game->getTitle(),
-        //         'description' => $game->getDescription(),
-        //         'poster' => $game->getPoster(),
-        //         'logo' => $game->getLogo(),
-        //         'url' => $this->generateUrl('games_list', [
-        //             'id' => $game->getId()
-        //         ], UrlGeneratorInterface::ABSOLUTE_URL)
-        //     ];
-        // }
-        // dump($this->json($arrayGames));
-        // // return $this->json($arrayGames); 
-                
-        
 
         $games = $gameRepository->findAll();
         
@@ -57,10 +40,10 @@ class GameController extends AbstractController
         
         $response->headers->set('Content-Type', 'application/json');
         
-        // dump($response);
-        // return $this->render('game/index.html.twig');
         return $response;
     } 
+
+
 
     /**
      * @Route("/rankbygame", name="RankByGames")
