@@ -162,7 +162,7 @@ class UserController extends AbstractController
         $gamesData = json_decode($request->getContent(), true);
 
         $user = $this->getUser();
-        $game = $gameRepository->findOneBy(['title' => $gamesData['title']]);
+        $game = $gameRepository->find(['id' => $gamesData['game_id']]);
         
 
         //searched for the game to delete
@@ -191,8 +191,6 @@ class UserController extends AbstractController
         $errors['delete_game'] = "Le jeu n'existe pas dans les favoris";
         }
 
-
-        
         // if there are errors we return them
         return $this->json([
             $errors
@@ -207,9 +205,9 @@ class UserController extends AbstractController
     /**
      * @Route("/list/games/favorite", name="list_games", methods={"POST"})
      */
-    public function userFavoriteGames(Request $request, GameRepository $gameRepository, FavoriteGameRepository $favoriteGameRepository)
+    public function userFavoriteGames(GameRepository $gameRepository, FavoriteGameRepository $favoriteGameRepository)
     {        
-        //get data from request in json
+      
        
         $user = $this->getUser();
     
@@ -224,6 +222,7 @@ class UserController extends AbstractController
             
 
             $gamesList['favorite_game'][]= [
+                'game_id' => $userFavoriteGames[$i]->getGame()->getId(),
                 'title' => $userFavoriteGames[$i]->getGame()->getTitle(),
                 'description' => $userFavoriteGames[$i]->getGame()->getDescription(),
                 'poster' => $userFavoriteGames[$i]->getGame()->getPoster(),
@@ -234,8 +233,6 @@ class UserController extends AbstractController
             $indice++;
         }
 
-
-
         if ($gamesList) {
 
             return $this->json($gamesList);
@@ -245,8 +242,6 @@ class UserController extends AbstractController
             return $this->json(['errors' => 'la liste des favoris est vide'], 400);
         }
       
-
-
     }
 }
 
