@@ -105,8 +105,8 @@ class UserController extends AbstractController
 
         $user = $this->getUser();
        
-        $rank = $rankRepository->findOneBy(['name' => $gamesData['name']]);
-        $game = $gameRepository->findOneBy(['title' => $gamesData['title']]);
+        $rank = $rankRepository->findOneBy(['id' => $gamesData['rank_id']]);
+        $game = $gameRepository->findOneBy(['id' => $gamesData['game_id']]);
 
 
         // set informations to new instance of FavoriteGame
