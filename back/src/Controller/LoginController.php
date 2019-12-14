@@ -29,7 +29,7 @@ class LoginController extends AbstractController
         for ($i= 0 ; $i < count($userFavoriteGames); $i++) { 
             
 
-            $gamesList['favorite_game'][]= [
+            $gamesList[]= [
                 'title' => $userFavoriteGames[$i]->getGame()->getTitle(),
                 'description' => $userFavoriteGames[$i]->getGame()->getDescription(),
                 'poster' => $userFavoriteGames[$i]->getGame()->getPoster(),
@@ -75,7 +75,7 @@ class LoginController extends AbstractController
         for ($i= 0 ; $i < count($userFavoriteGames); $i++) { 
             
 
-            $gamesList['favorite_game'][]= [
+            $gamesList[]= [
                 'title' => $userFavoriteGames[$i]->getGame()->getTitle(),
                 'description' => $userFavoriteGames[$i]->getGame()->getDescription(),
                 'poster' => $userFavoriteGames[$i]->getGame()->getPoster(),

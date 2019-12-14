@@ -2,6 +2,7 @@ import { register as actions } from 'src/store/actions';
 import { useSelector, useDispatch } from 'react-redux';
 
 const initialState = {
+  favoriteGameList : [],
   matchingResultPlayers: [
     {
       userId: 32,

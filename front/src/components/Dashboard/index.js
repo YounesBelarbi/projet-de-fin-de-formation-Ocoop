@@ -1,21 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Container, Row, Col, Media, Card, Collapse, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGolfBall, faPlusCircle, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import useForm from "react-hook-form";
+import { useHistory } from 'react-router-dom';
 
 import './style.sass';
 
 const Dashboard = () => {
 
     const dispatch = useDispatch();
+
     const activeState = useSelector(state => ({
         ...state.dashboardReducer,
     }));
 
-    //const [addGameClicked, setAddGameClicked] = useState(false);
+    useEffect(() => {
+        getFavoriteGames();
+      }, []);
+
+    let history = useHistory();
+
+    async function getFavoriteGames() {
+        let token = document.cookie
+        console.log(token);
+        if(!token || token === "") {
+            console.log('pas de token trouvé')
+            return history.push("/");
+        }
+        else {
+            axios.post("http://localhost:8000/api/user/tokencheck",
+            "", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+token
+            }
+          }).then(function (response) {
+            console.log('HTTP RESPONSE STATUT:', response.status);
+            console.log(response);
+            if(response.status === 200) {
+              dispatch({
+                type: `SET_USER_INFOS`,
+                data: response.data
+              })
+              history.push("/dashboard");
+            }
+            else {
+                console.log('error serveur');
+            }
+          }).catch(function (error) {
+      
+            console.log(error);
+            history.push("/");
+          });
+        }
+    
+      };
 
     const showPlayerCard = (key) => {
         dispatch({
@@ -86,7 +128,7 @@ const Dashboard = () => {
                             <Container fluid>
                             {
                                 activeState.favoriteGameList.map((game, key) => {
-                                    return  <Row key={game.gameId} className="justify-content-end">
+                                    return  <Row key={key} className="justify-content-end">
                                                 <div className={`game-row ${ game.isSelected ? "game-isSelected" : "" }`}>
                                                     <Media onClick={() => {selectGame(key)}} >
                                                         <img

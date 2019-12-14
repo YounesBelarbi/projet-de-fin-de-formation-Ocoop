@@ -15,7 +15,7 @@ import { faCoffee, faBars } from '@fortawesome/free-solid-svg-icons'
 // Composants React
 // import VoteWidget from 'src/components/VoteWidget';
 // import TestingHooks from 'src/components/TestingHooks';
-import CheckToken from 'src/components/CheckToken';
+// import CheckToken from 'src/components/CheckToken';
 import Header from 'src/components/Header';
 import Footer from 'src/components/Footer';
 import HomeMain from 'src/components/HomeMain';
@@ -38,7 +38,7 @@ const App = () => {
   return <Router>
             <div id="app">
               <main>
-              <CheckToken/>
+              {/* <CheckToken/> */}
               <Switch>
                 <Route path="/" exact>
                   <Header/>
