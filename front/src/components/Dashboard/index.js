@@ -17,51 +17,6 @@ const Dashboard = () => {
         ...state.dashboardReducer,
     }));
 
-    useEffect(() => {
-        getFavoriteGames();
-      }, []);
-
-    let history = useHistory();
-
-    async function getFavoriteGames() {
-        let token = document.cookie
-        console.log(token);
-        if(!token || token === "") {
-            console.log('pas de token trouvé')
-            return history.push("/");
-        }
-        else {
-            axios.post("http://localhost:8000/api/user/tokencheck",
-            "", {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+token
-            }
-          }).then(function (response) {
-            console.log('HTTP RESPONSE STATUT:', response.status);
-            console.log(response);
-            if(response.status === 200) {
-              dispatch({
-                type: `SET_USER_INFOS`,
-                data: {
-                    ...response.data,
-                    token: token
-                }
-              })
-              history.push("/dashboard");
-            }
-            else {
-                console.log('error serveur');
-            }
-          }).catch(function (error) {
-      
-            console.log(error);
-            history.push("/");
-          });
-        }
-    
-      };
-
     const showPlayerCard = (key) => {
         dispatch({
             type: `SHOW_PLAYER_CARD`,
@@ -131,22 +86,20 @@ const Dashboard = () => {
                             <Container fluid>
                             {
                                 activeState.favoriteGameList.map((game, key) => {
-                                    return  <Row key={key} className="justify-content-end">
-                                                <div className={`game-row ${ game.isSelected ? "game-isSelected" : "" }`}>
-                                                    <Media onClick={() => {selectGame(key)}} >
-                                                        <img
-                                                        width={100}
-                                                        height={100}
-                                                        className="dashboard-images"
-                                                        src={game.logo}
-                                                        alt={game.title}
-                                                    />
-                                                    </Media>
-                                                </div>
-                                               
-                                            </Row> 
-                                            
-                                        })
+                                    return <Row key={key} className="justify-content-end">
+                                            <div className={`game-row ${ game.isSelected ? "game-isSelected" : "" }`}>
+                                                <Media onClick={() => {selectGame(key)}} >
+                                                    <img
+                                                    width={100}
+                                                    height={100}
+                                                    className="dashboard-images"
+                                                    src={game.logo}
+                                                    alt={game.title}
+                                                />
+                                                </Media>
+                                            </div>
+                                        </Row>       
+                                    })
                             }
                                 <Row className="justify-content-end">
                                     <div className="game-row dashboard-images add-game-dashboard" onClick={() => {addGame()}}>
