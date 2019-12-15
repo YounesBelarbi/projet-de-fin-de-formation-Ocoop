@@ -17,70 +17,47 @@ use Symfony\Component\HttpFoundation\File\File;
 class ProfileController extends AbstractController
 {
     /**
-     * @Route("/", name="show")
-     */
-    public function show()
-    {
-        $user = $this->getUser();
-        
-        return $this->render('profile/index.html.twig', [
-            'user' => $user,
-        ]); 
-    }
-
-    /**
      * @Route("/edit", name="edit", methods={"POST"})
      */
     public function edit(EntityManagerInterface $em, Request $request): Response
     {
         $user = $this->getUser();
         
-        // $user = new User();
-
-        // $password = $user->getPassword();
-        
         $arrayData = json_decode($request->getContent(), true);
-
-        $username               = $arrayData['username'];
-        // $role               = $arrayData['role'];
-        $email                  = $arrayData['email'];          
-        $birth                  = \DateTime::createFromFormat('Y-m-d H:i:s', $arrayData['birth'].' 00:00:00');
-        $description            = $arrayData['description'];
-        // $avatar                 = $arrayData['avatar'];
-        $firstname              = $arrayData['firstname'];
-        $lastname               = $arrayData['lastname'];
-        $city                   = $arrayData['city'];
-        $mobile                 = $arrayData['mobile'];
         
         $errors = [];
         if (!$errors) {
-
-            $user->setUsername($username);
-            // $user->setRoles($role);
-            $user->setEmail($email);
+            $user->setUsername($arrayData['username']);
+            // $user->setRoles($arrayData['role']);
+            $user->setEmail($arrayData['email']);
             // $user->setPassword($password);
-            $user->setBirth($birth);
-            // $user->setAvatar($avatar);
-            $user->setDescription($description);
-            $user->setFirstname($firstname);
-            $user->setLastname($lastname);
-            $user->setcity($city);
-            $user->setMobile($mobile);
+            $user->setBirth(\DateTime::createFromFormat('Y-m-d H:i:s', $arrayData['birth'].' 00:00:00'));
+            // $user->setAvatar($arrayData['avatar']);
+            $user->setDescription($arrayData['description']);
+            $user->setFirstname($arrayData['firstname']);
+            $user->setLastname($arrayData['lastname']);
+            $user->setcity($arrayData['city']);
+            $user->setMobile($arrayData['mobile']);
             $user->setCreatedAt(new \DateTime());
             $user->setUpdatedAt(new \DateTime());
-
-            $entityManager = $this->getDoctrine()->getManager();
-            // $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->json([
-                'success' => 'success'
-                ]);  
+            try
+            {
+                $entityManager = $this->getDoctrine()->getManager();
+                // $entityManager->persist($user);
+                $entityManager->flush();
+                return $this->json([
+                    'success' => 'success'
+                    ]);  
+            }
+            catch(UniqueConstraintViolationException $e)
+            {
+                $errors = ['Erreur'];
+            }
         }
-
         return $this->json([
             $errors
         ], 400);
+        
     }
 
     /**

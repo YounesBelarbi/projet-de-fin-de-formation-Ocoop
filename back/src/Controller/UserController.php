@@ -231,6 +231,31 @@ class UserController extends AbstractController
         }
       
     }
+
+
+
+    /**
+     * @route("/matchmaking", name="matchmaking", methods={"POST"})
+     */
+    public function matchmaking(Request $request, UserRepository $userRepository, RankRepository $rankRepository, GameRepository $gameRepository, FavoriteGameRepository $favoriteGameRepository)
+    {
+        //get data from request in json
+        $matchmakingData = json_decode($request->getContent(), true);
+
+        $user = $this->getUser();
+        
+        $game = ['game' => $matchmakingData['game_id']];
+        // dd($game);
+        $rank = ['rank' => $matchmakingData['rank_id']];
+        // dd($rank);
+
+        $userMatch = $favoriteGameRepository->findByGameAndRank($game, $rank);
+        
+        return $this->json(['user_match' => $userMatch]);
+      
+        
+    }
+
 }
 
 
