@@ -2,7 +2,7 @@ App\Entity\User:
     user_{1..50}:
         username (unique): '<word()>'
         roles: <roles()>
-        password: '\$argon2id\$v=19\$m=65536,t=4,p=1\$lyNUAEBZPrgkCUXekFikfQ\$ATMVgoO/E7Mp/P2sm2DuGKBbPjjs/t+wToPz7/Xhfjk'
+        password: '\$argon2id\$v=19\$m=65536,t=4,p=1\$g4xxV+fRQKanSj/2zdH0RQ\$i3iCKZkCnX42O6ag/LCbKb+g+g5waYaiF/dvGPTzAE8' #password: esquad
         description: '<text(150)>'
         firstname: '<firstname()>'
         lastname: '<lastname()>'
