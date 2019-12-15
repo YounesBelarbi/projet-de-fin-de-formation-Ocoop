@@ -70,7 +70,7 @@ class GameController extends AbstractController
         }
         
         return $this->json([
-            'rank_game' => $ranksGame,
+            'ranks_game' => $ranksGame,
         ]);
         
     }

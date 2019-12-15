@@ -42,7 +42,7 @@ class LoginController extends AbstractController
         // we send in informations in json
         return $this->json([
             'user' => $user,
-            'favoriteGames' => $gamesList,
+            'favorite_games' => $gamesList,
             'token' => $JWTManager->create($user)
             
             ], 
@@ -85,7 +85,7 @@ class LoginController extends AbstractController
      
         return $this->json([
             'user' => $user,
-            'favoriteGames' => $gamesList,
+            'favorite_games' => $gamesList,
             
             ], 
             200, 

@@ -44,7 +44,7 @@ class UserController extends AbstractController
             ];
         }
         
-        return $this->json(['allUser' => $arrayUsers]);     
+        return $this->json(['all_user' => $arrayUsers]);     
         
 
     }
@@ -62,11 +62,11 @@ class UserController extends AbstractController
          $gamesData = json_decode($request->getContent(), true);
         
          //get user with id
-         $userSelected = $userRepository->find(['id' => $gamesData['userId']]);
+         $userSelected = $userRepository->find(['id' => $gamesData['user_id']]);
       
          
          return $this->json([
-            'userSelected' => $userSelected,
+            'user_selected' => $userSelected,
             
             ], 
             200, 
@@ -94,8 +94,8 @@ class UserController extends AbstractController
 
         $user = $this->getUser();
        
-        $rank = $rankRepository->findOneBy(['id' => $gamesData['rankId']]);
-        $game = $gameRepository->findOneBy(['id' => $gamesData['gameId']]);
+        $rank = $rankRepository->findOneBy(['id' => $gamesData['rank_id']]);
+        $game = $gameRepository->findOneBy(['id' => $gamesData['game_id']]);
 
 
         // set informations to new instance of FavoriteGame
@@ -151,7 +151,7 @@ class UserController extends AbstractController
         $gamesData = json_decode($request->getContent(), true);
 
         $user = $this->getUser();
-        $game = $gameRepository->find(['id' => $gamesData['gameId']]);
+        $game = $gameRepository->find(['id' => $gamesData['game_id']]);
         
 
         //searched for the game to delete
@@ -205,26 +205,25 @@ class UserController extends AbstractController
          
 
         $gamesList = [];
-        $indice=1;
+       
 
         for ($i= 0 ; $i < count($userFavoriteGames); $i++) { 
             
 
             $gamesList[]= [
-                'gameId' => $userFavoriteGames[$i]->getGame()->getId(),
+                'game_id' => $userFavoriteGames[$i]->getGame()->getId(),
                 'title' => $userFavoriteGames[$i]->getGame()->getTitle(),
                 'description' => $userFavoriteGames[$i]->getGame()->getDescription(),
                 'poster' => $userFavoriteGames[$i]->getGame()->getPoster(),
                 'logo' => $userFavoriteGames[$i]->getGame()->getLogo(),
                 'rank' => $userFavoriteGames[$i]->getRank()->getName()
             ];
-
-            $indice++;
+           
         }
 
         if ($gamesList) {
 
-            return $this->json(['favoriteGames' => $gamesList]);
+            return $this->json(['favorite_games' => $gamesList]);
 
         } else {
 
