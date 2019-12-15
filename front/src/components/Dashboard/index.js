@@ -43,7 +43,10 @@ const Dashboard = () => {
             if(response.status === 200) {
               dispatch({
                 type: `SET_USER_INFOS`,
-                data: response.data
+                data: {
+                    ...response.data,
+                    token: token
+                }
               })
               history.push("/dashboard");
             }
@@ -135,8 +138,8 @@ const Dashboard = () => {
                                                         width={100}
                                                         height={100}
                                                         className="dashboard-images"
-                                                        src={game.image}
-                                                        alt={game.name}
+                                                        src={game.logo}
+                                                        alt={game.title}
                                                     />
                                                     </Media>
                                                 </div>
