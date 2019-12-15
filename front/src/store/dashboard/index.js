@@ -50,9 +50,6 @@ const dashboardReducer = (state = initialState, action) => {
       case 'SET_USER_INFOS' :
         return {
           ...state,
-          user: {
-            ...action.data.user
-          },
           favoriteGameList: [
             ...action.data.favorite_games
           ],
