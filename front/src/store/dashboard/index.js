@@ -67,7 +67,7 @@ const dashboardReducer = (state = initialState, action) => {
             matchingResultPlayers: array
           }
         case 'SELECT_GAME' :
-          let newGameList = state.gameList.map((user, key) => {
+          let newGameList = state.favoriteGameList.map((user, key) => {
             return {
               ...user, isSelected: false
             }
@@ -76,7 +76,7 @@ const dashboardReducer = (state = initialState, action) => {
           newGameList[action.data] = newObject;
           return {
             ...state,
-            gameList: newGameList
+            favoriteGameList: newGameList
           }
         case 'SHOW_ADD_GAME_PANEL' : 
           //console.log('ADD_GAME Reducer >>', action.data);   
