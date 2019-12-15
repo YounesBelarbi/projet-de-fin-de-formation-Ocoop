@@ -12,7 +12,7 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 
 
 /**
@@ -22,73 +22,61 @@ class UserController extends AbstractController
 {
 
     /**
-     * @Route("/list", name="list")
+     * @Route("/list", name="list", methods={"POST"})
      */
     public function userList(UserRepository $userRepository)
     {
         
         $users = $userRepository->findAll();
-        //dump(findAll());
+       
         $arrayUsers = [];
         foreach ($users as  $user) {
             $arrayUsers [] = [
+                'id' => $user->getId(),
                 'username' => $user->getUsername(),
-                // 'roles' => $user->getRoles(),
-                // 'password'=> $user->getPassword(),
-                //'firstname'=> $user->getFirstname(),
-                //'lastname'=> $user->getLastname(),
-                'birth' => $user->getBirth(),
-                //'email' => $user->getEmail(),
-                'city' => $user->getCity(),
-                //'longitude' => $user->getLongitude(),
-                //'latitude' => $user->getLatitude(),
-                // 'mobile' => $user->getMobile(),
-                'avatar' => $user->getAvatar(),
-                // 'created_at' => $user->getCreatedAt(),
-                // 'updated_at' => $user->getUpdatedAt(),
-                'url' => $this->generateUrl('user_list', [
-                    'id' => $user->getId()
-                ], UrlGeneratorInterface::ABSOLUTE_URL)
-            ];
-        }
-        
-        return $this->json($arrayUsers);             
-    }
-
-
-
-    /**
-     * @Route("/{id}", name="show")
-     */
-    public function userShow(User $user, UserRepository $userRepository)
-    {        
-        $user = $userRepository->findById($user);
-        
-        $arrayUser = [];
-        foreach ($user as  $user) {
-            $arrayUser [] = [
-                'username' => $user->getUsername(),
-                // 'roles' => $user->getRoles(),
-                'password'=> $user->getPassword(),
                 'firstname'=> $user->getFirstname(),
                 'lastname'=> $user->getLastname(),
                 'birth' => $user->getBirth(),
                 'email' => $user->getEmail(),
                 'city' => $user->getCity(),
-                // 'longitude' => $user->getLongitude(),
-                // 'latitude' => $user->getLatitude(),
                 'mobile' => $user->getMobile(),
-                'avatar' => $user->getAvatar(),
-                // 'created_at' => $user->getCreatedAt(),
-                // 'updated_at' => $user->getUpdatedAt(),
-                'url' => $this->generateUrl('user_show', [
-                    'id' => $user->getId()
-                ], UrlGeneratorInterface::ABSOLUTE_URL)
+                'avatar' => $user->getAvatar(),        
             ];
         }
-        // dump($user->getUsername());
+        
+        return $this->json(['all_user' => $arrayUsers]);     
+        
+
+    }
+
+
+
+
+    /**
+     * @Route("/selected/show", name="show", methods={"POST"})
+     */
+    public function userShow(Request $request, UserRepository $userRepository)
+    {        
+
+         //get data from request in json
+         $gamesData = json_decode($request->getContent(), true);
+        
+         //get user with id
+         $userSelected = $userRepository->find(['id' => $gamesData['user_id']]);
+      
+         
+         return $this->json([
+            'user_selected' => $userSelected,
             
-        return $this->json($arrayUser);
+            ], 
+            200, 
+            [], 
+            [
+                'groups' => ['login_information'],
+                
+            ]
+        );
+
     }
 
 
@@ -106,8 +94,8 @@ class UserController extends AbstractController
 
         $user = $this->getUser();
        
-        $rank = $rankRepository->findOneBy(['name' => $gamesData['name']]);
-        $game = $gameRepository->findOneBy(['title' => $gamesData['title']]);
+        $rank = $rankRepository->findOneBy(['id' => $gamesData['rank_id']]);
+        $game = $gameRepository->findOneBy(['id' => $gamesData['game_id']]);
 
 
         // set informations to new instance of FavoriteGame
@@ -163,7 +151,7 @@ class UserController extends AbstractController
         $gamesData = json_decode($request->getContent(), true);
 
         $user = $this->getUser();
-        $game = $gameRepository->findOneBy(['title' => $gamesData['title']]);
+        $game = $gameRepository->find(['id' => $gamesData['game_id']]);
         
 
         //searched for the game to delete
@@ -192,8 +180,6 @@ class UserController extends AbstractController
         $errors['delete_game'] = "Le jeu n'existe pas dans les favoris";
         }
 
-
-        
         // if there are errors we return them
         return $this->json([
             $errors
@@ -208,48 +194,42 @@ class UserController extends AbstractController
     /**
      * @Route("/list/games/favorite", name="list_games", methods={"POST"})
      */
-    public function userFavoriteGames(Request $request, GameRepository $gameRepository, FavoriteGameRepository $favoriteGameRepository)
-    {
-        
-        //get data from request in json
+    public function userFavoriteGames(GameRepository $gameRepository, FavoriteGameRepository $favoriteGameRepository)
+    {        
+      
        
-
         $user = $this->getUser();
     
-        
+      
         $userFavoriteGames = $favoriteGameRepository->findGamesbyUser($user);
          
 
         $gamesList = [];
-        $indice=1;
+       
 
         for ($i= 0 ; $i < count($userFavoriteGames); $i++) { 
             
 
-            $gamesList['favorite_game'][]= [
+            $gamesList[]= [
+                'game_id' => $userFavoriteGames[$i]->getGame()->getId(),
                 'title' => $userFavoriteGames[$i]->getGame()->getTitle(),
                 'description' => $userFavoriteGames[$i]->getGame()->getDescription(),
                 'poster' => $userFavoriteGames[$i]->getGame()->getPoster(),
                 'logo' => $userFavoriteGames[$i]->getGame()->getLogo(),
                 'rank' => $userFavoriteGames[$i]->getRank()->getName()
             ];
-
-            $indice++;
+           
         }
-
-
 
         if ($gamesList) {
 
-            return $this->json($gamesList);
+            return $this->json(['favorite_games' => $gamesList]);
 
         } else {
 
             return $this->json(['errors' => 'la liste des favoris est vide'], 400);
         }
       
-
-
     }
 }
 

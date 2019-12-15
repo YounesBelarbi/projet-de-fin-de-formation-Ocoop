@@ -3,39 +3,22 @@
 namespace App\Controller;
 
 use App\Repository\GameRepository;
+use App\Repository\RankRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @Route("api/games", name="games_")
- */
+
 class GameController extends AbstractController
 {
     /**
-     * @Route("/list", name="list")
+     * @Route("/games/list", name="games_list", methods={"POST"})
      */
     public function gameList(GameRepository $gameRepository)
     {
-        // $games = $gameRepository->findAll();
-        // $arrayGames = [];
-        // foreach ($games as  $game) {
-        //     $arrayGames [] = [
-        //         'title' => $game->getTitle(),
-        //         'description' => $game->getDescription(),
-        //         'poster' => $game->getPoster(),
-        //         'logo' => $game->getLogo(),
-        //         'url' => $this->generateUrl('games_list', [
-        //             'id' => $game->getId()
-        //         ], UrlGeneratorInterface::ABSOLUTE_URL)
-        //     ];
-        // }
-        // dump($this->json($arrayGames));
-        // // return $this->json($arrayGames); 
-                
-        
 
         $games = $gameRepository->findAll();
         
@@ -57,10 +40,40 @@ class GameController extends AbstractController
         
         $response->headers->set('Content-Type', 'application/json');
         
-        // dump($response);
-        // return $this->render('game/index.html.twig');
         return $response;
     } 
-    
-}
 
+
+
+    /**
+     * @Route("/games/ranksbygame", name="RankByGames")
+     */
+    public function RankByGame(Request $request, RankRepository $rankRepository, GameRepository $gameRepository)
+    {
+
+        //get data from request in json
+        $gamesData = json_decode($request->getContent(), true);
+        $game = $gameRepository->find(['id' => $gamesData['game_id']]);
+
+        //search game with id
+        $ranksListOfGame = $rankRepository->findRanksbygame($game);
+
+        //get information from ranks object
+        $ranksGame = [];
+        for ($i= 0 ; $i < count($ranksListOfGame); $i++) { 
+            
+            $ranksGame []= [
+                'rank_id' => $ranksListOfGame[$i]->getId(),
+                'name' => $ranksListOfGame[$i]->getName(),
+            ];
+
+        }
+        
+        return $this->json([
+            'ranks_game' => $ranksGame,
+        ]);
+        
+    }
+
+
+}

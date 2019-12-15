@@ -1,21 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Container, Row, Col, Media, Card, Collapse, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGolfBall, faPlusCircle, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import useForm from "react-hook-form";
+import { useHistory } from 'react-router-dom';
 
 import './style.sass';
 
 const Dashboard = () => {
 
     const dispatch = useDispatch();
+
     const activeState = useSelector(state => ({
         ...state.dashboardReducer,
     }));
 
-    //const [addGameClicked, setAddGameClicked] = useState(false);
+    useEffect(() => {
+        getFavoriteGames();
+      }, []);
+
+    let history = useHistory();
+
+    async function getFavoriteGames() {
+        let token = document.cookie
+        console.log(token);
+        if(!token || token === "") {
+            console.log('pas de token trouvé')
+            return history.push("/");
+        }
+        else {
+            axios.post("http://localhost:8000/api/user/tokencheck",
+            "", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+token
+            }
+          }).then(function (response) {
+            console.log('HTTP RESPONSE STATUT:', response.status);
+            console.log(response);
+            if(response.status === 200) {
+              dispatch({
+                type: `SET_USER_INFOS`,
+                data: response.data
+              })
+              history.push("/dashboard");
+            }
+            else {
+                console.log('error serveur');
+            }
+          }).catch(function (error) {
+      
+            console.log(error);
+            history.push("/");
+          });
+        }
+    
+      };
 
     const showPlayerCard = (key) => {
         dispatch({
@@ -85,8 +127,8 @@ const Dashboard = () => {
                         <Col lg={2} md={2} sm={2} xs={2} className="dashboard-game-list">
                             <Container fluid>
                             {
-                                activeState.gameList.map((game, key) => {
-                                    return  <Row key={game.gameId} className="justify-content-end">
+                                activeState.favoriteGameList.map((game, key) => {
+                                    return  <Row key={key} className="justify-content-end">
                                                 <div className={`game-row ${ game.isSelected ? "game-isSelected" : "" }`}>
                                                     <Media onClick={() => {selectGame(key)}} >
                                                         <img
@@ -160,18 +202,11 @@ const Dashboard = () => {
                                 <Container fluid>
                                     <Row className="justify-content-center form-add-game">
                                         <Form onSubmit={submitAddGame}>
-                                            <Form.Row>
-                                                {/* <Form.Group controlId="games">
-                                                    <select name="games" ref={register} className="btn-select" onChange={handleChange}>
-                                                        <option value="csgo">csgo</option>
-                                                        <option value=" overwatch"> overwatch</option>
-                                                        <option value=" league of Legend"> league of Legend</option>
-                                                    </select>
-                                                </Form.Group> */}
+                                            {/* <Form.Row>
                                                 <Form.Group controlId="selected_platform">
                                                     <Form.Label>Selectionner votre plateforme de jeu</Form.Label>
                                                     <Form.Control as="select" defaultValue={""} onChange={handleChange} >
-                                                        <option value="" disabled hidden>Selectionner votre plateforme de jeu...</option>
+                                                        <option value="PC" disabled hidden>PC</option>
                                                         {
                                                             activeState.addGamePanel.plateformList.map((plateform) => {
                                                             return <option key={plateform.id} value={plateform.id}>{plateform.name}</option>
@@ -179,7 +214,7 @@ const Dashboard = () => {
                                                         }
                                                     </Form.Control>
                                                 </Form.Group>     
-                                            </Form.Row>
+                                            </Form.Row> */}
                                             {activeState.addGamePanel.gameToAdd.plateformId !== "" &&
                                                 <Form.Row>
                                                     <Form.Group controlId="selected_game">

@@ -20,6 +20,7 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("login_information")
      */
     private $id;
 
@@ -111,7 +112,7 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\FavoriteGame", mappedBy="user", cascade={"remove"})
-     * @Groups("login_information")
+     * 
      */
     private $favoriteGames;
 
