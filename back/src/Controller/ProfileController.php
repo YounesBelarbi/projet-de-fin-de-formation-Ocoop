@@ -63,4 +63,13 @@ class ProfileController extends AbstractController
             $errors
         ], 400);
     }
+
+
+    /**
+     * @Route("/upload", name="upload", methods={"POST"})
+     */
+    public function upload()
+    {
+        
+    }
 }
