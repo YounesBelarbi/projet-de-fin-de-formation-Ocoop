@@ -35,6 +35,7 @@ const initialState = {
   ],
   addGamePanel: {
     gameList: [],
+    rankList: [],
     isOpen: false,
     gameToAdd: {
       plateformId: '',
@@ -49,6 +50,10 @@ const dashboardReducer = (state = initialState, action) => {
     console.log('reducer[dashboard] >>', action);
     switch(action.type) {
       case 'SET_USER_INFOS' :
+        action.data.favorite_games[0] = {
+          ...action.data.favorite_games[0],
+          isSelected: true
+        }
         return {
           ...state,
           favoriteGameList: [
@@ -65,16 +70,20 @@ const dashboardReducer = (state = initialState, action) => {
             matchingResultPlayers: array
           }
         case 'SELECT_GAME' :
-          let newGameList = state.favoriteGameList.map((user, key) => {
+          let newGameList = state.favoriteGameList.map((game, key) => {
             return {
-              ...user, isSelected: false
+              ...game, isSelected: false
             }
           });
           let newObject = {...newGameList[action.data], isSelected: true};
           newGameList[action.data] = newObject;
           return {
             ...state,
-            favoriteGameList: newGameList
+            favoriteGameList: newGameList,
+            addGamePanel: {
+              ...state.addGamePanel,
+              isOpen: false
+            }
           }
         case 'GET_GAME_LIST' :
           return {
@@ -84,15 +93,48 @@ const dashboardReducer = (state = initialState, action) => {
               gameList: action.data
             }
           }
-        case 'SHOW_ADD_GAME_PANEL' : 
-          //console.log('ADD_GAME Reducer >>', action.data);   
+        case 'GET_RANKS_BY_GAME' :
           return {
             ...state,
+            addGamePanel: {
+              ...state.addGamePanel,
+              rankList: action.data
+            }
+          }
+        case 'SHOW_ADD_GAME_PANEL' : 
+        let newGameListSelectedOnFalse
+        if(!state.addGamePanel.isOpen) {
+          newGameListSelectedOnFalse = state.favoriteGameList.map((game) => {
+            return {
+              ...game, isSelected: false
+            }
+          });
+          return {
+            ...state,
+            favoriteGameList: newGameListSelectedOnFalse,
             addGamePanel: {
               ...state.addGamePanel,
               isOpen: !state.addGamePanel.isOpen
             }
           }
+        }
+        else {
+          newGameListSelectedOnFalse = state.favoriteGameList.map((game, key) => {
+            return {
+              ...game, isSelected: false
+            }
+          });
+          let newObjectDefaultSelected = {...newGameListSelectedOnFalse[0], isSelected: true};
+          newGameListSelectedOnFalse[0] = newObjectDefaultSelected;
+          return {
+            ...state,
+            favoriteGameList: newGameListSelectedOnFalse,
+            addGamePanel: {
+              ...state.addGamePanel,
+              isOpen: !state.addGamePanel.isOpen
+            }
+          }
+        }
           case 'ADD_FAVORITE_SELECTED_PLATFORM' : 
             return {
               ...state,
@@ -143,6 +185,25 @@ const dashboardReducer = (state = initialState, action) => {
               }
             }
           }
+          case 'ADD_FAVORITE_GAME' :
+            return {
+              ...state,
+              favoriteGameList: [
+                ...state.favoriteGameList,
+                {
+                  ...action.data
+                }
+              ],
+              addGamePanel: {
+                ...state.addGamePanel,
+                gameToAdd: {
+                  plateformId: '',
+                  gameId: '',
+                  rankId: '',
+                  frequencyId: ''
+                }
+              }
+            }
         default :
             return state
     }
