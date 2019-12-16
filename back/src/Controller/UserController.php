@@ -113,7 +113,7 @@ class UserController extends AbstractController
 
             return $this->json([
                 'success' => 'Le jeu à bien été rajouté à vos favoris',
-                
+
             ]);  
         }
 

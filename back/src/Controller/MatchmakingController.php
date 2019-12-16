@@ -32,7 +32,7 @@ class MatchmakingController extends AbstractController
         
         $rank = $rankRepository->find(['id' => $matchmakingData['rank_id']]);
        
-
+        
         $userMatch = $favoriteGameRepository->findByGameAndRank($game, $rank);
      
 
