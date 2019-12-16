@@ -67,7 +67,7 @@ class LoginController extends AbstractController
         // we send in informations in json
         return $this->json([
             'user' => $user,
-            'user_frequency' => $userFrequency ,
+            'user_frequency' => $userFrequency,
             'favorite_games' => $gamesList,
             'token' => $JWTManager->create($user),
             'frequency_list' => $frequencyList
@@ -84,7 +84,7 @@ class LoginController extends AbstractController
     /**
      * @Route("api/user/tokencheck", name="check", methods={"POST"})
      */
-    public function checkToken(UserInterface $user, FavoriteGameRepository $favoriteGameRepository)
+    public function checkToken(UserInterface $user, FavoriteGameRepository $favoriteGameRepository,  FrequencyRepository $frequencyRepository)
     {  
 
         $userFavoriteGames = $favoriteGameRepository->findGamesbyUser($user);
@@ -102,11 +102,30 @@ class LoginController extends AbstractController
                 'rank' => $userFavoriteGames[$i]->getRank()->getName()
             ];
         }
+
+        //get the user frequency
+        //if frequency usernot null we send 
+        $userFrequency = "";
+        if ($user->getFrequency()) {
+            $userFrequency =  $user->getFrequency()->getName();
+        }
+
+        //set all frequencies
+        $frequencies = $frequencyRepository->findAll();
+        $frequencyList = [];
+        for ($i= 0 ; $i < count($frequencies); $i++) {
+
+            $frequencyList[] = [
+                'id' => $frequencies[$i]->getId(),
+                'name' => $frequencies[$i]->getName(),
+            ];
+        }
      
         return $this->json([
             'user' => $user,
+            'user_frequency' => $userFrequency,
             'favorite_games' => $gamesList,
-            
+            'frequency_list' => $frequencyList
             ], 
             200, 
             [], 
