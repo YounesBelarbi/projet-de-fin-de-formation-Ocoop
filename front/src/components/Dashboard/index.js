@@ -18,20 +18,19 @@ const Dashboard = () => {
     }));
 
     useEffect(() => {
-        getFavoriteGames();
+        getGameDataFromAPI();
       }, []);
 
     let history = useHistory();
 
-    async function getFavoriteGames() {
-        let token = document.cookie
-        console.log(token);
+    async function getGameDataFromAPI() {
+        let token = activeState.token;
         if(!token || token === "") {
             console.log('pas de token trouvé')
-            return history.push("/");
+            return history.push("/signin");
         }
         else {
-            axios.post("http://localhost:8000/api/user/tokencheck",
+            axios.post("http://localhost:8000/api/games/list",
             "", {
             headers: {
                 'Content-Type': 'application/json',
@@ -42,16 +41,16 @@ const Dashboard = () => {
             console.log(response);
             if(response.status === 200) {
               dispatch({
-                type: `SET_USER_INFOS`,
-                data: response.data
+                type: `GET_GAME_LIST`,
+                data:[
+                    ...response.data
+                ]
               })
-              history.push("/dashboard");
             }
             else {
                 console.log('error serveur');
             }
           }).catch(function (error) {
-      
             console.log(error);
             history.push("/");
           });
@@ -128,22 +127,20 @@ const Dashboard = () => {
                             <Container fluid>
                             {
                                 activeState.favoriteGameList.map((game, key) => {
-                                    return  <Row key={key} className="justify-content-end">
-                                                <div className={`game-row ${ game.isSelected ? "game-isSelected" : "" }`}>
-                                                    <Media onClick={() => {selectGame(key)}} >
-                                                        <img
-                                                        width={100}
-                                                        height={100}
-                                                        className="dashboard-images"
-                                                        src={game.image}
-                                                        alt={game.name}
-                                                    />
-                                                    </Media>
-                                                </div>
-                                               
-                                            </Row> 
-                                            
-                                        })
+                                    return <Row key={key} className="justify-content-end">
+                                            <div className={`game-row ${ game.isSelected ? "game-isSelected" : "" }`}>
+                                                <Media onClick={() => {selectGame(key)}} >
+                                                    <img
+                                                    width={100}
+                                                    height={100}
+                                                    className="dashboard-images"
+                                                    src={game.logo}
+                                                    alt={game.title}
+                                                />
+                                                </Media>
+                                            </div>
+                                        </Row>       
+                                    })
                             }
                                 <Row className="justify-content-end">
                                     <div className="game-row dashboard-images add-game-dashboard" onClick={() => {addGame()}}>
@@ -215,21 +212,19 @@ const Dashboard = () => {
                                                     </Form.Control>
                                                 </Form.Group>     
                                             </Form.Row> */}
-                                            {activeState.addGamePanel.gameToAdd.plateformId !== "" &&
-                                                <Form.Row>
-                                                    <Form.Group controlId="selected_game">
-                                                        <Form.Label>Selectionner votre jeu</Form.Label>
-                                                        <Form.Control as="select" defaultValue={""} onChange={handleChange}>
-                                                            <option value="" disabled hidden>Selectionner votre jeu...</option>
-                                                            {
-                                                                activeState.addGamePanel.gameList.map((game) => {
-                                                                return <option key={game.id} value={game.id}>{game.name}</option>
-                                                                })
-                                                            }
-                                                        </Form.Control>
-                                                    </Form.Group>
-                                                </Form.Row>
-                                            }
+                                            <Form.Row>
+                                                <Form.Group controlId="selected_game">
+                                                    <Form.Label>Selectionner votre jeu</Form.Label>
+                                                    <Form.Control as="select" defaultValue={""} onChange={handleChange}>
+                                                        <option value="" disabled hidden>Selectionner votre jeu...</option>
+                                                        {
+                                                            activeState.addGamePanel.gameList.map((game, key) => {
+                                                            return <option key={key} value={game.id}>{game.title}</option>
+                                                            })
+                                                        }
+                                                    </Form.Control>
+                                                </Form.Group>
+                                            </Form.Row>
                                             {activeState.addGamePanel.gameToAdd.gameId !== "" &&
                                                 <Form.Row>
                                                     <Form.Group controlId="selected_rank">

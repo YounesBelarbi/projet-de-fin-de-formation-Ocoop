@@ -27,6 +27,7 @@ class GameController extends AbstractController
 
         foreach ($games as  $game) {
                 $arrayGames [] = [
+                    'id' => $game->getId(),
                     'title' => $game->getTitle(),
                     'description' => $game->getDescription(),
                     'poster' => $game->getPoster(),

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCogs, faSignOutAlt, faUserEdit, faUserCheck, faUserTimes } from '@fortawesome/free-solid-svg-icons'
 import { useSelector, useDispatch } from 'react-redux';
-
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 
 import { Button, Card, Media, Form } from 'react-bootstrap';
@@ -11,6 +12,51 @@ import { Link } from 'react-router-dom';
 import './style.sass';
 
 const HeaderDashboard = () => {
+
+    useEffect(() => {
+        getDataFromAPI();
+      }, []);
+
+    let history = useHistory();
+
+    async function getDataFromAPI() {
+        let token = document.cookie
+        console.log(token);
+        if(!token || token === "") {
+            console.log('pas de token trouvé')
+            return history.push("/signin");
+        }
+        else {
+            axios.post("http://localhost:8000/api/user/tokencheck",
+            "", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+token
+            }
+          }).then(function (response) {
+            console.log('HTTP RESPONSE STATUT:', response.status);
+            console.log(response);
+            if(response.status === 200) {
+              dispatch({
+                type: `SET_USER_INFOS`,
+                data: {
+                    ...response.data,
+                    token: token
+                }
+              })
+              history.push("/dashboard");
+            }
+            else {
+                console.log('error serveur');
+            }
+          }).catch(function (error) {
+      
+            console.log(error);
+            history.push("/");
+          });
+        }
+    
+      };
 
     const activeState = useSelector(state => ({
         ...state.headerDashboardReducer,
@@ -60,9 +106,9 @@ const HeaderDashboard = () => {
                             alt="Generic placeholder"
                         />
                         <Media.Body>
-                            <h4>{activeState.username}</h4>
-                            <h5>{activeState.frequency}</h5>
-                            <p>{activeState.description}</p>
+                            <h4>{activeState.user.username}</h4>
+                            <h5>{activeState.user.frequency}</h5>
+                            <p>{activeState.user.description}</p>
                         </Media.Body>
                     </Media>
                     <Card.Body>
@@ -76,7 +122,7 @@ const HeaderDashboard = () => {
                            width={94}
                            height={94}
                            className="mr-3"
-                           src="http://image.noelshack.com/fichiers/2019/04/5/1548409064-ppullpup.png"
+                           src={"https://pbs.twimg.com/profile_images/2565206995/image.jpg"}
                            alt="Generic placeholder"
                         />
                         <Media.Body>
@@ -95,8 +141,8 @@ const HeaderDashboard = () => {
                     </Media>
                     <Card.Body>
                         <ul>
-                            <li onClick={() => {submitEditProfile()}}>Enregister <FontAwesomeIcon icon={faUserCheck}/></li>
                             <li onClick={() => {showEditProfile()}}>Annuler <FontAwesomeIcon icon={faUserTimes}/></li>
+                            <li onClick={() => {submitEditProfile()}}>Enregister <FontAwesomeIcon icon={faUserCheck}/></li>
                         </ul>
                         
                         
@@ -106,7 +152,7 @@ const HeaderDashboard = () => {
                 )}
                 
 
-                <ul>
+                <ul className="header-menu-ul">
                     <a href="#"><li>paramètre <FontAwesomeIcon icon={faCogs}/></li></a>
                     <a href="#"><li>se déconnecter <FontAwesomeIcon icon={faSignOutAlt}/></li></a>
                 </ul>

@@ -3,24 +3,33 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const initialState = {
   showEditor: false,
-  username: 'Pascalou',
-  frequency: 'Compétiteur',
-  description: 'Je recherche des joueurs de mon age et de mon niveau',
+  user: {
+    username: 'Pascalou',
+    frequency: 'Compétiteur',
+    description: 'Je recherche des joueurs de mon age et de mon niveau'
+  },
   copyChange: {}
 };
 
 const headerDashboardReducer = (state = initialState, action) => {
     console.log('reducer[headerDashboard] >>', action);
     switch(action.type) {
+        case 'SET_USER_INFOS' :
+        return {
+          ...state,
+          user: {
+            ...action.data.user
+          }
+        }
         case 'SHOW_EDIT_PROFILE' :
             if(state.showEditor === false) {
                 return {
                     ...state,
                     showEditor: !state.showEditor,
                     copyChange: {
-                        username: state.username,
-                        frequency: state.frequency,
-                        description: state.description
+                        username: state.user.username,
+                        frequency: state.user.frequency,
+                        description: state.user.description
                     }
                 }
             }
@@ -59,9 +68,12 @@ const headerDashboardReducer = (state = initialState, action) => {
             return {
                 ...state,
                 showEditor: false,
-                username: state.copyChange.username,
-                frequency: state.copyChange.frequency,
-                description: state.copyChange.description,
+                user: {
+                    ...state.user,
+                    username: state.copyChange.username,
+                    frequency: state.copyChange.frequency,
+                    description: state.copyChange.description
+                },
                 copyChange: { }
             }
         default :

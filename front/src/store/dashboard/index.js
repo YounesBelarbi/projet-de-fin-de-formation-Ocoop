@@ -34,6 +34,7 @@ const initialState = {
     }
   ],
   addGamePanel: {
+    gameList: [],
     isOpen: false,
     gameToAdd: {
       plateformId: '',
@@ -50,9 +51,6 @@ const dashboardReducer = (state = initialState, action) => {
       case 'SET_USER_INFOS' :
         return {
           ...state,
-          user: {
-            ...action.data.user
-          },
           favoriteGameList: [
             ...action.data.favorite_games
           ],
@@ -67,7 +65,7 @@ const dashboardReducer = (state = initialState, action) => {
             matchingResultPlayers: array
           }
         case 'SELECT_GAME' :
-          let newGameList = state.gameList.map((user, key) => {
+          let newGameList = state.favoriteGameList.map((user, key) => {
             return {
               ...user, isSelected: false
             }
@@ -76,7 +74,15 @@ const dashboardReducer = (state = initialState, action) => {
           newGameList[action.data] = newObject;
           return {
             ...state,
-            gameList: newGameList
+            favoriteGameList: newGameList
+          }
+        case 'GET_GAME_LIST' :
+          return {
+            ...state,
+            addGamePanel: {
+              ...state.addGamePanel,
+              gameList: action.data
+            }
           }
         case 'SHOW_ADD_GAME_PANEL' : 
           //console.log('ADD_GAME Reducer >>', action.data);   
