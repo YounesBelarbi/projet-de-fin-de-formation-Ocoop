@@ -25,7 +25,7 @@ class ProfileController extends AbstractController
         
         $arrayData = json_decode($request->getContent(), true);
 
-        $frequency = $frequencyRepository->find(['id' => $arrayData['frequency_id']]);
+        $frequency = $frequencyRepository->find(['name' => $arrayData['user_frequency']]);
 
         $errors = [];
         if (!$errors) {
