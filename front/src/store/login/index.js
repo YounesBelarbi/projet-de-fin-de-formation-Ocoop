@@ -25,6 +25,12 @@ const loginReducer = (state = initialState, action) => {
                 ...state,
                 email: action.data
             }
+        case 'SET_USER_INFOS' :
+            return {
+                ...state,
+                email: "",
+                password: ""
+            }
         default :
             return state
     }
