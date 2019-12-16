@@ -24,38 +24,29 @@ const Dashboard = () => {
     let history = useHistory();
 
     async function getGameDataFromAPI() {
-        let token = activeState.token;
-        if(!token || token === "") {
-            console.log('pas de token trouvé')
-            return history.push("/signin");
+    axios.post("http://localhost:8000/games/list",
+    "", {
+    headers: {
+        'Content-Type': 'application/json'
+    }
+    }).then(function (response) {
+        console.log('HTTP RESPONSE STATUT:', response.status);
+        console.log(response);
+        if(response.status === 200) {
+            dispatch({
+            type: `GET_GAME_LIST`,
+            data:[
+                ...response.data
+            ]
+            })
         }
         else {
-            axios.post("http://localhost:8000/api/games/list",
-            "", {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+token
-            }
-          }).then(function (response) {
-            console.log('HTTP RESPONSE STATUT:', response.status);
-            console.log(response);
-            if(response.status === 200) {
-              dispatch({
-                type: `GET_GAME_LIST`,
-                data:[
-                    ...response.data
-                ]
-              })
-            }
-            else {
-                console.log('error serveur');
-            }
-          }).catch(function (error) {
-            console.log(error);
-            history.push("/");
-          });
+            console.log('error serveur');
         }
-    
+    }).catch(function (error) {
+        console.log(error);
+        history.push("/");
+    });
       };
 
     const showPlayerCard = (key) => {
@@ -91,11 +82,49 @@ const Dashboard = () => {
 
     const submitAddGame = (event) => {
         event.preventDefault();
-        console.log("gameToAdd", JSON.stringify({...activeState.addGamePanel.gameToAdd}));
-        axios.post("http://127.0.0.1:8000/api/user/add/games/favorite",
-        JSON.stringify({...activeState.addGamePanel.gameToAdd}), {
+        let token = activeState.token;
+        if(!token || token === "") {
+            console.log('pas de token trouvé')
+            return history.push("/signin");
+        }
+        else {
+            console.log("gameToAdd", JSON.stringify({...activeState.addGamePanel.gameToAdd}));
+            axios.post("http://127.0.0.1:8000/api/user/add/games/favorite",
+            JSON.stringify({...activeState.addGamePanel.gameToAdd}), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+token
+                }
+            })
+            .then(function (response) {
+                console.log('HTTP RESPONSE STATUT:', response.status);
+                console.log('On vien dajouter' ,response);
+
+                if(response.status === 200) {        
+                    dispatch({
+                        type: `ADD_FAVORITE_GAME`,
+                        data: response.data
+                        });
+                    dispatch({
+                        type: `SELECT_GAME`,
+                        data: activeState.favoriteGameList.length
+                        });
+                }
+                else {
+                    console.log('error submit');
+                }   
+            })
+            .catch(function (error) {
+            console.log(error);
+            });
+        }
+    };
+
+    const handleSelectGame = () => {
+        axios.post("http://127.0.0.1:8000/games/ranksbygame",
+        JSON.stringify({game_id: activeState.addGamePanel.gameToAdd.gameId}), {
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             }
         })
         .then(function (response) {
@@ -104,7 +133,8 @@ const Dashboard = () => {
 
         if(response.status === 200) {        
             dispatch({
-                type: `ADD_FAVORITE_GAME`
+                type: `GET_RANKS_BY_GAME`,
+                data: response.data.ranks_game
                 });
         }
         else {
@@ -115,7 +145,7 @@ const Dashboard = () => {
         .catch(function (error) {
         console.log(error);
         });
-    };
+    }
 
     return(
         <div className="dashboard">
@@ -215,11 +245,11 @@ const Dashboard = () => {
                                             <Form.Row>
                                                 <Form.Group controlId="selected_game">
                                                     <Form.Label>Selectionner votre jeu</Form.Label>
-                                                    <Form.Control as="select" defaultValue={""} onChange={handleChange}>
+                                                    <Form.Control as="select" defaultValue={""} onChange={handleChange} on>
                                                         <option value="" disabled hidden>Selectionner votre jeu...</option>
                                                         {
                                                             activeState.addGamePanel.gameList.map((game, key) => {
-                                                            return <option key={key} value={game.id}>{game.title}</option>
+                                                            return <option key={key} value={game.id} onClick={handleSelectGame} >{game.title}</option>
                                                             })
                                                         }
                                                     </Form.Control>
@@ -240,7 +270,7 @@ const Dashboard = () => {
                                                     </Form.Group>     
                                                 </Form.Row>
                                             }
-                                            {activeState.addGamePanel.gameToAdd.rankId !== "" &&
+                                            {/* {activeState.addGamePanel.gameToAdd.rankId !== "" &&
                                                 <Form.Row>
                                                     <Form.Group controlId="selected_frequency">
                                                         <Form.Label>Selectionner votre style de jeu</Form.Label>
@@ -254,8 +284,8 @@ const Dashboard = () => {
                                                         </Form.Control>
                                                     </Form.Group>     
                                                 </Form.Row>
-                                            }
-                                            {activeState.addGamePanel.gameToAdd.frequencyId !== "" &&
+                                            } */}
+                                            {activeState.addGamePanel.gameToAdd.rankId !== "" &&
                                                 <Button variant="primary" type="submit">
                                                 Ajouter ce jeu dans ma liste
                                                 </Button>
