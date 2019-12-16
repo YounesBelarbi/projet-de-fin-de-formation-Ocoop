@@ -63,6 +63,11 @@ class Game
      */
     private $platform;
 
+    public function __toString()
+    {
+        return $this->title;
+    }
+
 
     public function __construct()
     {
