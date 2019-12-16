@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @route("api/profile", name="profile_")
@@ -35,29 +34,33 @@ class ProfileController extends AbstractController
             $user->setBirth(\DateTime::createFromFormat('Y-m-d H:i:s', $arrayData['birth'].' 00:00:00'));
             $user->setDescription($arrayData['description']);
             $user->setFrequency($frequency);
+
             $user->setFirstname($arrayData['firstname']);
             $user->setLastname($arrayData['lastname']);
             $user->setcity($arrayData['city']);
             $user->setMobile($arrayData['mobile']);
+
             $user->setUpdatedAt(new \DateTime());
 
             try
             {
                 $entityManager = $this->getDoctrine()->getManager();
+
                 $entityManager->flush();
+              
                 return $this->json([
                     'success' => 'success'
                     ]);  
             }
+
             catch(UniqueConstraintViolationException $e)
             {
                 $errors = ['Erreur'];
             }
-
+          
         }
         return $this->json([
             $errors
         ], 400);
-        
     }
 }
