@@ -64,7 +64,7 @@ class GameController extends AbstractController
         for ($i= 0 ; $i < count($ranksListOfGame); $i++) { 
             
             $ranksGame []= [
-                'rank_id' => $ranksListOfGame[$i]->getId(),
+                'id' => $ranksListOfGame[$i]->getId(),
                 'name' => $ranksListOfGame[$i]->getName(),
             ];
 
