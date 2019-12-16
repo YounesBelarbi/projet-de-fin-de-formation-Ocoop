@@ -136,6 +136,11 @@ class User implements UserInterface
      */
     private $status;
 
+    public function __toString()
+    {
+        return $this->username;
+    }
+
     public function __construct()
     {
         $this->favoriteGames = new ArrayCollection();
