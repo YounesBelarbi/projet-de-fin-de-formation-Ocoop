@@ -34,6 +34,7 @@ const initialState = {
     }
   ],
   addGamePanel: {
+    gameList: [],
     isOpen: false,
     gameToAdd: {
       plateformId: '',
@@ -74,6 +75,14 @@ const dashboardReducer = (state = initialState, action) => {
           return {
             ...state,
             favoriteGameList: newGameList
+          }
+        case 'GET_GAME_LIST' :
+          return {
+            ...state,
+            addGamePanel: {
+              ...state.addGamePanel,
+              gameList: action.data
+            }
           }
         case 'SHOW_ADD_GAME_PANEL' : 
           //console.log('ADD_GAME Reducer >>', action.data);   
