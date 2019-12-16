@@ -82,7 +82,7 @@ class UserController extends AbstractController
 
 
 
-     /**
+    /**
      * @Route("/add/games/favorite", name="add_games", methods={"POST"})
      */
     public function userAddFavoriteGames(Request $request, RankRepository $rankRepository, GameRepository $gameRepository)
@@ -94,8 +94,8 @@ class UserController extends AbstractController
 
         $user = $this->getUser();
        
-        $rank = $rankRepository->findOneBy(['id' => $gamesData['rank_id']]);
-        $game = $gameRepository->findOneBy(['id' => $gamesData['game_id']]);
+        $rank = $rankRepository->findOneBy(['id' => $gamesData['rankId']]);
+        $game = $gameRepository->findOneBy(['id' => $gamesData['gameId']]);
 
 
         // set informations to new instance of FavoriteGame
@@ -113,10 +113,17 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             return $this->json([
-                'success' => 'Le jeu à bien été rajouté à vos favoris',
-                
+                'game_id' => $game->getId(),
+                'title' => $game->getTitle(),
+                'description' => $game->getDescription(),
+                'poster' => $game->getPoster(),
+                'logo' => $game->getLogo(),
+                'rank' => $rank->getName()
             ]);  
         }
+
+
+        
 
         catch(UniqueConstraintViolationException $e)
         {
