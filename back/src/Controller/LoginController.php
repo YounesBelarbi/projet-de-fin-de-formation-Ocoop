@@ -39,7 +39,16 @@ class LoginController extends AbstractController
             ];
         }
 
-        
+
+        //if frequency usernot null we send 
+        $userFrequency = "";
+        if ($user->getFrequency()) {
+            $userFrequency =  $user->getFrequency()->getName();
+        }
+
+
+
+        //set all frequencies
         $frequencyList = [];
         for ($i= 0 ; $i < count($frequencies); $i++) {
 
@@ -49,11 +58,16 @@ class LoginController extends AbstractController
             ];
         }
 
+        
+        
+        
+      
+
 
         // we send in informations in json
         return $this->json([
             'user' => $user,
-            'user_frequency' => ['frequency' => $user->getFrequency()->getName()],
+            'user_frequency' => $userFrequency ,
             'favorite_games' => $gamesList,
             'token' => $JWTManager->create($user),
             'frequency_list' => $frequencyList
