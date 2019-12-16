@@ -17,6 +17,47 @@ const Dashboard = () => {
         ...state.dashboardReducer,
     }));
 
+    useEffect(() => {
+        getGameDataFromAPI();
+      }, []);
+
+    let history = useHistory();
+
+    async function getGameDataFromAPI() {
+        let token = activeState.token;
+        if(!token || token === "") {
+            console.log('pas de token trouvé')
+            return history.push("/signin");
+        }
+        else {
+            axios.post("http://localhost:8000/api/games/list",
+            "", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+token
+            }
+          }).then(function (response) {
+            console.log('HTTP RESPONSE STATUT:', response.status);
+            console.log(response);
+            if(response.status === 200) {
+              dispatch({
+                type: `GET_GAME_LIST`,
+                data:[
+                    ...response.data
+                ]
+              })
+            }
+            else {
+                console.log('error serveur');
+            }
+          }).catch(function (error) {
+            console.log(error);
+            history.push("/");
+          });
+        }
+    
+      };
+
     const showPlayerCard = (key) => {
         dispatch({
             type: `SHOW_PLAYER_CARD`,
@@ -171,21 +212,19 @@ const Dashboard = () => {
                                                     </Form.Control>
                                                 </Form.Group>     
                                             </Form.Row> */}
-                                            {activeState.addGamePanel.gameToAdd.plateformId !== "" &&
-                                                <Form.Row>
-                                                    <Form.Group controlId="selected_game">
-                                                        <Form.Label>Selectionner votre jeu</Form.Label>
-                                                        <Form.Control as="select" defaultValue={""} onChange={handleChange}>
-                                                            <option value="" disabled hidden>Selectionner votre jeu...</option>
-                                                            {
-                                                                activeState.addGamePanel.gameList.map((game) => {
-                                                                return <option key={game.id} value={game.id}>{game.name}</option>
-                                                                })
-                                                            }
-                                                        </Form.Control>
-                                                    </Form.Group>
-                                                </Form.Row>
-                                            }
+                                            <Form.Row>
+                                                <Form.Group controlId="selected_game">
+                                                    <Form.Label>Selectionner votre jeu</Form.Label>
+                                                    <Form.Control as="select" defaultValue={""} onChange={handleChange}>
+                                                        <option value="" disabled hidden>Selectionner votre jeu...</option>
+                                                        {
+                                                            activeState.addGamePanel.gameList.map((game, key) => {
+                                                            return <option key={key} value={game.id}>{game.title}</option>
+                                                            })
+                                                        }
+                                                    </Form.Control>
+                                                </Form.Group>
+                                            </Form.Row>
                                             {activeState.addGamePanel.gameToAdd.gameId !== "" &&
                                                 <Form.Row>
                                                     <Form.Group controlId="selected_rank">
