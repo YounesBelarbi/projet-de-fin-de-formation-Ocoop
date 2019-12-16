@@ -1,0 +1,17 @@
+easy_admin:
+    site_name: 'Esquad Admin'
+    entities:
+        # List the entity class name you want to manage
+        - App\Entity\User
+        - App\Entity\Game
+        - App\Entity\Guild
+        - App\Entity\Frequency
+        - App\Entity\Platform
+        - App\Entity\Rank
+        - App\Entity\Status
+
+        
+
+       
+
+

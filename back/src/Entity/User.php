@@ -125,7 +125,7 @@ class User implements UserInterface
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Frequency", inversedBy="users")
      * @ORM\JoinColumn(nullable=true)
-     * @Groups("login_information")
+     *
      */
     private $frequency;
 
@@ -135,6 +135,11 @@ class User implements UserInterface
      * @Groups("login_information")
      */
     private $status;
+
+    public function __toString()
+    {
+        return $this->username;
+    }
 
     public function __construct()
     {

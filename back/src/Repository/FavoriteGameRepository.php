@@ -32,6 +32,20 @@ class FavoriteGameRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+
+    public function findByGameAndRank($game, $rank)
+    {
+        return $this->createQueryBuilder('f')
+            ->where('f.game = :game')
+            ->andWhere('f.rank = :rank')
+            ->setParameter('game', $game)
+            ->setParameter('rank', $rank)
+            ->getQuery()
+            ->getResult()
+        ;          
+        
+    }
     
 
     /*

@@ -72,8 +72,7 @@ class UserController extends AbstractController
             200, 
             [], 
             [
-                'groups' => ['login_information'],
-                
+                'groups' => ['login_information'],    
             ]
         );
 
@@ -131,21 +130,14 @@ class UserController extends AbstractController
         }
         catch(\Exception $e)
         {
-        $errors['add_game'] = "Le jeu n'a pas été rajouté, il se peut qu'il soit déjà parmi vos favoris";
+            $errors['add_game'] = "Le jeu n'a pas été rajouté, il se peut qu'il soit déjà parmi vos favoris";
         }
-
-
         
         // if there are errors we return them  
         return $this->json([
             $errors
         ], 400);
-    
-
-
     }
-
-
 
 
     /**
@@ -163,9 +155,8 @@ class UserController extends AbstractController
 
         //searched for the game to delete
         $favoriteGameToDelete = $favoriteGameRepository->find(['game' => $game, 'user' => $user]);
-      
-     
 
+        
         $errors = [];
         try
         {
@@ -191,31 +182,22 @@ class UserController extends AbstractController
         return $this->json([
             $errors
         ], 400);
-    
-        
     }
-
-
 
 
     /**
      * @Route("/list/games/favorite", name="list_games", methods={"POST"})
      */
     public function userFavoriteGames(GameRepository $gameRepository, FavoriteGameRepository $favoriteGameRepository)
-    {        
-      
-       
-        $user = $this->getUser();
-    
+    {            
+        $user = $this->getUser();   
       
         $userFavoriteGames = $favoriteGameRepository->findGamesbyUser($user);
-         
 
         $gamesList = [];
        
 
-        for ($i= 0 ; $i < count($userFavoriteGames); $i++) { 
-            
+        for ($i= 0 ; $i < count($userFavoriteGames); $i++) {       
 
             $gamesList[]= [
                 'game_id' => $userFavoriteGames[$i]->getGame()->getId(),
@@ -224,8 +206,7 @@ class UserController extends AbstractController
                 'poster' => $userFavoriteGames[$i]->getGame()->getPoster(),
                 'logo' => $userFavoriteGames[$i]->getGame()->getLogo(),
                 'rank' => $userFavoriteGames[$i]->getRank()->getName()
-            ];
-           
+            ];    
         }
 
         if ($gamesList) {
@@ -235,8 +216,7 @@ class UserController extends AbstractController
         } else {
 
             return $this->json(['errors' => 'la liste des favoris est vide'], 400);
-        }
-      
+        }    
     }
 }
 
