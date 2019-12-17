@@ -33,7 +33,7 @@ class MatchmakingController extends AbstractController
         $userGameId = $matchmakingData['game_id'];
         $userRankId = $matchmakingData['rank_id'];
 
-        $allRankByGame = $rankRepository->findRanksByGame($userGameId);
+        $allRankByGame = $rankRepository->findRanksbygame($userGameId);
 
         for($i = 0; $i <= 3; $i++) {
             foreach($allRankByGame as $rank) {
@@ -62,6 +62,6 @@ class MatchmakingController extends AbstractController
             }
         }
 
-        return $this->json(['user_match' => $userList]);
+        return $this->json($userList);
     }
 }
