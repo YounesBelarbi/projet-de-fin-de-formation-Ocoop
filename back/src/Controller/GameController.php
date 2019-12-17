@@ -44,8 +44,6 @@ class GameController extends AbstractController
         return $response;
     } 
 
-
-
     /**
      * @Route("/games/ranksbygame", name="RankByGames")
      */
@@ -57,7 +55,7 @@ class GameController extends AbstractController
         $game = $gameRepository->find(['id' => $gamesData['game_id']]);
 
         //search game with id
-        $ranksListOfGame = $rankRepository->findRanksbygame($game);
+        $ranksListOfGame = $rankRepository->findRanksByGame($game);
 
         //get information from ranks object
         $ranksGame = [];
@@ -67,14 +65,10 @@ class GameController extends AbstractController
                 'id' => $ranksListOfGame[$i]->getId(),
                 'name' => $ranksListOfGame[$i]->getName(),
             ];
-
         }
         
         return $this->json([
             'ranks_game' => $ranksGame,
-        ]);
-        
+        ]);  
     }
-
-
 }

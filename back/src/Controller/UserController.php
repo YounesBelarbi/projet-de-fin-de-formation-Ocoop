@@ -192,7 +192,7 @@ class UserController extends AbstractController
     {            
         $user = $this->getUser();   
       
-        $userFavoriteGames = $favoriteGameRepository->findGamesbyUser($user);
+        $userFavoriteGames = $favoriteGameRepository->findGamesByUser($user);
 
         $gamesList = [];
        

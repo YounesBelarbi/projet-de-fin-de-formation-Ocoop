@@ -19,11 +19,8 @@ class FavoriteGameRepository extends ServiceEntityRepository
         parent::__construct($registry, FavoriteGame::class);
     }
 
-    // /**
-    //  * @return FavoriteGame[] Returns an array of FavoriteGame objects
-    //  */
-    
-    public function findGamesbyUser($user)
+   
+    public function findGamesByUser($user)
     {
         return $this->createQueryBuilder('f')
             ->andWhere('f.user = :user')
@@ -33,18 +30,17 @@ class FavoriteGameRepository extends ServiceEntityRepository
         ;
     }
 
-
-    public function findByGameAndRank($game, $rank)
+    public function findByGameAndRank($userGameId, $minInterval, $maxInterval)
     {
         return $this->createQueryBuilder('f')
-            ->where('f.game = :game')
-            ->andWhere('f.rank = :rank')
-            ->setParameter('game', $game)
-            ->setParameter('rank', $rank)
+            ->where('f.game = :userGameId')
+            ->andWhere('f.rank BETWEEN :minInterval AND :maxInterval')
+            ->setParameter('userGameId', $userGameId)
+            ->setParameter('minInterval', $minInterval)
+            ->setParameter('maxInterval', $maxInterval)
             ->getQuery()
             ->getResult()
-        ;          
-        
+        ; 
     }
     
 

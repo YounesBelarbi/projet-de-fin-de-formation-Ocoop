@@ -49,7 +49,7 @@ class RankRepository extends ServiceEntityRepository
     */
 
 
-    public function findRanksbygame($game)
+    public function findRanksByGame($game)
     {
         return $this->createQueryBuilder('r')
             ->andWhere('r.games = :game')
