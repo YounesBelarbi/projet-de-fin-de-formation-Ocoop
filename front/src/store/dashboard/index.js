@@ -70,8 +70,6 @@ const dashboardReducer = (state = initialState, action) => {
             favoriteGameList : [],
             addGamePanel: {
               ...state.addGamePanel,
-              gameList: [],
-              rankList: [],
               isOpen: true,
               gameToAdd: {
                 plateformId: '',
@@ -238,7 +236,7 @@ const dashboardReducer = (state = initialState, action) => {
                 if(game.isSelected){
                   infosToFindMates = {
                     game_id: game.game_id,
-                    rank_name: game.rank
+                    rank_id: game.rank_id
                   }
                 }
               });
@@ -247,8 +245,10 @@ const dashboardReducer = (state = initialState, action) => {
                 findMates: infosToFindMates
               }
             case 'SHOW_MATE' : 
+            console.log("showmate data",action.data);
               return {
-
+                ...state,
+                matchingResultPlayers: {...action.data}
               }
             case 'LOGOUT' :
               return {

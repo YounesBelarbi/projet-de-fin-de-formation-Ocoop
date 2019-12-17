@@ -33,7 +33,7 @@ class MatchmakingController extends AbstractController
         $userGameId = $matchmakingData['game_id'];
         $userRankId = $matchmakingData['rank_id'];
 
-        $allRankByGame = $rankRepository->findRanksbygame($userGameId);
+        $allRankByGame = $rankRepository->findRanksByGame($userGameId);
 
         for($i = 0; $i <= 3; $i++) {
             foreach($allRankByGame as $rank) {
