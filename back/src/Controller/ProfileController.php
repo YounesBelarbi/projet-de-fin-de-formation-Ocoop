@@ -25,20 +25,26 @@ class ProfileController extends AbstractController
         
         $arrayData = json_decode($request->getContent(), true);
 
-        $frequency = $frequencyRepository->find(['id' => $arrayData['frequency_id']]);
+        //Une condition pour éviter le fais d'aller chercher une chaine de caractere vide en name ;-)
+        if($arrayData['frequency'] !== ""){
+            //findOneBy car findBy te renvois un tableau d'objet, ce que tu set dans user c'est l'objet directement
+            $frequency = $frequencyRepository->findOneBy(['name' => $arrayData['frequency']]);
+            $user->setFrequency($frequency);
+        }
+
 
         $errors = [];
         if (!$errors) {
+            //Pour l'instant on gére pas encore les autres champs via la card de l'utilisateur
             $user->setUsername($arrayData['username']);
-            $user->setEmail($arrayData['email']);
-            $user->setBirth(\DateTime::createFromFormat('Y-m-d H:i:s', $arrayData['birth'].' 00:00:00'));
+            //$user->setEmail($arrayData['email']);
+            //$user->setBirth(\DateTime::createFromFormat('Y-m-d H:i:s', $arrayData['birth'].' 00:00:00'));
             $user->setDescription($arrayData['description']);
-            $user->setFrequency($frequency);
 
-            $user->setFirstname($arrayData['firstname']);
-            $user->setLastname($arrayData['lastname']);
-            $user->setcity($arrayData['city']);
-            $user->setMobile($arrayData['mobile']);
+            // $user->setFirstname($arrayData['firstname']);
+            //$user->setLastname($arrayData['lastname']);
+            //$user->setcity($arrayData['city']);
+            //$user->setMobile($arrayData['mobile']);
 
             $user->setUpdatedAt(new \DateTime());
 
