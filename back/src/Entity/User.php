@@ -130,24 +130,21 @@ class User implements UserInterface
     private $frequency;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Status", inversedBy="users")
-     * @ORM\JoinColumn(nullable=true)
-     * @Groups("login_information")
+     * @ORM\Column(type="boolean")
      */
     private $status;
 
-    public function __toString()
-    {
-        return $this->username;
-    }
+
 
     public function __construct()
     {
         $this->favoriteGames = new ArrayCollection();
         $this->createdAt = new \DateTime();
-        
-       
-     
+    }
+
+    public function __toString()
+    {
+        return $this->username;
     }
 
 
@@ -423,15 +420,17 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getStatus(): ?Status
+    public function getStatus(): ?bool
     {
         return $this->status;
     }
 
-    public function setStatus(?Status $status): self
+    public function setStatus(bool $status): self
     {
         $this->status = $status;
 
         return $this;
     }
+
+
 }
