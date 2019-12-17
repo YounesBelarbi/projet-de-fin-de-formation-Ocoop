@@ -8,7 +8,6 @@ easy_admin:
         - App\Entity\Frequency
         - App\Entity\Platform
         - App\Entity\Rank
-        - App\Entity\Status
 
         
 

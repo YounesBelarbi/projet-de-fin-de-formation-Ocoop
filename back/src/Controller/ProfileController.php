@@ -31,7 +31,7 @@ class ProfileController extends AbstractController
             $frequency = $frequencyRepository->findOneBy(['name' => $arrayData['frequency']]);
             $user->setFrequency($frequency);
         }
-
+        
         $errors = [];
         if (!$errors) {
             //Pour l'instant on gére pas encore les autres champs via la card de l'utilisateur
