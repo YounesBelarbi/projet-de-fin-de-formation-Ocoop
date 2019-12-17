@@ -55,6 +55,7 @@ class RegistrationController extends AbstractController
             $user->setBirth($birth);
             $user->setPassword($encodedPassword);
             $user->setCreatedAt(new \DateTime());
+            $user->setStatus(false);
 
             $roles[] = 'ROLE_USER';
             $user->setRoles($roles);

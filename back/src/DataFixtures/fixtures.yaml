@@ -13,10 +13,11 @@ App\Entity\User:
         latitude: '<randomFloat()>'
         mobile: '<phoneNumber()>'
         avatar: '<word()>'
-        status: '@status*'
+        # status: '@status*'
         frequency: '@frequency*'
         createdAt: '<date_create()>'
-        updatedAt: '<date_create()>'        
+        updatedAt: '<date_create()>'
+        status: '<boolean()>'   
 
 App\Entity\Game:
     game_{1..10}:
@@ -52,10 +53,7 @@ App\Entity\Rank:
         createdAt: '<date_create()>'
         games: '@game*'
                  
-        
-App\Entity\Status:
-    status_{1..4}:
-        name (unique): '<status()>'
+
 
 App\Entity\Platform:
     platform_{1..3}:

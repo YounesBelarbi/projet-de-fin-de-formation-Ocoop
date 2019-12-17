@@ -32,7 +32,6 @@ class ProfileController extends AbstractController
             $user->setFrequency($frequency);
         }
 
-
         $errors = [];
         if (!$errors) {
             //Pour l'instant on gére pas encore les autres champs via la card de l'utilisateur
