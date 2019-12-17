@@ -50,16 +50,28 @@ const dashboardReducer = (state = initialState, action) => {
     console.log('reducer[dashboard] >>', action);
     switch(action.type) {
       case 'SET_USER_INFOS' :
-        action.data.favorite_games[0] = {
-          ...action.data.favorite_games[0],
-          isSelected: true
+        if(action.data.favorite_games.length > 0) {
+          action.data.favorite_games[0] = {
+            ...action.data.favorite_games[0],
+            isSelected: true
+          }
+              return {
+                ...state,
+                favoriteGameList: [
+                  ...action.data.favorite_games
+                ],
+                token: action.data.token
+              }
         }
-        return {
-          ...state,
-          favoriteGameList: [
-            ...action.data.favorite_games
-          ],
-          token: action.data.token
+        else {
+          return {
+            ...state,
+            token: action.data.token,
+            addGamePanel: {
+              ...state.addGamePanel,
+              isOpen: true
+            }
+          }
         }
         case 'SHOW_PLAYER_CARD' :
           let object = {...state.matchingResultPlayers[action.data], isOpen: !state.matchingResultPlayers[action.data].isOpen};
@@ -119,22 +131,29 @@ const dashboardReducer = (state = initialState, action) => {
           }
         }
         else {
-          newGameListSelectedOnFalse = state.favoriteGameList.map((game, key) => {
+          if(state.favoriteGameList.length > 0){
+            newGameListSelectedOnFalse = state.favoriteGameList.map((game, key) => {
+              return {
+                ...game, isSelected: false
+              }
+            });
+            let newObjectDefaultSelected = {...newGameListSelectedOnFalse[0], isSelected: true};
+            newGameListSelectedOnFalse[0] = newObjectDefaultSelected;
             return {
-              ...game, isSelected: false
-            }
-          });
-          let newObjectDefaultSelected = {...newGameListSelectedOnFalse[0], isSelected: true};
-          newGameListSelectedOnFalse[0] = newObjectDefaultSelected;
-          return {
-            ...state,
-            favoriteGameList: newGameListSelectedOnFalse,
-            addGamePanel: {
-              ...state.addGamePanel,
-              isOpen: !state.addGamePanel.isOpen
+              ...state,
+              favoriteGameList: newGameListSelectedOnFalse,
+              addGamePanel: {
+                ...state.addGamePanel,
+                isOpen: !state.addGamePanel.isOpen
+              }
             }
           }
-        }
+          else {
+            return {
+              ...state
+            }
+          }
+          }
           case 'ADD_FAVORITE_SELECTED_PLATFORM' : 
             return {
               ...state,

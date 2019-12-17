@@ -18,8 +18,10 @@ const headerDashboardReducer = (state = initialState, action) => {
         return {
           ...state,
           user: {
-            ...action.data.user
+            ...action.data.user,
+            userFrequency: action.data.user_frequency
           }
+          //todo add frequencylist
         }
         case 'SHOW_EDIT_PROFILE' :
             if(state.showEditor === false) {
