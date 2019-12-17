@@ -4,22 +4,28 @@ namespace App\Controller;
 
 use App\Repository\FavoriteGameRepository;
 use App\Repository\FrequencyRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\User\UserInterface;
-
+use Symfony\Component\Security\Guard\AuthenticatorInterface;
 
 class LoginController extends AbstractController
 {    
+    
     /**
      * @Route("user/login", name="api_login", methods={"POST"})
      */
     public function index(UserInterface $user, JWTTokenManagerInterface $JWTManager, FavoriteGameRepository $favoriteGameRepository, FrequencyRepository $frequencyRepository)
-    {  
-              
+    {      
+        // when user is connected status setted on true
+        $user->setStatus(true);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+
         // if user logged in, we generate a token
         // $token =  $JWTManager->create($user);
         $userFavoriteGames = $favoriteGameRepository->findGamesbyUser($user);
@@ -59,11 +65,6 @@ class LoginController extends AbstractController
         }
 
         
-        
-        
-      
-
-
         // we send in informations in json
         return $this->json([
             'user' => $user,
@@ -79,6 +80,8 @@ class LoginController extends AbstractController
             ]
         );
     } 
+
+
 
 
     /**
@@ -134,8 +137,30 @@ class LoginController extends AbstractController
                 
             ]
         );
-    } 
+    }
+    
+
+
+     /**
+      * @Route("api/user/logout", name="logout", methods={"POST"})
+      */
+    public function logout(UserInterface $user)
+    {
+        // when user logs out status setted on false
+        $user->setStatus(false);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+
+        return $this->json([
+            'logout' => 'success'
+        ]);
+    }
 }
+    
+
+
+
+
 
 
 
