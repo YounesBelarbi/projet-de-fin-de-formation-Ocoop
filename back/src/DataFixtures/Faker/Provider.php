@@ -37,15 +37,6 @@ class Provider extends BaseProvider
 
     ];
 
-    protected static $status = [
-
-        'en ligne',
-        'deconnecté',
-        'en jeu',
-        'absent'
-
-    ];
-
     protected static $roles = [
         ['ROLE_USER'],
         ['ROLE_ADMIN'],
@@ -80,10 +71,6 @@ class Provider extends BaseProvider
 
     public static function ranks(){
         return static::randomElement(static::$ranks);
-    }
-
-    public static function status(){
-        return static::randomElement(static::$status);
     }
 
     public static function roles(){

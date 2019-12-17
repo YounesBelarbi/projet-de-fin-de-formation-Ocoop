@@ -13,7 +13,6 @@ App\Entity\User:
         latitude: '<randomFloat()>'
         mobile: '<phoneNumber()>'
         avatar: '<word()>'
-        # status: '@status*'
         frequency: '@frequency*'
         createdAt: '<date_create()>'
         updatedAt: '<date_create()>'
