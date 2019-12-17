@@ -45,6 +45,9 @@ const HeaderDashboard = () => {
                 }
               })
               history.push("/dashboard");
+              dispatch({
+                type: `SET_INFOS_TO_FIND_MATE`
+              });
             }
             else {
                 console.log('error serveur');
@@ -90,7 +93,7 @@ const HeaderDashboard = () => {
             console.log('pas de token trouvé')
             return history.push("/signin");
         }
-        else {
+        else if(activeState.copyChange.username.length >= 3){
             axios.post("http://localhost:8000/api/profile/edit",
             JSON.stringify({...activeState.copyChange}), {
             headers: {
@@ -112,6 +115,14 @@ const HeaderDashboard = () => {
             console.log(error);
           });
         }
+    }
+
+    const logout = () => {
+        document.cookie = "";
+        history.push("/signin");
+        dispatch({
+            type: `LOGOUT`
+        });
     }
 
     return <header>
@@ -175,7 +186,7 @@ const HeaderDashboard = () => {
                                     <Form.Control type="text" className="edit-profile-frequency" value={activeState.copyChange.frequency} onChange={handleChangeInput}/>
                                 </Form.Group> */}
                                 <Form.Group controlId="description">
-                                    <Form.Control as="textarea" className="edit-profile-description" rows="5" value={activeState.copyChange.description} onChange={handleChangeInput}/>
+                                    <Form.Control as="textarea" className="edit-profile-description" rows="5" placeholder="Description" value={activeState.copyChange.description} onChange={handleChangeInput}/>
                                 </Form.Group>
                             </Form>
                         </Media.Body>
@@ -183,7 +194,7 @@ const HeaderDashboard = () => {
                     <Card.Body>
                         <ul>
                             <li onClick={() => {showEditProfile()}}>Annuler <FontAwesomeIcon icon={faUserTimes}/></li>
-                            <li onClick={() => {submitEditProfile()}}>Enregister <FontAwesomeIcon icon={faUserCheck}/></li>
+                            <li onClick={() => {submitEditProfile()}} >Enregister <FontAwesomeIcon icon={faUserCheck}/></li>
                         </ul>
                         
                         
@@ -195,7 +206,7 @@ const HeaderDashboard = () => {
 
                 <ul className="header-menu-ul">
                     <a href="#"><li>paramètre <FontAwesomeIcon icon={faCogs}/></li></a>
-                    <a href="#"><li>se déconnecter <FontAwesomeIcon icon={faSignOutAlt}/></li></a>
+                    <a href="#" onClick={() => {logout()}} ><li>se déconnecter <FontAwesomeIcon icon={faSignOutAlt}/></li></a>
                 </ul>
 
             </div>

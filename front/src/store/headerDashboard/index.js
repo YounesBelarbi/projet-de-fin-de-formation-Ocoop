@@ -78,6 +78,10 @@ const headerDashboardReducer = (state = initialState, action) => {
                 },
                 copyChange: { }
             }
+        case 'LOGOUT' :
+            return {
+                
+            }
         default :
             return state
     }

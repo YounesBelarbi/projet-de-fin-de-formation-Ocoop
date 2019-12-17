@@ -14,7 +14,11 @@ const Dashboard = () => {
     const dispatch = useDispatch();
 
     const activeState = useSelector(state => ({
-        ...state.dashboardReducer,
+        ...state.dashboardReducer
+    }));
+
+    const headerDashboardReducer = useSelector(state => ({
+        ...state.headerDashboardReducer
     }));
 
     useEffect(() => {
@@ -60,7 +64,10 @@ const Dashboard = () => {
         dispatch({
             type: `SELECT_GAME`,
             data: key
-          });   
+          });
+        dispatch({
+            type: `SET_INFOS_TO_FIND_MATE`
+        });
     };
 
     // controles du form
@@ -87,7 +94,7 @@ const Dashboard = () => {
             console.log('pas de token trouvé')
             return history.push("/signin");
         }
-        else {
+        else{
             console.log("gameToAdd", JSON.stringify({...activeState.addGamePanel.gameToAdd}));
             axios.post("http://127.0.0.1:8000/api/user/add/games/favorite",
             JSON.stringify({...activeState.addGamePanel.gameToAdd}), {
@@ -109,6 +116,9 @@ const Dashboard = () => {
                         type: `SELECT_GAME`,
                         data: activeState.favoriteGameList.length
                         });
+                    dispatch({
+                        type: `SET_INFOS_TO_FIND_MATE`
+                    });
                 }
                 else {
                     console.log('error submit');
@@ -121,6 +131,7 @@ const Dashboard = () => {
     };
 
     const handleSelectGame = () => {
+
         axios.post("http://127.0.0.1:8000/games/ranksbygame",
         JSON.stringify({game_id: activeState.addGamePanel.gameToAdd.gameId}), {
             headers: {
@@ -145,6 +156,40 @@ const Dashboard = () => {
         .catch(function (error) {
         console.log(error);
         });
+    }
+
+    const findMate = () => {
+        let token = activeState.token;
+        if(!token || token === "") {
+            console.log('pas de token trouvé')
+            return history.push("/signin");
+        }
+        else{
+            axios.post("http://127.0.0.1:8000/api/user/matchmaking",
+            JSON.stringify({...activeState.findMates, frequency_name: headerDashboardReducer.user.frequency}), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+token
+                }
+            })
+            .then(function (response) {
+                console.log('HTTP RESPONSE STATUT:', response.status);
+                console.log(response);
+                if(response.status === 200) {        
+                    dispatch({
+                        type: `SHOW_MATE`,
+                        data: response.data
+                        });
+                        //todo gerer le reducer
+                }
+                else {
+                    console.log('error submit');
+                }
+            })
+            .catch(function (error) {
+            console.log(error);
+            });
+        }
     }
 
     return(
@@ -187,7 +232,7 @@ const Dashboard = () => {
                             {!activeState.addGamePanel.isOpen ? (
                             <Container fluid>
                                 <Row className="justify-content-center">
-                                    <Button className="dashboard-main-btn">Rechercher un mate</Button>
+                                    <Button className="dashboard-main-btn" onClick={() => {findMate()}} >Rechercher un mate</Button>
                                 </Row>
                                 <Row>
                                     <Col>

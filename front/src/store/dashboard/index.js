@@ -8,7 +8,7 @@ const initialState = {
       userId: 32,
       username: "TheKairi78",
       image: "http://image.noelshack.com/fichiers/2017/22/1496181267-kenny-vomir1.png",
-      description: "Je carry les noobs sur Adibou ajoutez moi",
+      description: "Je carry les noobs sur Adibou ajoutez moi. Mon steam: TK78",
       isOpen: false
     },
     {
@@ -67,9 +67,18 @@ const dashboardReducer = (state = initialState, action) => {
           return {
             ...state,
             token: action.data.token,
+            favoriteGameList : [],
             addGamePanel: {
               ...state.addGamePanel,
-              isOpen: true
+              gameList: [],
+              rankList: [],
+              isOpen: true,
+              gameToAdd: {
+                plateformId: '',
+                gameId: '',
+                rankId: '',
+                frequencyId: '',
+              }
             }
           }
         }
@@ -223,6 +232,28 @@ const dashboardReducer = (state = initialState, action) => {
                 }
               }
             }
+            case 'SET_INFOS_TO_FIND_MATE' :
+              let infosToFindMates
+              state.favoriteGameList.forEach((game) => {
+                if(game.isSelected){
+                  infosToFindMates = {
+                    game_id: game.game_id,
+                    rank_name: game.rank
+                  }
+                }
+              });
+              return {
+                ...state,
+                findMates: infosToFindMates
+              }
+            case 'SHOW_MATE' : 
+              return {
+
+              }
+            case 'LOGOUT' :
+              return {
+                  
+              }
         default :
             return state
     }
