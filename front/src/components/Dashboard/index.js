@@ -165,6 +165,7 @@ const Dashboard = () => {
             return history.push("/signin");
         }
         else{
+            console.log(JSON.stringify({...activeState.findMates, frequency_name: headerDashboardReducer.user.frequency}));
             axios.post("http://127.0.0.1:8000/api/user/matchmaking",
             JSON.stringify({...activeState.findMates, frequency_name: headerDashboardReducer.user.frequency}), {
                 headers: {
@@ -219,9 +220,9 @@ const Dashboard = () => {
                             }
                                 <Row className="justify-content-end">
                                     <div className="game-row dashboard-images add-game-dashboard" onClick={() => {addGame()}}>
-                                        <Media>
-                                        <span className="add-span">+</span>
-                                        </Media>
+                                        
+                                        <p className="add-span">+</p>
+                                        
                                     </div> 
                                 </Row> 
                             </Container>
