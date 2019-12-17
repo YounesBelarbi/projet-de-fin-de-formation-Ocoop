@@ -12,6 +12,8 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Guard\AuthenticatorInterface;
 
 
 /**
@@ -22,33 +24,42 @@ class MatchmakingController extends AbstractController
     /**
      * @route("/matchmaking", name="matchmaking", methods={"POST"})
      */
-    public function matchmaking(Request $request, RankRepository $rankRepository, GameRepository $gameRepository, FavoriteGameRepository $favoriteGameRepository)
+    public function matchmaking(UserInterface $user, Request $request, RankRepository $rankRepository, GameRepository $gameRepository, FavoriteGameRepository $favoriteGameRepository)
     {
         //get data from request in json
         $matchmakingData = json_decode($request->getContent(), true);
         
+        //Get game_id and rank_id from the request
+        $userGameId = $matchmakingData['game_id'];
+        $userRankId = $matchmakingData['rank_id'];
 
-        $game = $gameRepository->find(['id' => $matchmakingData['game_id']]);
-        
-        $rank = $rankRepository->find(['id' => $matchmakingData['rank_id']]);
-       
-        
-        $userMatch = $favoriteGameRepository->findByGameAndRank($game, $rank);
-     
+        $allRankByGame = $rankRepository->findRanksbygame($userGameId);
 
-        $userList = [];
-        for ($i= 0 ; $i < count($userMatch); $i++) { 
-            
-            $userList[]= [
-                
-                'user_id' => $userMatch[$i]->getUser()->getId(),
-                'description' => $userMatch[$i]->getUser()->getDescription(),
-                'username' => $userMatch[$i]->getUser()->getUsername(),
-                'avatar' => $userMatch[$i]->getUser()->getAvatar(),
-                'city' => $userMatch[$i]->getUser()->getCity(),
-                'frequency' => $userMatch[$i]->getUser()->getFrequency(),
-                'rank' => $userMatch[$i]->getRank()->getName()
-            ];
+        for($i = 0; $i <= 3; $i++) {
+            foreach($allRankByGame as $rank) {
+                if($userRankId-$i === $rank->getId()){
+                    $minInterval = $rank->getId();
+                }
+                if($userRankId+$i === $rank->getId()){
+                    $maxInterval = $rank->getId();
+                }
+            }
+        }
+
+        $usersMatch = $favoriteGameRepository->findByGameAndRank($userGameId, $minInterval, $maxInterval);
+        
+        $usersMatchList = [];
+        foreach($usersMatch as $userMatch) {
+            if($user->getId() !== $userMatch->getUser()->getId()) {
+                $userList[]= [
+                    'user_id' => $userMatch->getUser()->getId(),
+                    'username' => $userMatch->getUser()->getUsername(),
+                    'description' => $userMatch->getUser()->getDescription(),
+                    'rank_name' => $userMatch->getRank()->getName(),
+                    'rank_id' => $userMatch->getRank()->getId(),
+                    'rank_logo' => $userMatch->getRank()->getLogo()
+                ];
+            }
         }
 
         return $this->json(['user_match' => $userList]);

@@ -34,17 +34,17 @@ class FavoriteGameRepository extends ServiceEntityRepository
     }
 
 
-    public function findByGameAndRank($game, $rank)
+    public function findByGameAndRank($userGameId, $minInterval, $maxInterval)
     {
         return $this->createQueryBuilder('f')
-            ->where('f.game = :game')
-            ->andWhere('f.rank = :rank')
-            ->setParameter('game', $game)
-            ->setParameter('rank', $rank)
+            ->where('f.game = :userGameId')
+            ->andWhere('f.rank BETWEEN :minInterval AND :maxInterval')
+            ->setParameter('userGameId', $userGameId)
+            ->setParameter('minInterval', $minInterval)
+            ->setParameter('maxInterval', $maxInterval)
             ->getQuery()
             ->getResult()
-        ;          
-        
+        ; 
     }
     
 
