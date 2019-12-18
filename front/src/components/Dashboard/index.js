@@ -244,7 +244,6 @@ const Dashboard = () => {
                                 <Row>
                                 {
                                     activeState.matchingResultPlayers.map((user, key) => {
-                                        console.log(user);
                                         return <Col xl={4} lg={6} md={6} sm={12} xm={12} className="col-card" key={user.userId}>
                                             <Card className="dahsboard-main-user">
                                                 <Media>
