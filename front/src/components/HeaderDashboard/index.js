@@ -45,6 +45,9 @@ const HeaderDashboard = () => {
                 }
               })
               history.push("/dashboard");
+              dispatch({
+                type: `SET_INFOS_TO_FIND_MATE`
+              });
             }
             else {
                 console.log('error serveur');
@@ -60,6 +63,10 @@ const HeaderDashboard = () => {
 
     const activeState = useSelector(state => ({
         ...state.headerDashboardReducer,
+    }));
+
+    const dashboardState = useSelector(state => ({
+        ...state.dashboardReducer,
     }));
 
     const dispatch = useDispatch();
@@ -80,9 +87,42 @@ const HeaderDashboard = () => {
     };
 
     const submitEditProfile = () => {
+        let token = dashboardState.token;
+        console.log(JSON.stringify({...activeState.copyChange}));
+        if(!token || token === "") {
+            console.log('pas de token trouvé')
+            return history.push("/signin");
+        }
+        else if(activeState.copyChange.username.length >= 3){
+            axios.post("http://localhost:8000/api/profile/edit",
+            JSON.stringify({...activeState.copyChange}), {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+token
+            }
+          }).then(function (response) {
+            console.log('HTTP RESPONSE STATUT:', response.status);
+            console.log(response);
+            if(response.status === 200) {
+                dispatch({
+                    type: `SUBMIT_EDIT_PROFILE`
+                })
+            }
+            else {
+                console.log('error serveur');
+            }
+          }).catch(function (error) {
+            console.log(error);
+          });
+        }
+    }
+
+    const logout = () => {
+        document.cookie = "";
+        history.push("/signin");
         dispatch({
-            type: `SUBMIT_EDIT_PROFILE`
-        })
+            type: `LOGOUT`
+        });
     }
 
     return <header>
@@ -131,10 +171,22 @@ const HeaderDashboard = () => {
                                     <Form.Control size="lg" type="text" className="edit-profile-username" value={activeState.copyChange.username} onChange={handleChangeInput}/>
                                 </Form.Group>
                                 <Form.Group controlId="frequency">
+                                    <Form.Control as="select" defaultValue={activeState.copyChange.frequency} onChange={handleChangeInput}>
+                                        {activeState.copyChange.frequency === "" &&
+                                            <option value="" disabled hidden>Dite quel type de joueur vous êtes</option>
+                                        }
+                                        {
+                                            activeState.frequencyList.map((frequency) => {
+                                            return <option key={frequency.id} value={frequency.name}>{frequency.name}</option>
+                                            })
+                                        }
+                                    </Form.Control>
+                                </Form.Group>    
+                                {/* <Form.Group controlId="frequency">
                                     <Form.Control type="text" className="edit-profile-frequency" value={activeState.copyChange.frequency} onChange={handleChangeInput}/>
-                                </Form.Group>
+                                </Form.Group> */}
                                 <Form.Group controlId="description">
-                                    <Form.Control as="textarea" className="edit-profile-description" rows="5" value={activeState.copyChange.description} onChange={handleChangeInput}/>
+                                    <Form.Control as="textarea" className="edit-profile-description" rows="5" placeholder="Description" value={activeState.copyChange.description} onChange={handleChangeInput}/>
                                 </Form.Group>
                             </Form>
                         </Media.Body>
@@ -142,7 +194,7 @@ const HeaderDashboard = () => {
                     <Card.Body>
                         <ul>
                             <li onClick={() => {showEditProfile()}}>Annuler <FontAwesomeIcon icon={faUserTimes}/></li>
-                            <li onClick={() => {submitEditProfile()}}>Enregister <FontAwesomeIcon icon={faUserCheck}/></li>
+                            <li onClick={() => {submitEditProfile()}} >Enregister <FontAwesomeIcon icon={faUserCheck}/></li>
                         </ul>
                         
                         
@@ -154,7 +206,7 @@ const HeaderDashboard = () => {
 
                 <ul className="header-menu-ul">
                     <a href="#"><li>paramètre <FontAwesomeIcon icon={faCogs}/></li></a>
-                    <a href="#"><li>se déconnecter <FontAwesomeIcon icon={faSignOutAlt}/></li></a>
+                    <a href="#" onClick={() => {logout()}} ><li>se déconnecter <FontAwesomeIcon icon={faSignOutAlt}/></li></a>
                 </ul>
 
             </div>

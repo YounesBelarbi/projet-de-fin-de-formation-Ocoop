@@ -117,7 +117,8 @@ class UserController extends AbstractController
                 'description' => $game->getDescription(),
                 'poster' => $game->getPoster(),
                 'logo' => $game->getLogo(),
-                'rank' => $rank->getName()
+                'rank_name' => $rank->getName(),
+                'rank_id' => $rank->getId()
             ]);  
         }
 

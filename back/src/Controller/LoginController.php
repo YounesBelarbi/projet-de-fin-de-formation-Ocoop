@@ -41,8 +41,8 @@ class LoginController extends AbstractController
                 'description' => $userFavoriteGames[$i]->getGame()->getDescription(),
                 'poster' => $userFavoriteGames[$i]->getGame()->getPoster(),
                 'logo' => $userFavoriteGames[$i]->getGame()->getLogo(),
-                'rank' => $userFavoriteGames[$i]->getRank()->getName(),
-                'rank' => $userFavoriteGames[$i]->getRank()->getId()
+                'rank_name' => $userFavoriteGames[$i]->getRank()->getName(),
+                'rank_id' => $userFavoriteGames[$i]->getRank()->getId()
             ];
         }
 
@@ -103,8 +103,8 @@ class LoginController extends AbstractController
                 'description' => $userFavoriteGames[$i]->getGame()->getDescription(),
                 'poster' => $userFavoriteGames[$i]->getGame()->getPoster(),
                 'logo' => $userFavoriteGames[$i]->getGame()->getLogo(),
-                'rank' => $userFavoriteGames[$i]->getRank()->getName(),
-                'rank' => $userFavoriteGames[$i]->getRank()->getId()
+                'rank_name' => $userFavoriteGames[$i]->getRank()->getName(),
+                'rank_id' => $userFavoriteGames[$i]->getRank()->getId()
             ];
         }
 

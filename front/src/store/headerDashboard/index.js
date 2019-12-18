@@ -18,8 +18,10 @@ const headerDashboardReducer = (state = initialState, action) => {
         return {
           ...state,
           user: {
-            ...action.data.user
-          }
+            ...action.data.user,
+            frequency: action.data.user_frequency
+          },
+          frequencyList: action.data.frequency_list
         }
         case 'SHOW_EDIT_PROFILE' :
             if(state.showEditor === false) {
@@ -75,6 +77,10 @@ const headerDashboardReducer = (state = initialState, action) => {
                     description: state.copyChange.description
                 },
                 copyChange: { }
+            }
+        case 'LOGOUT' :
+            return {
+                
             }
         default :
             return state
