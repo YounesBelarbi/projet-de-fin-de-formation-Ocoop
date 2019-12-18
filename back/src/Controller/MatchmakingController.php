@@ -51,7 +51,7 @@ class MatchmakingController extends AbstractController
         $usersMatchList = [];
         foreach($usersMatch as $userMatch) {
             if($user->getId() !== $userMatch->getUser()->getId()) {
-                $userList[]= [
+                $usersMatchList[]= [
                     'user_id' => $userMatch->getUser()->getId(),
                     'username' => $userMatch->getUser()->getUsername(),
                     'description' => $userMatch->getUser()->getDescription(),
@@ -62,6 +62,6 @@ class MatchmakingController extends AbstractController
             }
         }
 
-        return $this->json($userList);
+        return $this->json($usersMatchList);
     }
 }
