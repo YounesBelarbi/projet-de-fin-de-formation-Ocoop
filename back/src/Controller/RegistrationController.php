@@ -75,11 +75,11 @@ class RegistrationController extends AbstractController
 
             catch(UniqueConstraintViolationException $e)
             {
-                $errors['username'] = "Email ou username déjà utilisé.";  
+                $errors[] = "Email ou username déjà utilisé.";  
             }
             catch(\Exception $e)
             {
-                $errors['game'] = "Email ou username déjà utilisé.";
+                $errors[] = "Email ou username déjà utilisé.";
             }
         }
 
