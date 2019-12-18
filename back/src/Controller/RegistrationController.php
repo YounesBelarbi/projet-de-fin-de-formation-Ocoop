@@ -79,7 +79,7 @@ class RegistrationController extends AbstractController
             }
             catch(\Exception $e)
             {
-                $errors['game'] = "Email ou username déjà utilisé.";
+                $errors['exeption'] = "Email ou username déjà utilisé.";
             }
         }
 
@@ -88,4 +88,5 @@ class RegistrationController extends AbstractController
             $errors
         ], 400);
     }
+
 }
