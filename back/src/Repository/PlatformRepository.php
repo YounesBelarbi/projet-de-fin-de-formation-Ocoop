@@ -19,6 +19,20 @@ class PlatformRepository extends ServiceEntityRepository
         parent::__construct($registry, Platform::class);
     }
 
+    // public function setPlatformInDataBase()
+    // {
+    //     $conn = $this->getEntityManager()
+    //         ->getConnection();
+    //     $sql = `INSERT INTO \`platform\` (\`id\`, \`name\`, \`created_at\`, \`updated_at\`) VALUES
+    //     (1, 'Xbox', '2019-12-13 15:21:37', '2019-12-13 15:21:37'),
+    //     (2, 'PC', '2019-12-13 15:21:37', '2019-12-13 15:21:37'),
+    //     (3, 'Playstation', '2019-12-13 15:21:37', '2019-12-13 15:21:37');`;
+        
+    //     $stmt = $conn->prepare($sql);
+    //     $stmt->execute();
+    //     $stmt->fetchAll();
+    // }
+
     // /**
     //  * @return Platform[] Returns an array of Platform objects
     //  */

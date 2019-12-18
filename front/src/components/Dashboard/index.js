@@ -203,6 +203,7 @@ const Dashboard = () => {
                             <Container fluid>
                             {
                                 activeState.favoriteGameList.map((game, key) => {
+                                    console.log(game);
                                     return <Row key={key} className="justify-content-end">
                                             <div className={`game-row ${ game.isSelected ? "game-isSelected" : "" }`}>
                                                 <Media onClick={() => {selectGame(key)}} >
@@ -210,7 +211,7 @@ const Dashboard = () => {
                                                     width={100}
                                                     height={100}
                                                     className="dashboard-images"
-                                                    src={game.logo}
+                                                    src={`\back\public\assets\images\games-posters${game.logo}`}
                                                     alt={game.title}
                                                 />
                                                 </Media>
@@ -243,6 +244,7 @@ const Dashboard = () => {
                                 <Row>
                                 {
                                     activeState.matchingResultPlayers.map((user, key) => {
+                                        console.log(user);
                                         return <Col xl={4} lg={6} md={6} sm={12} xm={12} className="col-card" key={user.userId}>
                                             <Card className="dahsboard-main-user">
                                                 <Media>
@@ -261,8 +263,10 @@ const Dashboard = () => {
                                                         <Collapse in={user.isOpen}>
                                                             <p className="dahsboard-main-user-description">
                                                                 {user.description}
+                                                                <Button className="dashboard-main-btn">Ajoute moi</Button>
                                                             </p>
                                                         </Collapse>  
+                                                        
                                                     </Media.Body>          
                                                 </Media>
                                             </Card>

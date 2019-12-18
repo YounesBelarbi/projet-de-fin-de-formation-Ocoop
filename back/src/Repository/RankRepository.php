@@ -19,6 +19,7 @@ class RankRepository extends ServiceEntityRepository
         parent::__construct($registry, Rank::class);
     }
 
+
     // /**
     //  * @return Rank[] Returns an array of Rank objects
     //  */

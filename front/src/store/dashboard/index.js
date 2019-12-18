@@ -246,13 +246,14 @@ const dashboardReducer = (state = initialState, action) => {
               }
             case 'SHOW_MATE' : 
             console.log("showmate data",action.data);
+              console.log("show_mate",action.data)
               return {
                 ...state,
                 matchingResultPlayers: {...action.data}
               }
             case 'LOGOUT' :
               return {
-                  
+                  ...initialState
               }
         default :
             return state
