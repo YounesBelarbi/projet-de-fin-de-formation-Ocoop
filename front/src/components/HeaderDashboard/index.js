@@ -27,7 +27,7 @@ const HeaderDashboard = () => {
             return history.push("/signin");
         }
         else {
-            axios.post("http://localhost:8000/api/user/tokencheck",
+            axios.post("http://localhost:8001/api/user/tokencheck",
             "", {
             headers: {
                 'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ const HeaderDashboard = () => {
             return history.push("/signin");
         }
         else if(activeState.copyChange.username.length >= 3){
-            axios.post("http://localhost:8000/api/profile/edit",
+            axios.post("http://localhost:8001/api/profile/edit",
             JSON.stringify({...activeState.copyChange}), {
             headers: {
                 'Content-Type': 'application/json',
@@ -211,7 +211,7 @@ const HeaderDashboard = () => {
 
             </div>
         </div>
-        <h1 className="header-logo">LOGO</h1>
+        <img src="http://localhost:8001/../assets/images/logo4.png" className="header-logo"/>
     </nav>
 </header>
 };

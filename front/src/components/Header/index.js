@@ -22,7 +22,8 @@ const Header = () => {
                     <a href="#" target="_blank"><li>Mention légales <FontAwesomeIcon icon={faClipboardList}/></li></a>
                 </ul>
             </div>
-            <h1 className="header-logo">LOGO</h1>
+            
+            <img src="http://localhost:8001/../assets/images/logo4.png" className="header-logo"/>
         </nav>
     </header>
 }

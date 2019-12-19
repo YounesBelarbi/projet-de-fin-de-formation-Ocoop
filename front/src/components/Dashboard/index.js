@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Container, Row, Col, Media, Card, Collapse, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGolfBall, faPlusCircle, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faGolfBall, faPlusCircle, faChevronDown, faPlus } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import useForm from "react-hook-form";
 import { useHistory } from 'react-router-dom';
@@ -17,6 +17,10 @@ const Dashboard = () => {
         ...state.dashboardReducer
     }));
 
+    const {matchingResultPlayers} = useSelector(state => 
+        state.dashboardReducer
+    );
+
     const headerDashboardReducer = useSelector(state => ({
         ...state.headerDashboardReducer
     }));
@@ -28,7 +32,7 @@ const Dashboard = () => {
     let history = useHistory();
 
     async function getGameDataFromAPI() {
-    axios.post("http://localhost:8000/games/list",
+    axios.post("http://localhost:8001/games/list",
     "", {
     headers: {
         'Content-Type': 'application/json'
@@ -96,7 +100,7 @@ const Dashboard = () => {
         }
         else{
             console.log("gameToAdd", JSON.stringify({...activeState.addGamePanel.gameToAdd}));
-            axios.post("http://127.0.0.1:8000/api/user/add/games/favorite",
+            axios.post("http://127.0.0.1:8001/api/user/add/games/favorite",
             JSON.stringify({...activeState.addGamePanel.gameToAdd}), {
                 headers: {
                     'Content-Type': 'application/json',
@@ -132,7 +136,7 @@ const Dashboard = () => {
 
     const handleSelectGame = () => {
 
-        axios.post("http://127.0.0.1:8000/games/ranksbygame",
+        axios.post("http://127.0.0.1:8001/games/ranksbygame",
         JSON.stringify({game_id: activeState.addGamePanel.gameToAdd.gameId}), {
             headers: {
                 'Content-Type': 'application/json'
@@ -166,7 +170,7 @@ const Dashboard = () => {
         }
         else{
             console.log(JSON.stringify({...activeState.findMates, frequency_name: headerDashboardReducer.user.frequency}));
-            axios.post("http://127.0.0.1:8000/api/user/matchmaking",
+            axios.post("http://127.0.0.1:8001/api/user/matchmaking",
             JSON.stringify({...activeState.findMates, frequency_name: headerDashboardReducer.user.frequency}), {
                 headers: {
                     'Content-Type': 'application/json',
@@ -181,7 +185,6 @@ const Dashboard = () => {
                         type: `SHOW_MATE`,
                         data: response.data
                         });
-                        //todo gerer le reducer
                 }
                 else {
                     console.log('error submit');
@@ -191,6 +194,21 @@ const Dashboard = () => {
             console.log(error);
             });
         }
+    }
+
+    const getGameIdSelected = () => {
+        let newArray = activeState.favoriteGameList.filter(function (gameObject){
+            if(gameObject.isSelected) {
+                return gameObject.game_id
+            }
+        });
+        let gameId = newArray[0].game_id;
+
+        return gameId;
+
+        // let gameName = activeState.favoriteGameList.filter(isSelected => isSelected === true);
+        // console.log('Nom du jeux', gameName);
+        // return gameName;
     }
 
     return(
@@ -211,7 +229,7 @@ const Dashboard = () => {
                                                     width={100}
                                                     height={100}
                                                     className="dashboard-images"
-                                                    src={`\back\public\assets\images\games-posters${game.logo}`}
+                                                    src={`http://localhost:8001/../assets/images/games-posters/${game.poster}`}
                                                     alt={game.title}
                                                 />
                                                 </Media>
@@ -219,10 +237,10 @@ const Dashboard = () => {
                                         </Row>       
                                     })
                             }
-                                <Row className="justify-content-end">
-                                    <div className="game-row dashboard-images add-game-dashboard" onClick={() => {addGame()}}>
+                                <Row className="justify-content-end add-game-font">
+                                    <div className="dashboard-images add-game-dashboard" onClick={() => {addGame()}}>
                                         
-                                        <p className="add-span">+</p>
+                                    <FontAwesomeIcon size="2x" icon={faPlus} />
                                         
                                     </div> 
                                 </Row> 
@@ -234,7 +252,7 @@ const Dashboard = () => {
                             {!activeState.addGamePanel.isOpen ? (
                             <Container fluid>
                                 <Row className="justify-content-center">
-                                    <Button className="dashboard-main-btn" onClick={() => {findMate()}} >Rechercher un mate</Button>
+                                    <Button className="dashboard-main-btn" onClick={() => {findMate()}} >Rechercher un coéquipier</Button>
                                 </Row>
                                 <Row>
                                     <Col>
@@ -243,34 +261,54 @@ const Dashboard = () => {
                                 </Row>
                                 <Row>
                                 {
-                                    activeState.matchingResultPlayers.map((user, key) => {
-                                        return <Col xl={4} lg={6} md={6} sm={12} xm={12} className="col-card" key={user.userId}>
-                                            <Card className="dahsboard-main-user">
-                                                <Media>
-                                                    <img
-                                                        width={46}
-                                                        height={46}
-                                                        src={user.image}
-                                                        alt={user.username}
-                                                        className="dahsboard-main-user-img"
-                                                    />
-                                                    <Media.Body className="dahsboard-main-user-body" onClick={() => {showPlayerCard(key)}}>
-                                                        <div className="dashboard-main-visible-header">
-                                                            <h5 className="dahsboard-main-user-username">{user.username}</h5>
-                                                            <FontAwesomeIcon size="2x" icon={faChevronDown} />
-                                                        </div>
-                                                        <Collapse in={user.isOpen}>
-                                                            <p className="dahsboard-main-user-description">
-                                                                {user.description}
-                                                                <Button className="dashboard-main-btn">Ajoute moi</Button>
-                                                            </p>
-                                                        </Collapse>  
-                                                        
-                                                    </Media.Body>          
-                                                </Media>
-                                            </Card>
-                                        </Col>
-                                    })
+                                    matchingResultPlayers.map((game) => {
+                                            return game.map((user, key) => {
+                                                //console.log('Jen ai GROS', user.gameId);
+                                                console.log(getGameIdSelected());
+                                                if(user.game_id === getGameIdSelected()) {
+                                                    return <Col xl={4} lg={6} md={6} sm={12} xm={12} className="col-card" key={user.userId}>
+                                                        <Card className="dahsboard-main-user">
+                                                            <Media>
+                                                                <img
+                                                                    width={46}
+                                                                    height={46}
+                                                                    //src={user.image}
+                                                                    src="https://www.pikpng.com/pngl/m/238-2387180_avatar-profile-png-icon-avatar-gamer-png-transparent.png"
+                                                                    alt={user.username}
+                                                                    className="dahsboard-main-user-img"
+                                                                />
+                                                                <Media.Body className="dahsboard-main-user-body" onClick={() => {showPlayerCard(key)}}>
+                                                                    <div className="dashboard-main-visible-header">
+                                                                        <h5 className="dahsboard-main-user-username">{user.username}</h5>
+                                                                        <FontAwesomeIcon size="2x" icon={faChevronDown} />
+                                                                    </div>
+                                                                    <div>
+                                                                        <img
+                                                                            height={30}
+                                                                            src={`http://localhost:8001/../assets/images/games-ranks/${user.rank_logo}`}
+                                                                            alt={user.rank_name}
+                                                                            className="dashboard-mais-user-rank-logo"
+                                                                        />
+                                                                        <h3>{user.rank_name}</h3>
+                                                                    </div>
+                                                                    <Collapse in={user.isOpen}>
+                                                                        <p className="dahsboard-main-user-description">
+                                                                            <h4 className="justify-content-center">
+                                                                                {user.frequency_name}
+                                                                            </h4>
+                                                                            {user.description}
+                                                                            <Button className="dashboard-main-btn card">Ajoute moi</Button>
+                                                                        </p>
+                                                                    </Collapse>  
+                                                                    
+                                                                </Media.Body>          
+                                                            </Media>
+                                                        </Card>
+                                                    </Col>
+                                                }
+                                            })
+                                        }
+                                    )
                                 }
                             </Row>   
                             </Container>
