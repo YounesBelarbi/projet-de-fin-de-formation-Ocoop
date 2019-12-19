@@ -51,17 +51,39 @@ class MatchmakingController extends AbstractController
         $usersMatchList = [];
         foreach($usersMatch as $userMatch) {
             if($user->getId() !== $userMatch->getUser()->getId()) {
+                if ($userMatch->getUser()->getFrequency() !== null){
+                    $frequencyName = $userMatch->getUser()->getFrequency()->getName();
+                }
+                else {
+                    $frequencyName= "";
+                }
+
+                if ($userMatch->getUser()->getDescription() !== null){
+                    $userDescription = $userMatch->getUser()->getDescription();
+                }
+                else {
+                    $userDescription= "";
+                }
+
                 $usersMatchList[]= [
                     'user_id' => $userMatch->getUser()->getId(),
                     'username' => $userMatch->getUser()->getUsername(),
-                    'description' => $userMatch->getUser()->getDescription(),
+                    'description' => $userDescription,
+                    'frequency_name' => $frequencyName,
+                    'game_name' => $userMatch->getGame()->getTitle(),
+                    'game_id' => $userMatch->getGame()->getId(),
                     'rank_name' => $userMatch->getRank()->getName(),
                     'rank_id' => $userMatch->getRank()->getId(),
-                    'rank_logo' => $userMatch->getRank()->getLogo()
+                    'rank_logo' => $userMatch->getRank()->getLogo(),
+                    'isOpen' => false
                 ];
+
+                //Envoyer la frequence name ce serait perfecto
+                
+                $gameId = $userMatch->getGame()->getId();
             }
         }
 
-        return $this->json($usersMatchList);
+        return $this->json([ $gameId => $usersMatchList]);
     }
 }
