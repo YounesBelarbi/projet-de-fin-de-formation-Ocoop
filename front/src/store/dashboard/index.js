@@ -3,36 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const initialState = {
   favoriteGameList : [],
-  matchingResultPlayers: [
-    {
-      userId: 32,
-      username: "TheKairi78",
-      image: "http://image.noelshack.com/fichiers/2017/22/1496181267-kenny-vomir1.png",
-      description: "Je carry les noobs sur Adibou ajoutez moi. Mon steam: TK78",
-      isOpen: false
-    },
-    {
-      userId: 12,
-      username: "ChristCosmique28",
-      image: "https://www.nouvelordremondial.cc/wp-content/uploads/2018/07/durif-pas-mort.jpg",
-      description: "",
-      isOpen: false
-    },
-    {
-      userId: 23,
-      username: "lampereur",
-      image: "https://www.numero.com/sites/default/files/images/article_new/slides/alkpotecfifou-0073alkpote-album-monument-rap-francais-numero-magazine.jpg",
-      description: "Je carry",
-      isOpen: false
-    },
-    {
-      userId: 46,
-      username: "Clovis",
-      image: "https://i.skyrock.net/6138/53906138/pics/2789465568_small_1.jpg",
-      description: "ajoutez moi",
-      isOpen: false
-    }
-  ],
+  matchingResultPlayers: [],
   addGamePanel: {
     gameList: [],
     rankList: [],
@@ -81,12 +52,13 @@ const dashboardReducer = (state = initialState, action) => {
           }
         }
         case 'SHOW_PLAYER_CARD' :
-          let object = {...state.matchingResultPlayers[action.data], isOpen: !state.matchingResultPlayers[action.data].isOpen};
-          let array = [...state.matchingResultPlayers];
+          //TODO BIEN INVERSER AU BON ENDROIT
+          let object = {...state.matchingResultPlayers[0][action.data], isOpen: !state.matchingResultPlayers[0][action.data].isOpen};
+          let array = [...state.matchingResultPlayers[0]];
           array[action.data] = object;
           return {
             ...state,
-            matchingResultPlayers: array
+            matchingResultPlayers: [array]
           }
         case 'SELECT_GAME' :
           let newGameList = state.favoriteGameList.map((game, key) => {
@@ -245,11 +217,20 @@ const dashboardReducer = (state = initialState, action) => {
                 findMates: infosToFindMates
               }
             case 'SHOW_MATE' : 
-            console.log("showmate data",action.data);
-              console.log("show_mate",action.data)
+              console.log("show_mate",action.data);
+              
+              // array = [];
+              // array[action.data[0].game_name] = [...action.data];
+              //let arrayId = Object.values(action.data)[0].game_id;
+              // let newResultArray = [];
+              // newResultArray[arrayName] = action.data;
+              //console.log(arrayId);
               return {
                 ...state,
-                matchingResultPlayers: {...action.data}
+                matchingResultPlayers: 
+                //...state.matchingResultPlayers,
+                Object.values(action.data)
+              
               }
             case 'LOGOUT' :
               return {
