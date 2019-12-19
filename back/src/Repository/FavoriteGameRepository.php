@@ -38,6 +38,7 @@ class FavoriteGameRepository extends ServiceEntityRepository
             ->setParameter('userGameId', $userGameId)
             ->setParameter('minInterval', $minInterval)
             ->setParameter('maxInterval', $maxInterval)
+            ->addOrderBy('f.rank')
             ->getQuery()
             ->getResult()
         ; 

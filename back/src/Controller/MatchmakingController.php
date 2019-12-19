@@ -82,8 +82,14 @@ class MatchmakingController extends AbstractController
                 
                 $gameId = $userMatch->getGame()->getId();
             }
-        }
 
-        return $this->json([ $gameId => $usersMatchList]);
+        }
+        
+        if(!isset($gameId)) {
+            return $this->json([ 'result' => 'Aucun joueur n\'a été trouvé']);
+        }else {
+            return $this->json([ $gameId => $usersMatchList]);
+        }
+        
     }
 }
