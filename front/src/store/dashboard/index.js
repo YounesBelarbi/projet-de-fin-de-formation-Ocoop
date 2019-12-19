@@ -232,6 +232,16 @@ const dashboardReducer = (state = initialState, action) => {
                 Object.values(action.data)
               
               }
+            case 'DELETE_GAME' :
+              //const gameIdToRemove = action.data;
+              const coucou = [...state.favoriteGameList];
+
+              const newFavoriteGameArray = coucou.filter((item) => item.game_id !== action.data);
+              console.log(newFavoriteGameArray);  
+              return {
+                  ...state,
+                  favoriteGameList: newFavoriteGameArray
+                }
             case 'LOGOUT' :
               return {
                   ...initialState

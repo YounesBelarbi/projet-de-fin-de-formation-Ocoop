@@ -27,7 +27,7 @@ const HeaderDashboard = () => {
             return history.push("/signin");
         }
         else {
-            axios.post("http://localhost:8001/api/user/tokencheck",
+            axios.post("http://localhost:8000/api/user/tokencheck",
             "", {
             headers: {
                 'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ const HeaderDashboard = () => {
             return history.push("/signin");
         }
         else if(activeState.copyChange.username.length >= 3){
-            axios.post("http://localhost:8001/api/profile/edit",
+            axios.post("http://localhost:8000/api/profile/edit",
             JSON.stringify({...activeState.copyChange}), {
             headers: {
                 'Content-Type': 'application/json',
@@ -171,7 +171,7 @@ const HeaderDashboard = () => {
                                     <Form.Control size="lg" type="text" className="edit-profile-username" value={activeState.copyChange.username} onChange={handleChangeInput}/>
                                 </Form.Group>
                                 <Form.Group controlId="frequency">
-                                    <Form.Control as="select" defaultValue={activeState.copyChange.frequency} onChange={handleChangeInput}>
+                                    <Form.Control as="select" className="edit-profile-frequency" defaultValue={activeState.copyChange.frequency} onChange={handleChangeInput}>
                                         {activeState.copyChange.frequency === "" &&
                                             <option value="" disabled hidden>Dite quel type de joueur vous êtes</option>
                                         }
@@ -211,7 +211,7 @@ const HeaderDashboard = () => {
 
             </div>
         </div>
-        <img src="http://localhost:8001/../assets/images/logo4.png" className="header-logo"/>
+        <img src="http://localhost:8000/../assets/images/logo4.png" className="header-logo"/>
     </nav>
 </header>
 };

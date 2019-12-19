@@ -23,7 +23,7 @@ const Header = () => {
                 </ul>
             </div>
             
-            <img src="http://localhost:8001/../assets/images/logo4.png" className="header-logo"/>
+            <img src="http://localhost:8000/../assets/images/logo4.png" className="header-logo"/>
         </nav>
     </header>
 }

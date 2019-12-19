@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Container, Row, Col, Media, Card, Collapse, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGolfBall, faPlusCircle, faChevronDown, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faGolfBall, faPlusCircle, faChevronDown, faPlus, faTrashAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
+
 import axios from 'axios';
 import useForm from "react-hook-form";
 import { useHistory } from 'react-router-dom';
@@ -32,7 +34,7 @@ const Dashboard = () => {
     let history = useHistory();
 
     async function getGameDataFromAPI() {
-    axios.post("http://localhost:8001/games/list",
+    axios.post("http://localhost:8000/games/list",
     "", {
     headers: {
         'Content-Type': 'application/json'
@@ -100,7 +102,7 @@ const Dashboard = () => {
         }
         else{
             console.log("gameToAdd", JSON.stringify({...activeState.addGamePanel.gameToAdd}));
-            axios.post("http://127.0.0.1:8001/api/user/add/games/favorite",
+            axios.post("http://127.0.0.1:8000/api/user/add/games/favorite",
             JSON.stringify({...activeState.addGamePanel.gameToAdd}), {
                 headers: {
                     'Content-Type': 'application/json',
@@ -136,7 +138,7 @@ const Dashboard = () => {
 
     const handleSelectGame = () => {
 
-        axios.post("http://127.0.0.1:8001/games/ranksbygame",
+        axios.post("http://127.0.0.1:8000/games/ranksbygame",
         JSON.stringify({game_id: activeState.addGamePanel.gameToAdd.gameId}), {
             headers: {
                 'Content-Type': 'application/json'
@@ -170,7 +172,7 @@ const Dashboard = () => {
         }
         else{
             console.log(JSON.stringify({...activeState.findMates, frequency_name: headerDashboardReducer.user.frequency}));
-            axios.post("http://127.0.0.1:8001/api/user/matchmaking",
+            axios.post("http://127.0.0.1:8000/api/user/matchmaking",
             JSON.stringify({...activeState.findMates, frequency_name: headerDashboardReducer.user.frequency}), {
                 headers: {
                     'Content-Type': 'application/json',
@@ -202,13 +204,67 @@ const Dashboard = () => {
                 return gameObject.game_id
             }
         });
-        let gameId = newArray[0].game_id;
-
+        console.log("COUCOUC JE PASSE A LA TELE", newArray);
+        if(newArray.length > 0) {
+            var gameId = newArray[0].game_id;
+        }
+        else {
+            var gameId = 0
+        }
         return gameId;
+    }
 
-        // let gameName = activeState.favoriteGameList.filter(isSelected => isSelected === true);
-        // console.log('Nom du jeux', gameName);
-        // return gameName;
+    const deleteGame = (gameId) => {
+
+        let token = activeState.token;
+        if(!token || token === "") {
+            console.log('pas de token trouvé')
+            return history.push("/signin");
+        }
+        else{
+            console.log(JSON.stringify({...activeState.findMates, frequency_name: headerDashboardReducer.user.frequency}));
+            axios.post("http://127.0.0.1:8000/api/user/delete/games/favorite",
+            JSON.stringify({game_id: gameId}), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+token
+                }
+            })
+            .then(function (response) {
+                console.log('HTTP RESPONSE STATUT:', response.status);
+                console.log(response);
+                if(response.status === 200) {        
+                    if(activeState.favoriteGameList.length === 1) {
+                        return dispatch({
+                            type: `DELETE_GAME`,
+                            data: gameId
+                        }),
+                        dispatch({
+                            type: 'SHOW_ADD_GAME_PANEL'
+                        })
+                    }
+                    else {
+                        return dispatch({
+                            type: `DELETE_GAME`,
+                            data: gameId
+                        }),
+                        dispatch({
+                            type: `SELECT_GAME`,
+                            data: 0
+                        })
+                    }
+                }
+                else {
+                    console.log('error submit');
+                }
+            })
+            .catch(function (error) {
+            console.log(error);
+            });
+
+
+        }
+       
     }
 
     return(
@@ -224,12 +280,13 @@ const Dashboard = () => {
                                     console.log(game);
                                     return <Row key={key} className="justify-content-end">
                                             <div className={`game-row ${ game.isSelected ? "game-isSelected" : "" }`}>
-                                                <Media onClick={() => {selectGame(key)}} >
+                                                <FontAwesomeIcon className="delete-btn" size="2x" icon={faTimes} size="lg" color="#e00000" onClick={() => {deleteGame(game.game_id)}}/>
+                                                <Media onClick={() => {selectGame(key)}} className="media-game" >
                                                     <img
                                                     width={100}
                                                     height={100}
                                                     className="dashboard-images"
-                                                    src={`http://localhost:8001/../assets/images/games-posters/${game.poster}`}
+                                                    src={`http://localhost:8000/../assets/images/games-posters/${game.poster}`}
                                                     alt={game.title}
                                                 />
                                                 </Media>
@@ -261,9 +318,15 @@ const Dashboard = () => {
                                 </Row>
                                 <Row>
                                 {
+                                
                                     matchingResultPlayers.map((game) => {
+                                        console.log(game);
+                                        if(game === "Aucun joueur n'a été trouvé") {
+                                            return <h2>{game}</h2>
+                                            //Damien si t'est chaude faire une classe TODO
+                                        }
+                                        else {
                                             return game.map((user, key) => {
-                                                //console.log('Jen ai GROS', user.gameId);
                                                 console.log(getGameIdSelected());
                                                 if(user.game_id === getGameIdSelected()) {
                                                     return <Col xl={4} lg={6} md={6} sm={12} xm={12} className="col-card" key={user.userId}>
@@ -285,15 +348,15 @@ const Dashboard = () => {
                                                                     <div>
                                                                         <img
                                                                             height={30}
-                                                                            src={`http://localhost:8001/../assets/images/games-ranks/${user.rank_logo}`}
+                                                                            src={`http://localhost:8000/../assets/images/games-ranks/${user.rank_logo}`}
                                                                             alt={user.rank_name}
                                                                             className="dashboard-mais-user-rank-logo"
                                                                         />
-                                                                        <h3>{user.rank_name}</h3>
+                                                                        <h3 className="dahsboard-main-user-rankname">{user.rank_name}</h3>
                                                                     </div>
                                                                     <Collapse in={user.isOpen}>
                                                                         <p className="dahsboard-main-user-description">
-                                                                            <h4 className="justify-content-center">
+                                                                            <h4 className="dahsboard-main-user-frequency">
                                                                                 {user.frequency_name}
                                                                             </h4>
                                                                             {user.description}
@@ -307,6 +370,8 @@ const Dashboard = () => {
                                                     </Col>
                                                 }
                                             })
+
+                                        }
                                         }
                                     )
                                 }
@@ -332,11 +397,11 @@ const Dashboard = () => {
                                             <Form.Row>
                                                 <Form.Group controlId="selected_game">
                                                     <Form.Label>Selectionner votre jeu</Form.Label>
-                                                    <Form.Control as="select" defaultValue={""} onChange={handleChange} on>
-                                                        <option value="" disabled hidden>Selectionner votre jeu...</option>
+                                                    <Form.Control as="select" defaultValue={""} onChange={handleChange} className="option-form" on>
+                                                        <option value="" disabled hidden className="option-form">Selectionner votre jeu...</option>
                                                         {
                                                             activeState.addGamePanel.gameList.map((game, key) => {
-                                                            return <option key={key} value={game.id} onClick={handleSelectGame} >{game.title}</option>
+                                                            return <option key={key} value={game.id} onClick={handleSelectGame} className="option-form" >{game.title}</option>
                                                             })
                                                         }
                                                     </Form.Control>
@@ -346,11 +411,11 @@ const Dashboard = () => {
                                                 <Form.Row>
                                                     <Form.Group controlId="selected_rank">
                                                         <Form.Label>Selectionner votre rank</Form.Label>
-                                                        <Form.Control as="select" defaultValue={""} onChange={handleChange}>
-                                                            <option value="" disabled hidden>Selectionner votre rank...</option>
+                                                        <Form.Control as="select" defaultValue={""} onChange={handleChange} className="option-form">
+                                                            <option value="" disabled hidden className="option-form">Selectionner votre rank...</option>
                                                             {
                                                                 activeState.addGamePanel.rankList.map((rank) => {
-                                                                return <option key={rank.id} value={rank.id}>{rank.name}</option>
+                                                                return <option key={rank.id} value={rank.id} className="option-form">{rank.name}</option>
                                                                 })
                                                             }
                                                         </Form.Control>
@@ -373,7 +438,7 @@ const Dashboard = () => {
                                                 </Form.Row>
                                             } */}
                                             {activeState.addGamePanel.gameToAdd.rankId !== "" &&
-                                                <Button variant="primary" type="submit">
+                                                <Button variant="primary" type="submit" className="btn-form">
                                                 Ajouter ce jeu dans ma liste
                                                 </Button>
                                             }

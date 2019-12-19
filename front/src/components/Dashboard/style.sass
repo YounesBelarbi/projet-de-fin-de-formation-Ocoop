@@ -49,6 +49,7 @@
     justify-content: center
     align-items: center
     color: $orange
+    margin-top: 30px
     .add-span
         font-size: 3em
 
@@ -109,6 +110,15 @@
                 font-weight: bold
             // .dashboard-mais-user-rank-logo
             //     display: inline
+            .dahsboard-main-user-description
+                font-style: italic
+                color: #cecece
+                .dahsboard-main-user-frequency
+                    font-style: normal
+                    font-weight: bolder
+            .dahsboard-main-user-rankname
+                font-weight: bold
+                color: #ffffff
 
 .col-card
     padding-top: 5px
@@ -147,6 +157,73 @@
 
 
 
+
+
+.option-form
+    width: 300px
+    background: none
+    border: 1px solid $orange
+    color: $orange
+    -webkit-appearance: none
+    -moz-appearance: none
+   
+.option-form:focus
+    background: none
+    border: 1px solid $orange
+    color: $orange
+    -webkit-appearance: none
+    -moz-appearance: none
+    
+    
+
+.btn-form
+    background: $orange
+    color: #fff
+    width: 300px
+    
+
+.btn-form:hover
+    background: $orange
+    color: #fff
+    width: 300px
+
+.media-game
+    
+    
+.delete-btn
+    margin: 0
+    position: relative
+    left: 90px
+    top: 30px
+    color: $orange
+    -webkit-box-shadow: 0px 0px 19px -5px rgba(0,0,0,0.75)
+    -moz-box-shadow: 0px 0px 19px -5px rgba(0,0,0,0.75)
+    box-shadow: 0px 0px 19px -5px rgba(0,0,0,0.75)
+    z-index: 10
+
+.delete-btn:hover
+    position: relative
+    left: 90px
+    top: 30px
+    color: $orange-hover
+
+
+
+//ADD GAME
+
+.btn-select
+    width: 100%
+    padding: 15px 20px
+    background-color: #1F2036
+    border: none
+    border-radius: 50px
+    color: #fff
+    
+.form-add-game
+    margin-top: 20px
+
+
+
 @media (max-width: 430px)
     .dashboard-main
         padding-left: 0px
@@ -165,18 +242,16 @@
 @media (max-width: 650px)
     .game-row
         padding-right: 0
+    .option-form
+        width: 200px
+    .btn-form
+        width: 200px
+    .delete-btn
+        position: relative
+        top: 30px
+        left: 40px
+    .add-game-dashboard
+        width: 20px
+        height: 20px
+        margin-right: 10px
   
-
-
-//ADD GAME
-
-.btn-select
-    width: 100%
-    padding: 15px 20px
-    background-color: #1F2036
-    border: none
-    border-radius: 50px
-    color: #fff
-    
-.form-add-game
-    margin-top: 20px

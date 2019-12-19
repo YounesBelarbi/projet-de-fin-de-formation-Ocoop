@@ -22,7 +22,7 @@ import './app.sass';
 const HomeCards = () => {
 
   async function showGame() {
-    axios.post("http://127.0.0.1:8001/games/list", "",
+    axios.post("http://127.0.0.1:8000/games/list", "",
     {
         headers: {
             'Content-Type': 'application/json'
@@ -62,7 +62,7 @@ const HomeCards = () => {
       return (
         <Col key={i} lg={3} md={4} sm={12} className="pt-5">
         <Card className="bg-dark text-white hover-card rounded-card">
-        <Card.Img className="rounded-card" src={`http://localhost:8001/../assets/images/games-home/${game.poster}`} alt={game.title} />
+        <Card.Img className="rounded-card" src={`http://localhost:8000/../assets/images/games-home/${game.poster}`} alt={game.title} />
         <Card.ImgOverlay>
         <Card.Title className="hidden-title">Trouver des joueurs de {game.title}</Card.Title>
         </Card.ImgOverlay>
